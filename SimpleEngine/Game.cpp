@@ -24,38 +24,47 @@ void Game::load()
 {
 	inputSystem.setMouseRelativeMode(true);
 
+	// Shaders
 	Assets::loadShader("Res\\Shaders\\Sprite.vert", "Res\\Shaders\\Sprite.frag", "", "", "", "Sprite");
 	Assets::loadShader("Res\\Shaders\\BasicMesh.vert", "Res\\Shaders\\BasicMesh.frag", "", "", "", "BasicMesh");
 	Assets::loadShader("Res\\Shaders\\Phong.vert", "Res\\Shaders\\Phong.frag", "", "", "", "Phong");
 
+	// Textures
 	Assets::loadTexture(renderer, "Res\\Textures\\Default.png", "Default");
 	Assets::loadTexture(renderer, "Res\\Textures\\Cube.png", "Cube");
 	Assets::loadTexture(renderer, "Res\\Textures\\Plane.png", "Plane");
 	Assets::loadTexture(renderer, "Res\\Textures\\Crosshair.png", "Crosshair");
 	Assets::loadTexture(renderer, "Res\\Textures\\Sphere.png", "Sphere");
+	/*
 	Assets::loadTexture(renderer, "Res\\Textures\\ak74.png", "ak74");
 	Assets::loadTexture(renderer, "Res\\Textures\\lm.png", "lm");
 	Assets::loadTexture(renderer, "Res\\Textures\\Wood.png", "Wood");
-	Assets::loadTexture(renderer, "Res\\Textures\\PlayerBall.png", "PlayerBall");
-	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\lmDmg.png", "lmDmg");
 	Assets::loadTexture(renderer, "Res\\Textures\\lmTrig.png", "lmTrig");
+	*/
 	Assets::loadTexture(renderer, "Res\\Textures\\Col.png", "Col");
 	Assets::loadTexture(renderer, "Res\\Textures\\NoCol.png", "NoCol");
+	Assets::loadTexture(renderer, "Res\\Textures\\PlayerBall.png", "PlayerBall");
+	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
 
+	// Textures UI
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonYellow.png", "ButtonYellow");
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonBlue.png", "ButtonBlue");
 	Assets::loadTexture(renderer, "Res\\Textures\\DialogBG.png", "DialogBG");
 
+	// Meshes
 	Assets::loadMesh("Res\\Meshes\\Cube.gpmesh", "Mesh_Cube");
 	Assets::loadMesh("Res\\Meshes\\Plane.gpmesh", "Mesh_Plane");
-	Assets::loadMesh("Res\\Meshes\\Wood.gpmesh", "Mesh_Wood");
 	Assets::loadMesh("Res\\Meshes\\Sphere.gpmesh", "Mesh_Sphere");
+	/*
+	Assets::loadMesh("Res\\Meshes\\Wood.gpmesh", "Mesh_Wood");
 	Assets::loadMesh("Res\\Meshes\\ak74.gpmesh", "Mesh_Ak74");
 	Assets::loadMesh("Res\\Meshes\\lemon.gpmesh", "Mesh_Lemon");
+	*/
 	Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
 
+	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
 
 	chara = new Character();
@@ -64,138 +73,21 @@ void Game::load()
 
 	achieve = new Achievements();
 
-	/*camera = new Camera();
-	camera->setCharacter(chara);
-	camera->addObserver(achieve);*/
-
 	Quaternion q(Vector3::unitY, -Maths::piOver2);
 	q = Quaternion::concatenate(q, Quaternion(Vector3::unitZ, Maths::pi + Maths::pi / 4.0f));
 
-	/*BulletHole* bh = new BulletHole();
-	bh->setPosition(Vector3(1.0f, 1.0f, 10.0f));*/
 
-
-	// ==============================
-	//		Floor and walls
-	// ==============================
-
-	// Setup floor
-	const float start = -2500.0f;
-	const float startL = -4500.0f;
-	const float size = 500.0f;
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 18; j++)
-		{
-			PlaneActor* p = new PlaneActor();
-			p->setPosition(Vector3(start + i * size, startL + j * size, -100.0f));
-
-			p = new PlaneActor();
-			p->setPosition(Vector3(start + i * size, startL + j * size, 500.0f));
-		}
-	}
-
-	// Left/right walls
-	q = Quaternion(Vector3::unitX, Maths::piOver2);
-	for (int i = 0; i < 10; i++)
-	{
-		PlaneActor* p = new PlaneActor();
-		p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-		p->setPosition(Vector3(start + i * size, startL - size, 0.0f));
-		p->setRotation(q);
-
-		p = new PlaneActor();
-		p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-		p->setPosition(Vector3(start + i * size, -startL, 0.0f));
-		p->setRotation(q);
-
-		if (i >= 2 && i < 8)
-		{
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, startL + size , 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, startL + size * 5, 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, -startL - size * 2, 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, -startL - size * 6, 0.0f));
-			p->setRotation(q);
-		}
-		if (i < 2 || i >= 8)
-		{
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, startL + size * 7, 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + i * size, -startL - size * 8, 0.0f));
-			p->setRotation(q);
-		}
-	}
-
-	// Forward/back walls
-	/*
-	q = Quaternion::concatenate(q, Quaternion(Vector3::unitZ, Maths::piOver2));
-	for (int i = 0; i < 18; i++)
-	{
-		PlaneActor* p = new PlaneActor();
-		p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-		p->setPosition(Vector3(start - size, startL + i * size, 0.0f));
-		p->setRotation(q);
-
-		p = new PlaneActor();
-		p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-		p->setPosition(Vector3(-start, startL + i * size, 0.0f));
-		p->setRotation(q);
-
-		if ((i > 1 && i < 5) || (i > 12 && i < 16))
-		{
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + size, startL + i * size, 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(-start - size * 2, startL + i * size, 0.0f));
-			p->setRotation(q);
-		}
-		if (i > 7 && i < 10)
-		{
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(start + size * 2, startL + i * size, 0.0f));
-			p->setRotation(q);
-
-			p = new PlaneActor();
-			p->changeMesh(&Assets::getMesh("Mesh_Wood"));
-			p->setPosition(Vector3(-start - size * 3, startL + i * size, 0.0f));
-			p->setRotation(q);
-		}
-	}
-	*/
 	// ==============================
 	//		Setup lights
 	// ==============================
-	renderer.setAmbientLight(Vector3(0.25f, 0.25f, 0.25f));
+	//renderer.setAmbientLight(Vector3(0.25f, 0.25f, 0.25f));
+	renderer.setAmbientLight(Vector3(0.5f, 0.5f, 0.5f));
 	DirectionalLight& dir = renderer.getDirectionalLight();
 	dir.direction = Vector3(0.0f, -0.707f, -0.707f);
-	dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
-	//dir.diffuseColor = Vector3(0.f, 0.f, 0.f);
+	//dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
+	dir.diffuseColor = Vector3(1.0f, 1.0f, 1.0f);
 	//dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
-	dir.specColor = Vector3(0.1f, 0.1f, 0.1f);
+	dir.specColor = Vector3(1.f, 1.0f, 1.0f);
 
 
 	// ==============================
@@ -215,42 +107,8 @@ void Game::load()
 
 	// Enemies
 	Enemy* t = new Enemy();
+	const float start = -2500.0f;
 	t->setPosition(Vector3(start + 10000, 0, 0.0f));
-	//t->setRotation(Quaternion(Vector3::unitZ, -Maths::piOver2));
-	/*
-	Enemy* t = new Enemy();
-	t->setPosition(Vector3(-start - size, -startL - size, 0.0f));
-	//t->setRotation(Quaternion(Vector3::unitZ, -Maths::piOver2));
-	t = new Enemy();
-	t->setPosition(Vector3(-start - size, startL, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, Maths::piOver2));
-	t = new Enemy();
-	t->setPosition(Vector3(start, -startL - size, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, -Maths::piOver2));
-	t = new Enemy();
-	t->setPosition(Vector3(start, startL, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, Maths::twoPi));
-
-	t = new Enemy();
-	t->setPosition(Vector3(-start - size, -startL - size * 7, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, Maths::piOver2));
-	t = new Enemy();
-	t->setPosition(Vector3(start, -startL - size * 7, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, Maths::twoPi));
-	t = new Enemy();
-	t->setPosition(Vector3(-start - size, startL + size * 6, 0.0f));
-	t = new Enemy();
-	t->setPosition(Vector3(start, startL + size * 6, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, -Maths::piOver2));
-
-	
-	//Enemy* t = new Enemy();
-	t->setPosition(Vector3(0.0f, 1200.0f, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, -Maths::piOver2));
-	t = new Enemy();
-	t->setPosition(Vector3(0.0f, -1200.0f, 0.0f));
-	t->setRotation(Quaternion(Vector3::unitZ, Maths::piOver2));
-	*/
 
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "SphereActor.h"
 
 class Character : public Actor
 {
@@ -19,15 +20,26 @@ private:
 	class MoveComponent* moveComponent;
 	class MeshComponent* mc;
 	class Camera* cameraComponent;
-	class Actor* FPSModelRifle;
-
-	float sensitiveRota = Maths::twoPi;
+	//class Actor* FPSModelRifle;
 	class BoxCollisionComponent* boxComponent;
 
+	// Test
+	SphereActor* sphereX;
+	SphereActor* sphereY;
+	SphereActor* sphereZ;
+
+	// Movements
+	float maxFowardSpeed = 1000.0f;
+	float maxNegatFowardSpeed = maxFowardSpeed / 2;
+	float maxUpSpeed = maxNegatFowardSpeed;
+	float maxStrafeSpeed = 750.0f;
+	float sensitiveRota = Maths::twoPi;
+	
+	// Ammo
 	int magazineMax = 15;
 	int currentMagazine = 0;
 
-	//Reload
+	// Reload
 	bool isReloading = false;
 	bool decending = true;
 	float finalAngle = 0.35f;

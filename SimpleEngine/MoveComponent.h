@@ -9,11 +9,17 @@ public:
 	MoveComponent& operator=(const MoveComponent&) = delete;
 
 	float getForwardSpeed() const { return forwardSpeed; }
+	float getUpSpeed() const { return upSpeed; }
 	float getAngularSpeed() const { return angularSpeed; }
+	float getPitchSpeed() const { return pitchSpeed; }
+	float getYawSpeed() const { return yawSpeed; }
 	float getStrafeSpeed() const { return strafeSpeed; }
 
 	void setForwardSpeed(float forwardSpeedP);
+	void setUpSpeed(float upSpeedP);
 	void setAngularSpeed(float angularSpeedP);
+	void setPitchSpeed(float pitchSpeedP);
+	void setYawSpeed(float yawSpeedP);
 	void setStrafeSpeed(float strafeSpeedP);
 
 	void update(float dt) override;
@@ -21,7 +27,10 @@ public:
 
 private:
 	float forwardSpeed;
+	float upSpeed;
 	float angularSpeed;
+	float pitchSpeed;
+	float yawSpeed;
 	float strafeSpeed;
 };
 

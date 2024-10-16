@@ -181,8 +181,12 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="DialogBox.cpp" />
+    <ClCompile Include="Button.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogBox.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -344,8 +348,12 @@
     <ClInclude Include="PauseMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="DialogBox.h" />
+    <ClInclude Include="DialogBox.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\Shaders\Sprite.frag">

@@ -15,7 +15,7 @@ Enemy::Enemy()
 	mc->setMesh(Assets::getMesh("Destroyer_01"));
 
 	BoxCollisionComponent* bc = new BoxCollisionComponent(this);
-	bc->setObjectBox(Assets::getMesh("Mesh_Lemon").getBox());
+	bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
 
 	//sphere = new SphereActor();
 	//sphere->setScale(5.0f);
@@ -28,7 +28,7 @@ Enemy::Enemy()
 	sphereL->getMeshComponent()->setTextureIndex(3);
 	*/
 
-	moveComponent = new MoveComponent(this);
+	//moveComponent = new MoveComponent(this);
 	//moveComponent->setForwardSpeed(fowardSpeed);
 	//moveComponent->setForwardSpeed(0);
 

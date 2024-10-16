@@ -13,10 +13,23 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	moveComponent = new MoveComponent(this);
 	cameraComponent = new Camera(this);
 
-	FPSModelRifle = new Actor();
-	FPSModelRifle->setScale(0.75f);
-	mc = new MeshComponent(FPSModelRifle);
-	mc->setMesh(Assets::getMesh("Mesh_Ak74"));
+	//FPSModelRifle = new Actor();
+	//FPSModelRifle->setScale(0.75f);
+	//mc = new MeshComponent(FPSModelRifle);
+	//mc->setMesh(Assets::getMesh("Mesh_Ak74"));
+
+	sphereX = new SphereActor();
+	sphereX->setScale(1.0f);
+	sphereX->getMeshComponent()->setTextureIndex(3);
+	
+	sphereY = new SphereActor();
+	sphereY->setScale(1.0f);
+	sphereY->getMeshComponent()->setTextureIndex(4);
+	/*
+	sphereZ = new SphereActor();
+	sphereZ->setScale(1.0f);
+	sphereZ->getMeshComponent()->setTextureIndex(2);
+	*/
 
 	boxComponent = new BoxCollisionComponent(this);
 	AABB collision(Vector3(-25.0f, -25.0f, -87.5f), Vector3(25.0f, 25.0f, 87.5f));
@@ -37,34 +50,44 @@ void Character::actorInput(const struct InputState& inputState)
 {
 	//std::cout << getPosition().x << ", " << getPosition().y << std::endl;
 	float forwardSpeed = 0.0f;
+	float upSpeed = 0.0f;
 	float angularSpeed = 0.0f;
 	float strafeSpeed = 0.0f;
 
 	// wasd movement
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
 	{
-		forwardSpeed += 600.0f;
+		forwardSpeed += maxFowardSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
-		forwardSpeed -= 300.0f;
+		forwardSpeed -= maxNegatFowardSpeed;
+	}
+	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
+	{
+		upSpeed += maxUpSpeed;
+	}
+	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_LCTRL))
+	{
+		upSpeed -= maxUpSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_A))
 	{
 		if (cameraComponent->getFPScam())
-			strafeSpeed -= 500.0f;
+			strafeSpeed -= maxStrafeSpeed;
 		else
 			angularSpeed -= sensitiveRota;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_D))
 	{
 		if(cameraComponent->getFPScam())
-			strafeSpeed += 500.0f;
+			strafeSpeed += maxStrafeSpeed;
 		else
 			angularSpeed += sensitiveRota;
 	}
 
 	// Camera shake movement
+	/*
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W) ||
 		inputState.keyboard.getKeyValue(SDL_SCANCODE_S) ||
 		inputState.keyboard.getKeyValue(SDL_SCANCODE_A) ||
@@ -74,8 +97,10 @@ void Character::actorInput(const struct InputState& inputState)
 	}
 	else
 		cameraComponent->setShakeSpeed(0.09f);
-
+	*/
+	
 	moveComponent->setForwardSpeed(forwardSpeed);
+	moveComponent->setUpSpeed(upSpeed);
 	moveComponent->setAngularSpeed(angularSpeed);
 	moveComponent->setStrafeSpeed(strafeSpeed);
 
@@ -96,7 +121,8 @@ void Character::actorInput(const struct InputState& inputState)
 			angularSpeed *= maxAngularSpeed;
 		}
 		moveComponent->setAngularSpeed(angularSpeed);
-
+		
+		// PITCH
 		const float maxPitchSpeed = Maths::pi * 8;
 		float pitchSpeed = 0.0f;
 		if (y != 0)
@@ -104,7 +130,23 @@ void Character::actorInput(const struct InputState& inputState)
 			pitchSpeed = y / maxMouseSpeed;
 			pitchSpeed *= maxPitchSpeed;
 		}
-		cameraComponent->setPitchSpeed(pitchSpeed);
+		//std::cout << "Right: " << getRight().x << ", " << getRight().y << ", " << getRight().z << std::endl;
+		//cameraComponent->setPitchSpeed(pitchSpeed);
+		moveComponent->setPitchSpeed(pitchSpeed);
+
+		// YAW
+		const float maxYawSpeed = Maths::pi * 8;
+		float yawSpeed = 0.0f;
+		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
+		{
+			yawSpeed += sensitiveRota;
+		}
+		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
+		{
+			yawSpeed -= sensitiveRota;
+		}
+		moveComponent->setYawSpeed(yawSpeed);
+		
 	}
 
 	if (inputState.mouse.getButtonState(1) == ButtonState::Pressed || inputState.mouse.getButtonState(1) == ButtonState::Held)
@@ -121,14 +163,15 @@ void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
 
+	sphereX->setPosition(getPosition() + getForward() * 300);
+	//std::cout << "sphereX : " << sphereX->getPosition().x << ", " << sphereX->getPosition().y << ", " << sphereX->getPosition().z << std::endl;
+	sphereY->setPosition(getPosition() + getForward() * 300 + getRight() * 100);
+	//std::cout << "sphereY : " << sphereY->getPosition().x << ", " << sphereY->getPosition().y << ", " << sphereY->getPosition().z << std::endl;
+	//sphereZ->setPosition(getPosition() + getUp() * 300);
+	//std::cout << "sphereZ : " << sphereZ->getPosition().x << ", " << sphereZ->getPosition().y << ", " << sphereZ->getPosition().z << std::endl << std::endl;
+
 	// Update position and rotation of model relatively to position
 	Vector3 modelPosition = getPosition();
-	/*modelPosition += getForward() * MODEL_OFFSET.x;
-	modelPosition += getRight() * MODEL_OFFSET.y;
-	modelPosition.z += MODEL_OFFSET.z;
-	FPSModelRifle->setPosition(modelPosition);
-	Quaternion q = getRotation();*/
-	//q = Quaternion::concatenate(q, Quaternion(getRight(), cameraComponent->getPitch()));
 
 	// === Shoot Animation ===
 	if (isShooting)
@@ -146,7 +189,7 @@ void Character::updateActor(float dt)
 	}
 	modelPosition += getRight() * MODEL_OFFSET.y;
 	modelPosition.z += MODEL_OFFSET.z;
-	FPSModelRifle->setPosition(modelPosition);
+	//FPSModelRifle->setPosition(modelPosition);
 	Quaternion q = getRotation();
 
 	// === RELOADING ===
@@ -174,9 +217,9 @@ void Character::updateActor(float dt)
 		}
 	}
 
-	q = Quaternion::concatenate(q, Quaternion(getRight(), cameraComponent->getPitch() + currentAngle));
+	//q = Quaternion::concatenate(q, Quaternion(getRight(), cameraComponent->getPitch() + currentAngle));
 
-	FPSModelRifle->setRotation(q);
+	//FPSModelRifle->setRotation(q);
 	
 	fixCollisions();
 }
@@ -184,40 +227,20 @@ void Character::updateActor(float dt)
 void Character::shoot()
 {
 	if (currentMagazine > 0 && !isReloading && !isShooting)
-	{
-		/*
-		Vector3 startWeapon = FPSModelRifle->getPosition() + FPSModelRifle->getForward() * 75;
-		Vector3 start = getPosition() + getForward() * 100.0f;
-		Vector3 end = cameraComponent->getPosition() + FPSModelRifle->getForward() * 20000;
-
-		LineSegment l(start, end);
-		PhysicsSystem::CollisionInfo info;
-
-		if (getGame().getPhysicsSystem().segmentCast(l, info) && info.actor != this)
-		{
-			Vector3 dir = (info.point + Vector3(0, 0, 25)) - startWeapon;
-			dir.normalize();
-			std::cout << dir.x << ", " << dir.y << ", " << dir.z << std::endl;
-			// Spawn a ball
-			BallActor* ball = new BallActor(ballDamage);
-			ball->setPlayer(this);
-			ball->setPosition(startWeapon + dir * 20.0f);
-			// Rotate the ball to face new direction
-			ball->rotateToNewForward(dir);
-		}
-		*/
-		
+	{		
 		// Get start point (in center of screen on near plane)
-		Vector3 screenPoint(0.0f, 0.0f, 0.0f);
+		Vector3 screenPoint(445.0f, -270.0f, 0.0f);
 		//Vector3 start = getGame().getRenderer().unproject(screenPoint);
-		Vector3 start = FPSModelRifle->getPosition() + FPSModelRifle->getForward() * 75;
+		//Vector3 start = FPSModelRifle->getPosition() + FPSModelRifle->getForward() * 75;
+		Vector3 start = getGame().getRenderer().unproject(screenPoint) + Vector3(0.f, 10.f, .5f);
 		// Get end point (in center of screen, between near and far)
 		screenPoint.z = 0.9f;
-		screenPoint = Vector3(75.5f, -45.0f, 0.9f);
+		//screenPoint = Vector3(75.5f, -45.0f, 0.9f);
 		Vector3 end = getGame().getRenderer().unproject(screenPoint);
 		// Get direction vector
-		Vector3 dir = end - start;
+		Vector3 dir = end;
 		dir.normalize();
+
 		// Spawn a ball
 		BallActor* ball = new BallActor(ballDamage);
 		ball->getMeshComponent()->setTextureIndex(1);
@@ -225,7 +248,6 @@ void Character::shoot()
 		ball->setPosition(start + dir * 20.0f);
 		// Rotate the ball to face new direction
 		ball->rotateToNewForward(dir);
-		
 
 		isShooting = true;
 		currentCooldownShoot = cooldownShoot;

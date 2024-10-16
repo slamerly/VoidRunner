@@ -13,7 +13,11 @@ bool Window::initialize()
 		return false;
 	}
 
-	SDLWindow = SDL_CreateWindow("Void Runner", 320, 180, width, height, SDL_WINDOW_OPENGL);
+	// HD monitor
+	SDLWindow = SDL_CreateWindow("Void Runner", 0, 0, width, height, SDL_WINDOW_OPENGL);
+
+	// 2K monitor
+	//SDLWindow = SDL_CreateWindow("Void Runner", 320, 180, width, height, SDL_WINDOW_OPENGL);
 	if (!SDLWindow)
 	{
 		Log::error(LogCategory::System, "Failed to create window");

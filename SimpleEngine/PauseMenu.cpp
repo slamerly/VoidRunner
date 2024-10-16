@@ -15,9 +15,7 @@ PauseMenu::PauseMenu() : UIScreen()
 	//addButton("QuitButton", [this]() { Game::instance().setState(GameState::Quit); });
 	
 	addButton("QuitButton", [this]() { 
-		new DialogBox("QuitText", [this]() {
-			Game::instance().setState(GameState::Quit); });
-		});
+		Game::instance().setState(GameState::Quit); });
 }
 
 PauseMenu::~PauseMenu()
