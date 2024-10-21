@@ -55,10 +55,12 @@ void MoveComponent::update(float dt)
 	{
 		Quaternion newRotation = owner.getRotation();
 		float angle = pitchSpeed * dt;
-		Quaternion increment(owner.getRight(), angle);
-		//Quaternion increment(Vector3::unitY, angle);
-		newRotation = Quaternion::concatenate(newRotation, increment);
-		std::cout << "newRotation: " << newRotation.x << ", " << newRotation.y << ", " << newRotation.z << ", " << newRotation.w << std::endl;
+		//Quaternion increment(owner.getRight(), angle);
+		Quaternion increment(Vector3::unitY, angle);
+		Quaternion incr(Vector3::unitX, 0);
+		newRotation = Quaternion::concatenate(increment, newRotation);
+		//newRotation = Quaternion::concatenate(newRotation, incr);
+		std::cout << "Rotation: " << owner.getRotation().x << ", " << owner.getRotation().y << ", " << owner.getRotation().z << ", " << owner.getRotation().w << std::endl;
 		owner.setRotation(newRotation);
 	}
 	if (!Maths::nearZero(yawSpeed))

@@ -27,7 +27,7 @@ void Camera::update(float deltaTime)
 	{
 		//cameraPos = owner.getPosition() + Vector3(0.0f, 0.0f, 30.0f);
 		pitch += pitchSpeed * deltaTime;
-		pitch = Maths::clamp(pitch, -maxPitch, maxPitch);
+		//pitch = Maths::clamp(pitch, -maxPitch, maxPitch);
 		Quaternion q{ owner.getRight(), pitch };
 		Vector3 viewForward = Vector3::transform(owner.getForward(), q);
 
@@ -40,8 +40,6 @@ void Camera::update(float deltaTime)
 		up = Vector3::transform(Vector3::unitZ, q);
 	}
 	// --- End FPS camera ---
-
-
 
 	// View Matrix
 	Matrix4 view = Matrix4::createLookAt(cameraPos, target, up);

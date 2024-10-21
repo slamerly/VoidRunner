@@ -111,7 +111,7 @@ void Character::actorInput(const struct InputState& inputState)
 		float x = mousePosition.x;
 		float y = mousePosition.y;
 
-		const float maxMouseSpeed = 500.0f;
+		const float maxMouseSpeed = 500;
 		const float maxAngularSpeed = Maths::pi * 8;
 
 		float angularSpeed = 0.0f;
@@ -130,7 +130,8 @@ void Character::actorInput(const struct InputState& inputState)
 			pitchSpeed = y / maxMouseSpeed;
 			pitchSpeed *= maxPitchSpeed;
 		}
-		//std::cout << "Right: " << getRight().x << ", " << getRight().y << ", " << getRight().z << std::endl;
+		//std::cout << "Character position: " << getPosition().x << ", " << getPosition().y << ", " << getPosition().z << std::endl;
+		//std::cout << "Camera position: " << cameraComponent->getPosition().x << ", " << cameraComponent->getPosition().y << ", " << cameraComponent->getPosition().z << std::endl;
 		//cameraComponent->setPitchSpeed(pitchSpeed);
 		moveComponent->setPitchSpeed(pitchSpeed);
 

@@ -32,5 +32,7 @@ private:
 	float pitchSpeed;
 	float yawSpeed;
 	float strafeSpeed;
+
+	float pitch = 0;
 };
 

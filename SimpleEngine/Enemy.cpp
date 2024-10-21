@@ -14,8 +14,8 @@ Enemy::Enemy()
 	//mc->setMesh(Assets::getMesh("Mesh_Lemon"));
 	mc->setMesh(Assets::getMesh("Destroyer_01"));
 
-	BoxCollisionComponent* bc = new BoxCollisionComponent(this);
-	bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
+	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
+	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
 
 	//sphere = new SphereActor();
 	//sphere->setScale(5.0f);
