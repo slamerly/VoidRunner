@@ -12,27 +12,25 @@ public:
 	float getUpSpeed() const { return upSpeed; }
 	float getAngularSpeed() const { return angularSpeed; }
 	float getPitchSpeed() const { return pitchSpeed; }
-	float getYawSpeed() const { return yawSpeed; }
+	float getRollSpeed() const { return rollSpeed; }
 	float getStrafeSpeed() const { return strafeSpeed; }
 
 	void setForwardSpeed(float forwardSpeedP);
 	void setUpSpeed(float upSpeedP);
 	void setAngularSpeed(float angularSpeedP);
 	void setPitchSpeed(float pitchSpeedP);
-	void setYawSpeed(float yawSpeedP);
+	void setRollSpeed(float rollSpeedP);
 	void setStrafeSpeed(float strafeSpeedP);
 
 	void update(float dt) override;
 
 
 private:
-	float forwardSpeed;
-	float upSpeed;
-	float angularSpeed;
-	float pitchSpeed;
-	float yawSpeed;
-	float strafeSpeed;
-
-	float pitch = 0;
+	float forwardSpeed = 0;
+	float upSpeed = 0;
+	float angularSpeed = 0;
+	float pitchSpeed = 0;
+	float rollSpeed = 0;
+	float strafeSpeed = 0;
 };
 

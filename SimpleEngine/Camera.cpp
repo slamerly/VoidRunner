@@ -6,17 +6,19 @@ Camera::Camera(Actor* owner) : Component(owner)
 	up = Vector3::unitZ;
 	//setPosition(Vector3(0.0f, 0.0f, -100.0f));
 	pitchSpeed = 0.0f;
+	rollSpeed = 0.0f;
 	
 	// --- FPS camera ---
 	maxPitch = Maths::pi / 3.0f;
 	pitch = 0.0f;
+	roll = 0.0f;
 }
 
 void Camera::update(float deltaTime)
 {
 	Component::update(deltaTime);
 
-	cpt+= shakeSpeed;
+	//cpt+= shakeSpeed;
 
 	// --- Default values ---
 	cameraPos = owner.getPosition();
@@ -25,11 +27,17 @@ void Camera::update(float deltaTime)
 	// --- FPS camera ---
 	if (fpsCam)
 	{
-		//cameraPos = owner.getPosition() + Vector3(0.0f, 0.0f, 30.0f);
+		/*
 		pitch += pitchSpeed * deltaTime;
-		//pitch = Maths::clamp(pitch, -maxPitch, maxPitch);
-		Quaternion q{ owner.getRight(), pitch };
-		Vector3 viewForward = Vector3::transform(owner.getForward(), q);
+		Quaternion pitchQuat{ owner.getRight(), pitch };
+
+		roll += rollSpeed * deltaTime;
+		Quaternion rollQuat{ owner.getForward(), roll };
+
+		Quaternion cameraRotation = Quaternion::concatenate(pitchQuat, rollQuat);
+
+
+		Vector3 viewForward = Vector3::transform(owner.getForward(), cameraRotation);
 
 		// Movement shake
 		//cameraPos += Vector3(owner.getRight().x * cos(cpt) * 0.1f, owner.getRight().y * cos(cpt) * 0.25f, sin(cpt) * 0.66f);
@@ -37,7 +45,15 @@ void Camera::update(float deltaTime)
 		//std::cout << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << std::endl;
 
 		target = cameraPos + viewForward * 100.0f;
-		up = Vector3::transform(Vector3::unitZ, q);
+		up = Vector3::transform(Vector3::unitZ, cameraRotation);
+		*/
+		Quaternion characterRotation = owner.getRotation();
+		
+		Vector3 viewForward = Vector3::transform(Vector3::unitX, characterRotation);
+
+		target = cameraPos + viewForward * 100.0f;
+
+		up = Vector3::transform(Vector3::unitZ, characterRotation);
 	}
 	// --- End FPS camera ---
 
@@ -49,6 +65,11 @@ void Camera::update(float deltaTime)
 void Camera::setPitchSpeed(float newPitchSpeed)
 {
 	pitchSpeed = newPitchSpeed;
+}
+
+void Camera::setRollSpeed(float newRollSpeed)
+{
+	rollSpeed = newRollSpeed;
 }
 
 void Camera::setMaxPitch(float pitch)

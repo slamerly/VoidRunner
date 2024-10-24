@@ -11,12 +11,16 @@ public:
 
 	// Spring Arm
 	float getPitchSpeed() const { return pitchSpeed; } // Orbiting & FPS
+	float getRollSpeed() const { return rollSpeed; }
 
 	void setPitchSpeed(float newPitchSpeed); // Orbiting & FPS
+	void setRollSpeed(float newRollSpeed);
 
 	// FPS camera
 	float getPitch() const { return pitch; }
 	float getMaxPitch() const { return maxPitch; }
+	float getRoll() const { return roll; }
+	float getMaxRoll() const { return maxRoll; }
 	bool getFPScam() const { return fpsCam; }
 
 	void setMaxPitch(float pitch);
@@ -38,11 +42,15 @@ private:
 
 	// Spring Arm
 	float pitchSpeed; // Orbiting & FPS
+	float rollSpeed;
 
 	// FPS camera
 	bool fpsCam = true;
 	float maxPitch;
 	float pitch;
+
+	float maxRoll;
+	float roll;
 
 	// Movement Shake
 	float cpt = 0;

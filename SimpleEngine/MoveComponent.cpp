@@ -5,7 +5,7 @@
 #include <iostream>
 
 MoveComponent::MoveComponent(Actor* ownerP, int updateOrderP)
-	: Component(ownerP, updateOrderP), forwardSpeed(0.0f), upSpeed(0.0f), angularSpeed(0.0f), pitchSpeed(0.0f), yawSpeed(0.0f), strafeSpeed(0.0f)
+	: Component(ownerP, updateOrderP), forwardSpeed(0.0f), upSpeed(0.0f), angularSpeed(0.0f), pitchSpeed(0.0f), rollSpeed(0.0f), strafeSpeed(0.0f)
 {
 
 }
@@ -30,9 +30,9 @@ void MoveComponent::setPitchSpeed(float pitchSpeedP)
 	pitchSpeed = pitchSpeedP;
 }
 
-void MoveComponent::setYawSpeed(float yawSpeedP)
+void MoveComponent::setRollSpeed(float rollSpeedP)
 {
-	yawSpeed = yawSpeedP;
+	rollSpeed = rollSpeedP;
 }
 
 void MoveComponent::setStrafeSpeed(float strafeSpeedP)
@@ -42,34 +42,31 @@ void MoveComponent::setStrafeSpeed(float strafeSpeedP)
 
 void MoveComponent::update(float dt)
 {
-	if (!Maths::nearZero(angularSpeed))
+	if (!Maths::nearZero(angularSpeed) || !Maths::nearZero(pitchSpeed) || !Maths::nearZero(rollSpeed))
 	{
 		Quaternion newRotation = owner.getRotation();
-		float angle = angularSpeed * dt;
-		Quaternion increment(Vector3::unitZ, angle);
-		//Quaternion increment(owner.getUp(), angle);
-		newRotation = Quaternion::concatenate(newRotation, increment);
-		owner.setRotation(newRotation);
-	}
-	if (!Maths::nearZero(pitchSpeed))
-	{
-		Quaternion newRotation = owner.getRotation();
-		float angle = pitchSpeed * dt;
-		//Quaternion increment(owner.getRight(), angle);
-		Quaternion increment(Vector3::unitY, angle);
-		Quaternion incr(Vector3::unitX, 0);
-		newRotation = Quaternion::concatenate(increment, newRotation);
-		//newRotation = Quaternion::concatenate(newRotation, incr);
-		std::cout << "Rotation: " << owner.getRotation().x << ", " << owner.getRotation().y << ", " << owner.getRotation().z << ", " << owner.getRotation().w << std::endl;
-		owner.setRotation(newRotation);
-	}
-	if (!Maths::nearZero(yawSpeed))
-	{
-		Quaternion newRotation = owner.getRotation();
-		float angle = yawSpeed * dt;
-		//Quaternion increment(owner.getRight(), angle);
-		Quaternion increment(Vector3::unitX, angle);
-		newRotation = Quaternion::concatenate(newRotation, increment);
+
+		if (!Maths::nearZero(rollSpeed)) // X (roulis)
+		{
+			float rollAngle = rollSpeed * dt;
+			Quaternion rollIncrement(owner.getForward(), rollAngle);
+			newRotation = Quaternion::concatenate(newRotation, rollIncrement);
+		}
+
+		if (!Maths::nearZero(pitchSpeed)) // Y (tangage)
+		{
+			float pitchAngle = pitchSpeed * dt;
+			Quaternion pitchIncrement(owner.getRight(), pitchAngle);
+			newRotation = Quaternion::concatenate(newRotation, pitchIncrement);
+		}
+
+		if (!Maths::nearZero(angularSpeed)) // Z (lacet)
+		{
+			float yawAngle = angularSpeed * dt;
+			Quaternion yawIncrement(Vector3::unitZ, yawAngle);
+			newRotation = Quaternion::concatenate(newRotation, yawIncrement);
+		}
+
 		owner.setRotation(newRotation);
 	}
 

@@ -135,18 +135,18 @@ void Character::actorInput(const struct InputState& inputState)
 		//cameraComponent->setPitchSpeed(pitchSpeed);
 		moveComponent->setPitchSpeed(pitchSpeed);
 
-		// YAW
-		const float maxYawSpeed = Maths::pi * 8;
-		float yawSpeed = 0.0f;
+		// Roll
+		const float maxRollSpeed = Maths::pi * 8;
+		float rollSpeed = 0.0f;
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
 		{
-			yawSpeed += sensitiveRota;
+			rollSpeed += sensitiveRota;
 		}
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
 		{
-			yawSpeed -= sensitiveRota;
+			rollSpeed -= sensitiveRota;
 		}
-		moveComponent->setYawSpeed(yawSpeed);
+		moveComponent->setRollSpeed(rollSpeed);
 		
 	}
 
