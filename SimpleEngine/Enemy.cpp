@@ -17,9 +17,11 @@ Enemy::Enemy()
 	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
 	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
 
-	//sphere = new SphereActor();
-	//sphere->setScale(5.0f);
 	/*
+	// ===== DEBUG =====
+	sphere = new SphereActor();
+	sphere->setScale(5.0f);
+
 	sphereR = new SphereActor();
 	sphereR->setScale(5.0f);
 	sphereR->getMeshComponent()->setTextureIndex(3);

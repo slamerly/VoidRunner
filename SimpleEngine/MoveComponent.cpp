@@ -64,7 +64,7 @@ void MoveComponent::update(float dt)
 		{
 			float yawAngle = angularSpeed * dt;
 			Quaternion yawIncrement(Vector3::unitZ, yawAngle);
-			newRotation = Quaternion::concatenate(newRotation, yawIncrement);
+			newRotation = Quaternion::concatenate(yawIncrement, newRotation);
 		}
 
 		owner.setRotation(newRotation);

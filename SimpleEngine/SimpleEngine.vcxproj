@@ -137,6 +137,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BackgroundSpriteComponent.cpp" />
     <ClCompile Include="BallActor.cpp" />
     <ClCompile Include="BallMoveComponent.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Asteroid.h" />
     <ClInclude Include="BackgroundSpriteComponent.h" />
     <ClInclude Include="BallActor.h" />
     <ClInclude Include="BallMoveComponent.h" />

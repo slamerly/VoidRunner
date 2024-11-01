@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "Font.h"
 #include "PauseMenu.h"
+#include "Asteroid.h"
 
 bool Game::initialize()
 {
@@ -47,6 +48,7 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\PlayerBall.png", "PlayerBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
+	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
 
 	// Textures UI
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonYellow.png", "ButtonYellow");
@@ -63,6 +65,10 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\lemon.gpmesh", "Mesh_Lemon");
 	*/
 	Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
+	Assets::loadMesh("Res\\Meshes\\Rock_Medium01.gpmesh", "Rock_Medium01");
+	Assets::loadMesh("Res\\Meshes\\Rock_Medium02.gpmesh", "Rock_Medium02");
+	Assets::loadMesh("Res\\Meshes\\Rock_Small01.gpmesh", "Rock_Small01");
+	Assets::loadMesh("Res\\Meshes\\Rock_Small02.gpmesh", "Rock_Small02");
 
 	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
@@ -108,7 +114,21 @@ void Game::load()
 	// Enemies
 	Enemy* t = new Enemy();
 	const float start = -2500.0f;
-	t->setPosition(Vector3(start + 10000, 0, 0.0f));
+	t->setPosition(Vector3(-7500, 0, 0.0f));
+
+	// Asteroids
+	for (int i = 0; i < 4; i++)
+	{
+		Asteroid* ast = new Asteroid();
+		ast->setPosition(Vector3(7500, -6000 + (i * 3000), 0));
+		/*
+		int selectScale = 1;
+		selectScale = rand() % 1 + 10;
+
+		ast->setScale(selectScale);
+		std::cout << selectScale << std::endl;
+		*/
+	}
 
 }
 

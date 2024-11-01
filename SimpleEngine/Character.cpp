@@ -18,6 +18,8 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	//mc = new MeshComponent(FPSModelRifle);
 	//mc->setMesh(Assets::getMesh("Mesh_Ak74"));
 
+	// ===== DEBUG =====
+	/*
 	sphereX = new SphereActor();
 	sphereX->setScale(1.0f);
 	sphereX->getMeshComponent()->setTextureIndex(3);
@@ -25,10 +27,6 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	sphereY = new SphereActor();
 	sphereY->setScale(1.0f);
 	sphereY->getMeshComponent()->setTextureIndex(4);
-	/*
-	sphereZ = new SphereActor();
-	sphereZ->setScale(1.0f);
-	sphereZ->getMeshComponent()->setTextureIndex(2);
 	*/
 
 	boxComponent = new BoxCollisionComponent(this);
@@ -130,21 +128,17 @@ void Character::actorInput(const struct InputState& inputState)
 			pitchSpeed = y / maxMouseSpeed;
 			pitchSpeed *= maxPitchSpeed;
 		}
-		//std::cout << "Character position: " << getPosition().x << ", " << getPosition().y << ", " << getPosition().z << std::endl;
-		//std::cout << "Camera position: " << cameraComponent->getPosition().x << ", " << cameraComponent->getPosition().y << ", " << cameraComponent->getPosition().z << std::endl;
-		//cameraComponent->setPitchSpeed(pitchSpeed);
 		moveComponent->setPitchSpeed(pitchSpeed);
 
 		// Roll
-		const float maxRollSpeed = Maths::pi * 8;
 		float rollSpeed = 0.0f;
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
 		{
-			rollSpeed += sensitiveRota;
+			rollSpeed += sensitiveRota / 2;
 		}
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
 		{
-			rollSpeed -= sensitiveRota;
+			rollSpeed -= sensitiveRota / 2;
 		}
 		moveComponent->setRollSpeed(rollSpeed);
 		
@@ -164,13 +158,9 @@ void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
 
-	sphereX->setPosition(getPosition() + getForward() * 300);
-	//std::cout << "sphereX : " << sphereX->getPosition().x << ", " << sphereX->getPosition().y << ", " << sphereX->getPosition().z << std::endl;
-	sphereY->setPosition(getPosition() + getForward() * 300 + getRight() * 100);
-	//std::cout << "sphereY : " << sphereY->getPosition().x << ", " << sphereY->getPosition().y << ", " << sphereY->getPosition().z << std::endl;
-	//sphereZ->setPosition(getPosition() + getUp() * 300);
-	//std::cout << "sphereZ : " << sphereZ->getPosition().x << ", " << sphereZ->getPosition().y << ", " << sphereZ->getPosition().z << std::endl << std::endl;
-
+	//sphereX->setPosition(getPosition() + getForward() * 300);
+	//sphereY->setPosition(getPosition() + getForward() * 300 + getRight() * 100);
+	
 	// Update position and rotation of model relatively to position
 	Vector3 modelPosition = getPosition();
 

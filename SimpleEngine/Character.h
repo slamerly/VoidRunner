@@ -26,7 +26,6 @@ private:
 	// Test
 	SphereActor* sphereX;
 	SphereActor* sphereY;
-	SphereActor* sphereZ;
 
 	// Movements
 	float maxFowardSpeed = 1000.0f;
