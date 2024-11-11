@@ -61,7 +61,9 @@ public:
 	GameState getState() const { return state; }
 	void setState(GameState stateP);
 
-	// Game Specific
+	// ==================================================================
+	//						Game Specific
+	// ==================================================================
 	Character* getCharacter() { return chara; }
 	//Camera* getCamera() { return camera; }
 	void addPlane(class PlaneActor* plane);
@@ -89,11 +91,15 @@ private:
 	vector<class UIScreen*> UIStack;
 	GameState state;
 
-	// Game Specific
+	// ==================================================================
+	//						Game Specific
+	// ==================================================================
 	//Camera* camera;
 	Character* chara;
 	Achievements* achieve;
 	vector<PlaneActor*> planes;
 	vector<Actor*> movableActors;
+	SphereActor* skybox;
+
 };
 

@@ -3,7 +3,6 @@
 
 Asteroid::Asteroid()
 {
-	//srand(time(NULL));
 	mc = new MeshComponent(this);
 
 	int selectMesh = 0;
@@ -29,13 +28,95 @@ Asteroid::Asteroid()
 		break;
 	}
 
-
-	//srand(time(NULL));
 	int selectScale = 1;
 	selectScale = rand() % 10 + 1;
 
 	setScale(selectScale);
 	std::cout << selectScale << std::endl;
+}
+
+Asteroid::Asteroid(AsteroidSize size)
+{
+	mc = new MeshComponent(this);
+
+	int selectMesh = 0;
+	int selectScale = 1;
+
+	switch (size)
+	{
+	case SMALL:
+		selectMesh = rand() % 2;
+		selectScale = rand() % 10 + 1;
+		//selectScale = 1;
+
+		if (selectMesh == 0)
+		{
+			mc->setMesh(Assets::getMesh("Rock_Small01"));
+		}
+		else
+		{
+			mc->setMesh(Assets::getMesh("Rock_Small02"));
+		}
+
+		setScale(selectScale);
+		std::cout << selectScale << std::endl;
+
+		break;
+	case MEDIUM:
+		selectMesh = rand() % 4;
+		selectScale = 1;
+
+		switch (selectMesh)
+		{
+		case 0:
+			mc->setMesh(Assets::getMesh("Rock_Small01"));
+			selectScale = rand() % 11 + 20;
+			break;
+		case 1:
+			mc->setMesh(Assets::getMesh("Rock_Small02"));
+			selectScale = rand() % 11 + 20;
+			break;
+		case 2:
+			mc->setMesh(Assets::getMesh("Rock_Medium01"));
+			selectScale = rand() % 6 + 5;
+			break;
+		case 3:
+			mc->setMesh(Assets::getMesh("Rock_Medium02"));
+			selectScale = rand() % 6 + 5;
+			break;
+		default:
+			break;
+		}
+
+		setScale(selectScale);
+		std::cout << selectScale << std::endl;
+
+		break;
+	case LARGE:
+		selectMesh = rand() % 2;
+		selectScale = rand() % 6 + 25;
+		//selectScale = 1;
+
+		if (selectMesh == 0)
+		{
+			mc->setMesh(Assets::getMesh("Rock_Medium01"));
+		}
+		else
+		{
+			mc->setMesh(Assets::getMesh("Rock_Medium02"));
+		}
+
+		setScale(selectScale);
+		std::cout << selectScale << std::endl;
+
+		break;
+	case NONE:
+		std::cout << "NONE" << std::endl;
+
+		break;
+	default:
+		break;
+	}
 }
 
 Asteroid::~Asteroid()

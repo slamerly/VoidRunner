@@ -114,12 +114,20 @@ void Game::load()
 	// Enemies
 	Enemy* t = new Enemy();
 	const float start = -2500.0f;
-	t->setPosition(Vector3(-7500, 0, 0.0f));
+	t->setPosition(Vector3(10000, 0, 0.0f));
 
 	// Asteroids
 	for (int i = 0; i < 4; i++)
 	{
-		Asteroid* ast = new Asteroid();
+		Asteroid* ast;
+		/*
+		if(i == 0 || i == 2)
+			ast = new Asteroid(AsteroidSize::SMALL);
+		else
+			ast = new Asteroid(AsteroidSize::MEDIUM);
+		*/
+		ast = new Asteroid(AsteroidSize::LARGE);
+
 		ast->setPosition(Vector3(7500, -6000 + (i * 3000), 0));
 		/*
 		int selectScale = 1;
