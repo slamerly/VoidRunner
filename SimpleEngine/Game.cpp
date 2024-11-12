@@ -36,13 +36,6 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\Plane.png", "Plane");
 	Assets::loadTexture(renderer, "Res\\Textures\\Crosshair.png", "Crosshair");
 	Assets::loadTexture(renderer, "Res\\Textures\\Sphere.png", "Sphere");
-	/*
-	Assets::loadTexture(renderer, "Res\\Textures\\ak74.png", "ak74");
-	Assets::loadTexture(renderer, "Res\\Textures\\lm.png", "lm");
-	Assets::loadTexture(renderer, "Res\\Textures\\Wood.png", "Wood");
-	Assets::loadTexture(renderer, "Res\\Textures\\lmDmg.png", "lmDmg");
-	Assets::loadTexture(renderer, "Res\\Textures\\lmTrig.png", "lmTrig");
-	*/
 	Assets::loadTexture(renderer, "Res\\Textures\\Col.png", "Col");
 	Assets::loadTexture(renderer, "Res\\Textures\\NoCol.png", "NoCol");
 	Assets::loadTexture(renderer, "Res\\Textures\\PlayerBall.png", "PlayerBall");
@@ -59,11 +52,6 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\Cube.gpmesh", "Mesh_Cube");
 	Assets::loadMesh("Res\\Meshes\\Plane.gpmesh", "Mesh_Plane");
 	Assets::loadMesh("Res\\Meshes\\Sphere.gpmesh", "Mesh_Sphere");
-	/*
-	Assets::loadMesh("Res\\Meshes\\Wood.gpmesh", "Mesh_Wood");
-	Assets::loadMesh("Res\\Meshes\\ak74.gpmesh", "Mesh_Ak74");
-	Assets::loadMesh("Res\\Meshes\\lemon.gpmesh", "Mesh_Lemon");
-	*/
 	Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium01.gpmesh", "Rock_Medium01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium02.gpmesh", "Rock_Medium02");
@@ -72,6 +60,8 @@ void Game::load()
 
 	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
+
+	srand(time(nullptr));
 
 	chara = new Character();
 	//chara->setPosition(Vector3(200.0f, 0.0f, 0.0f));
@@ -112,11 +102,18 @@ void Game::load()
 	SpriteComponent* scCrosshair = new SpriteComponent(crosshairActor, Assets::getTexture("Crosshair"));
 
 	// Enemies
+	/*
 	Enemy* t = new Enemy();
 	const float start = -2500.0f;
 	t->setPosition(Vector3(10000, 0, 0.0f));
+	*/
 
 	// Asteroids
+
+	Asteroid* ast = new Asteroid(AsteroidSize::SMALL);
+	ast->setPosition(Vector3(5500, 0, 0));
+	ast->sphere->setPosition(Vector3(5500, 0, 0));
+	/*
 	for (int i = 0; i < 4; i++)
 	{
 		Asteroid* ast;
@@ -125,7 +122,7 @@ void Game::load()
 			ast = new Asteroid(AsteroidSize::SMALL);
 		else
 			ast = new Asteroid(AsteroidSize::MEDIUM);
-		*/
+		
 		ast = new Asteroid(AsteroidSize::LARGE);
 
 		ast->setPosition(Vector3(7500, -6000 + (i * 3000), 0));
@@ -135,9 +132,9 @@ void Game::load()
 
 		ast->setScale(selectScale);
 		std::cout << selectScale << std::endl;
-		*/
+		
 	}
-
+	*/
 }
 
 void Game::addPlane(PlaneActor* plane)
@@ -160,6 +157,11 @@ void Game::removeMovableActor(Actor* actor)
 {
 	auto iter = std::find(begin(movableActors), end(movableActors), actor);
 	movableActors.erase(iter);
+}
+
+void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall, float minDisLarge, float minDisMedium, float minDisSmall)
+{
+	
 }
 
 void Game::processInput()

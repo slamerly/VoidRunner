@@ -39,6 +39,9 @@ Asteroid::Asteroid(AsteroidSize size)
 {
 	mc = new MeshComponent(this);
 
+	sphere = new SphereActor();
+	sphere->getMeshComponent()->setTextureIndex(4);
+
 	int selectMesh = 0;
 	int selectScale = 1;
 
@@ -47,7 +50,6 @@ Asteroid::Asteroid(AsteroidSize size)
 	case SMALL:
 		selectMesh = rand() % 2;
 		selectScale = rand() % 10 + 1;
-		//selectScale = 1;
 
 		if (selectMesh == 0)
 		{
@@ -60,7 +62,6 @@ Asteroid::Asteroid(AsteroidSize size)
 
 		setScale(selectScale);
 		std::cout << selectScale << std::endl;
-
 		break;
 	case MEDIUM:
 		selectMesh = rand() % 4;

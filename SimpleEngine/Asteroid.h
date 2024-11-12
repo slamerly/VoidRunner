@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "MeshComponent.h"
+#include "SphereActor.h"
 
 enum AsteroidSize
 {
@@ -18,7 +19,10 @@ public:
 	Asteroid(AsteroidSize size);
 	~Asteroid();
 
+	SphereActor* sphere;
+
 private:
 	MeshComponent* mc;
+	
 };
 

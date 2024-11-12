@@ -11,6 +11,7 @@
 #include "Achievements.h"
 #include "PhysicsSystem.h"
 #include "PlaneActor.h"
+#include "Asteroid.h"
 
 using std::vector;
 
@@ -73,6 +74,8 @@ public:
 	void removeMovableActor(class Actor* actor);
 	vector<Actor*>& getMovableActors() { return movableActors; }
 
+	void generateAsteroidField(int numLarge, int numMedium, int numSmall, float minDisLarge, float minDisMedium, float minDisSmall);
+
 private:
 	void processInput();
 	void update(float dt);
@@ -101,5 +104,7 @@ private:
 	vector<Actor*> movableActors;
 	SphereActor* skybox;
 
+	vector<Asteroid*> asteroids;
+	Vector3 beginAsteroidField, endAsteroidField;
 };
 
