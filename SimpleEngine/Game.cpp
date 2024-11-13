@@ -110,7 +110,7 @@ void Game::load()
 
 	// Asteroids
 
-	Asteroid* ast = new Asteroid(AsteroidSize::SMALL);
+	Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
 	ast->setPosition(Vector3(5500, 0, 0));
 	ast->sphere->setPosition(Vector3(5500, 0, 0));
 	/*

@@ -19,10 +19,14 @@ public:
 	Asteroid(AsteroidSize size);
 	~Asteroid();
 
-	SphereActor* sphere;
+	// Size test
+	//SphereActor* sphere;
+
+	const float GetAsteroidSize() { return asteroidSize; }
 
 private:
 	MeshComponent* mc;
+	float asteroidSize = 0;
 	
 };
 

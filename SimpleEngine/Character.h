@@ -28,10 +28,12 @@ private:
 	SphereActor* sphereY;
 
 	// Movements
-	float maxFowardSpeed = 1000.0f;
+	//float maxFowardSpeed = 1000.0f;
+	float maxFowardSpeed = 2000.0f;
 	float maxNegatFowardSpeed = maxFowardSpeed / 2;
 	float maxUpSpeed = maxNegatFowardSpeed;
-	float maxStrafeSpeed = 750.0f;
+	//float maxStrafeSpeed = 750.0f;
+	float maxStrafeSpeed = 1500.0f;
 	float sensitiveRota = Maths::twoPi;
 	
 	// Ammo
