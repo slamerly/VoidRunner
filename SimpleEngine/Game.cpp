@@ -112,7 +112,7 @@ void Game::load()
 
 	Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
 	ast->setPosition(Vector3(5500, 0, 0));
-	ast->sphere->setPosition(Vector3(5500, 0, 0));
+	//ast->sphere->setPosition(Vector3(5500, 0, 0));
 	/*
 	for (int i = 0; i < 4; i++)
 	{
@@ -159,9 +159,64 @@ void Game::removeMovableActor(Actor* actor)
 	movableActors.erase(iter);
 }
 
-void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall, float minDisLarge, float minDisMedium, float minDisSmall)
+void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall)
 {
-	
+	Asteroid* ast;
+	for (int i = 0; i < numLarge; i++)
+	{
+		ast = new Asteroid(LARGE);
+		asteroids.push_back(ast);
+	}
+}
+
+void Game::placedAsteroid(Asteroid* rock)
+{
+	bool placed = false;
+	int cpt = 0;
+
+	float x, y, z;
+	float rangeX = abs(beginAsteroidField.x) + abs(endAsteroidField.x);
+	float rangeY = abs(beginAsteroidField.y) + abs(endAsteroidField.y);
+	float rangeZ = abs(beginAsteroidField.z) + abs(endAsteroidField.z);
+
+	while (!placed && cpt < 100)
+	{
+		x = static_cast<float>(rand()) / rangeX + 1;
+		y = static_cast<float>(rand()) / rangeY + 1;
+		z = static_cast<float>(rand()) / rangeZ + 1;
+
+		if (beginAsteroidField.x > endAsteroidField.x)
+		{
+			x += endAsteroidField.x;
+		}
+		else
+		{
+			x += beginAsteroidField.x;
+		}
+
+		if (beginAsteroidField.y > endAsteroidField.y)
+		{
+			y += endAsteroidField.y;
+		}
+		else
+		{
+			y += beginAsteroidField.y;
+		}
+
+		if (beginAsteroidField.z > endAsteroidField.z)
+		{
+			z += endAsteroidField.z;
+		}
+		else
+		{
+			z += beginAsteroidField.z;
+		}
+
+		for (const auto& other : asteroids)
+		{
+			// TODO - distance min
+		}
+	}
 }
 
 void Game::processInput()

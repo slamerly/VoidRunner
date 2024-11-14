@@ -74,7 +74,8 @@ public:
 	void removeMovableActor(class Actor* actor);
 	vector<Actor*>& getMovableActors() { return movableActors; }
 
-	void generateAsteroidField(int numLarge, int numMedium, int numSmall, float minDisLarge, float minDisMedium, float minDisSmall);
+	void generateAsteroidField(int numLarge, int numMedium, int numSmall);
+	void placedAsteroid(Asteroid* rock);
 
 private:
 	void processInput();
