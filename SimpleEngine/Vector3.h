@@ -104,6 +104,16 @@ public:
 		return temp;
 	}
 
+	// Distance between two vector
+	static float distance(const Vector3& origin, const Vector3& target)
+	{
+		float dx = target.x - origin.x;
+		float dy = target.y - origin.y;
+		float dz = target.z - origin.z;
+
+		return sqrt(dx * dx + dy * dy + dz * dz);
+	}
+
 	// Lerp from A to B by f
 	static Vector3 lerp(const Vector3& a, const Vector3& b, float f)
 	{

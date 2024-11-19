@@ -172,6 +172,7 @@ void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall)
 void Game::placedAsteroid(Asteroid* rock)
 {
 	bool placed = false;
+	bool rightDist = false;
 	int cpt = 0;
 
 	float x, y, z;
@@ -214,9 +215,42 @@ void Game::placedAsteroid(Asteroid* rock)
 
 		for (const auto& other : asteroids)
 		{
-			// TODO - distance min
+			if (rightDistance(rock, other))
+			{
+				rock->setPosition(Vector3(x, y, z));
+				placed = true;
+			}
+			else
+			{
+				placed = false;
+			}
 		}
 	}
+}
+
+bool Game::rightDistance(Asteroid* origin, Asteroid* target)
+{
+	float minDist = 0;
+	if (target->getAsteroidSize() <= origin->getAsteroidSize())
+	{
+		minDist = origin->getAsteroidSize() * 0.5f + 1.5f * target->getAsteroidSize();
+	}
+	else
+	{
+		minDist = target->getAsteroidSize() * 0.5f + 1.5f * origin->getAsteroidSize();
+	}
+
+	float dist = Vector3::distance(origin->getPosition(), target->getPosition());
+
+	if (dist < minDist)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	
 }
 
 void Game::processInput()

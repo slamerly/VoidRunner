@@ -22,7 +22,7 @@ public:
 	// Size test
 	//SphereActor* sphere;
 
-	const float GetAsteroidSize() { return asteroidSize; }
+	const float getAsteroidSize() { return asteroidSize; }
 
 private:
 	MeshComponent* mc;

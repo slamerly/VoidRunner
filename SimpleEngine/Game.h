@@ -77,6 +77,8 @@ public:
 	void generateAsteroidField(int numLarge, int numMedium, int numSmall);
 	void placedAsteroid(Asteroid* rock);
 
+	bool rightDistance(Asteroid* origin, Asteroid* target);
+
 private:
 	void processInput();
 	void update(float dt);
