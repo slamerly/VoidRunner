@@ -395,5 +395,7 @@
     <None Include="Res\Shaders\LineTrace.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Res\Shaders\Skybox.frag" />
+    <None Include="Res\Shaders\Skybox.vert" />
   </ItemGroup>
 </Project>
