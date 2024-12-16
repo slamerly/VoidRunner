@@ -1,5 +1,6 @@
 #pragma once
 #include "Maths.h"
+#include <string>
 class Vector3
 {
 
@@ -17,6 +18,8 @@ public:
 	float lengthSq() const;
 	float length() const;
 	void normalize();
+
+	const std::string toString();
 
 	const float* getAsFloatPtr() const
 	{
@@ -133,6 +136,9 @@ public:
 
 	// Transform a Vector3 by a quaternion
 	static Vector3 transform(const Vector3& v, const class Quaternion& q);
+
+	// Return true if the two vector are equal
+	bool equal(const Vector3& vec);
 
 	static const Vector3 zero;
 	static const Vector3 unitX;

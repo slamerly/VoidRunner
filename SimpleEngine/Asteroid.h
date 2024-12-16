@@ -20,9 +20,11 @@ public:
 	~Asteroid();
 
 	// Size test
-	//SphereActor* sphere;
+	SphereActor* sphere;
 
 	const float getAsteroidSize() { return asteroidSize; }
+
+	void setPosition(Vector3 positionP);
 
 private:
 	MeshComponent* mc;

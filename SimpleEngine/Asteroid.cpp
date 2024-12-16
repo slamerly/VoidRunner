@@ -39,11 +39,11 @@ Asteroid::Asteroid(AsteroidSize size)
 {
 	mc = new MeshComponent(this);
 
-	/*
+	
 	// Size test
-	sphere = new SphereActor();
-	sphere->getMeshComponent()->setTextureIndex(4);
-	*/
+	//sphere = new SphereActor();
+	//sphere->getMeshComponent()->setTextureIndex(4);
+	
 
 	int selectMesh = 0;
 	int selectScale = 1;
@@ -66,7 +66,6 @@ Asteroid::Asteroid(AsteroidSize size)
 		asteroidSize = 65;
 
 		setScale(selectScale);
-		std::cout << selectScale << std::endl;
 		break;
 
 	case MEDIUM:
@@ -98,16 +97,11 @@ Asteroid::Asteroid(AsteroidSize size)
 		asteroidSize = 145;
 
 		setScale(selectScale);
-		std::cout << selectScale << std::endl;
-
 		break;
 
 	case LARGE:
 		selectMesh = rand() % 2;
 		selectScale = rand() % 6 + 25;
-
-		selectMesh = 1;
-		selectScale = 30;
 
 		if (selectMesh == 0)
 		{
@@ -120,9 +114,9 @@ Asteroid::Asteroid(AsteroidSize size)
 
 		asteroidSize = 595;
 
-		setScale(selectScale);
-		std::cout << selectScale << std::endl;
+		//sphere->setScale(asteroidSize);
 
+		setScale(selectScale);
 		break;
 	case NONE:
 		std::cout << "NONE" << std::endl;
@@ -135,4 +129,11 @@ Asteroid::Asteroid(AsteroidSize size)
 
 Asteroid::~Asteroid()
 {
+	//sphere->setState(Actor::ActorState::Dead);
+}
+
+void Asteroid::setPosition(Vector3 positionP)
+{
+	Actor::setPosition(positionP);
+	//sphere->setPosition(positionP);
 }

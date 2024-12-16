@@ -3,7 +3,7 @@
 	"vertexformat": "PosNormTex",
 	"shader": "Phong",
 	"textures": [
-		"Cube"
+		"Skybox"
 	],
 	"specularPower": 100.0,
 	"vertices": [

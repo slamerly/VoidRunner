@@ -25,6 +25,10 @@ void Game::load()
 {
 	inputSystem.setMouseRelativeMode(true);
 
+	// ====================================================
+	//					Load Ressources
+	// ====================================================
+
 	// Shaders
 	Assets::loadShader("Res\\Shaders\\Sprite.vert", "Res\\Shaders\\Sprite.frag", "", "", "", "Sprite");
 	Assets::loadShader("Res\\Shaders\\BasicMesh.vert", "Res\\Shaders\\BasicMesh.frag", "", "", "", "BasicMesh");
@@ -42,6 +46,7 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
 	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox.png", "Skybox");
 
 	// Textures UI
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonYellow.png", "ButtonYellow");
@@ -61,13 +66,14 @@ void Game::load()
 	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
 
+	std::cout << "\n" << std::endl;
+	std::cout << "=========================================\n	IN GAME RETURNS\n=========================================" << std::endl;
+
+	// ====================================================
+	//					End Load Ressources
+	// ====================================================
+
 	srand(time(nullptr));
-
-	chara = new Character();
-	//chara->setPosition(Vector3(200.0f, 0.0f, 0.0f));
-	//chara->setScale(25.0f);
-
-	achieve = new Achievements();
 
 	Quaternion q(Vector3::unitY, -Maths::piOver2);
 	q = Quaternion::concatenate(q, Quaternion(Vector3::unitZ, Maths::pi + Maths::pi / 4.0f));
@@ -101,18 +107,44 @@ void Game::load()
 	crosshairActor->setScale(2.0f);
 	SpriteComponent* scCrosshair = new SpriteComponent(crosshairActor, Assets::getTexture("Crosshair"));
 
-	// Enemies
+	// ===== Skybox =====
+	CubeActor* skybox = new CubeActor();
+
+	skybox->setScale(1000);
+
+	// ==============================
+	//			Actors
+	// ============================== 
+
+	// ===== Player =====
+	chara = new Character();
+
+	//std::cout << chara->getPosition().x << ", " << chara->getPosition().y << ", " << chara->getPosition().z << std::endl;
+	//chara->setPosition(Vector3(200.0f, 0.0f, 0.0f));
+	//chara->setScale(25.0f);
+
+	// ===== Enemies =====
 	/*
 	Enemy* t = new Enemy();
 	const float start = -2500.0f;
 	t->setPosition(Vector3(10000, 0, 0.0f));
 	*/
 
-	// Asteroids
-
-	Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
-	ast->setPosition(Vector3(5500, 0, 0));
-	//ast->sphere->setPosition(Vector3(5500, 0, 0));
+	// ===== Asteroids =====
+	//Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
+	//ast->setPosition(Vector3(5500, 0, 0));
+	beginAsteroidField = Vector3(1000, -50000, -50000);
+	endAsteroidField = Vector3(110000, 50000, 50000);
+	
+	generateAsteroidField(3, 9, 81);
+	
+	/*
+	Asteroid* ast;
+	ast = new Asteroid(AsteroidSize::LARGE);
+	ast->setPosition(Vector3(10000, -(ast->getAsteroidSize()*2), 0));
+	ast = new Asteroid(AsteroidSize::LARGE);
+	ast->setPosition(Vector3(10000, 0, 0));
+	*/
 	/*
 	for (int i = 0; i < 4; i++)
 	{
@@ -126,7 +158,7 @@ void Game::load()
 		ast = new Asteroid(AsteroidSize::LARGE);
 
 		ast->setPosition(Vector3(7500, -6000 + (i * 3000), 0));
-		/*
+		
 		int selectScale = 1;
 		selectScale = rand() % 1 + 10;
 
@@ -161,11 +193,39 @@ void Game::removeMovableActor(Actor* actor)
 
 void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall)
 {
-	Asteroid* ast;
-	for (int i = 0; i < numLarge; i++)
+	if ((beginAsteroidField.equal(Vector3::zero) && endAsteroidField.equal(Vector3::zero)) ||
+		beginAsteroidField.equal(endAsteroidField))
 	{
-		ast = new Asteroid(LARGE);
-		asteroids.push_back(ast);
+		// Error
+		std::cout << "ERROR: begin and/or end Asteroid Field are/is not initialized or are equal." << std::endl;
+		return;
+	}
+
+	if (numLarge > 0)
+	{
+		for (int i = 0; i < numLarge; i++)
+		{
+			Asteroid* ast = new Asteroid(LARGE);
+			placedAsteroid(ast);
+		}
+	}
+
+	if (numMedium > 0)
+	{
+		for (int i = 0; i < numMedium; i++)
+		{
+			Asteroid* ast = new Asteroid(MEDIUM);
+			placedAsteroid(ast);
+		}
+	}
+
+	if (numSmall > 0)
+	{
+		for (int i = 0; i < numSmall; i++)
+		{
+			Asteroid* ast = new Asteroid(SMALL);
+			placedAsteroid(ast);
+		}
 	}
 }
 
@@ -176,15 +236,44 @@ void Game::placedAsteroid(Asteroid* rock)
 	int cpt = 0;
 
 	float x, y, z;
-	float rangeX = abs(beginAsteroidField.x) + abs(endAsteroidField.x);
-	float rangeY = abs(beginAsteroidField.y) + abs(endAsteroidField.y);
-	float rangeZ = abs(beginAsteroidField.z) + abs(endAsteroidField.z);
+	float rangeX = 0;
+	float rangeY = 0;
+	float rangeZ = 0;
+	if ((beginAsteroidField.x >= 0 && endAsteroidField.x >= 0) ||
+		(beginAsteroidField.x <= 0 && endAsteroidField.x <= 0))
+	{
+		rangeX = abs(beginAsteroidField.x - endAsteroidField.x);
+	}
+	else
+	{
+		rangeX = abs(beginAsteroidField.x) + abs(endAsteroidField.x);
+	}
+	if ((beginAsteroidField.y >= 0 && endAsteroidField.y >= 0) ||
+		(beginAsteroidField.y <= 0 && endAsteroidField.y <= 0))
+	{
+		rangeY = abs(beginAsteroidField.y - endAsteroidField.y);
+	}
+	else
+	{
+		rangeY = abs(beginAsteroidField.y) + abs(endAsteroidField.y);
+	}
+	if ((beginAsteroidField.z >= 0 && endAsteroidField.z >= 0) ||
+		(beginAsteroidField.z <= 0 && endAsteroidField.z <= 0))
+	{
+		rangeZ = abs(beginAsteroidField.z - endAsteroidField.z);
+	}
+	else
+	{
+		rangeZ = abs(beginAsteroidField.z) + abs(endAsteroidField.z);
+	}
 
+	//std::cout << "Range:\nx:" << rangeX << "\ny:" << rangeY << "\nz:" << rangeZ << "\n" << std::endl;
+	
 	while (!placed && cpt < 100)
 	{
-		x = static_cast<float>(rand()) / rangeX + 1;
-		y = static_cast<float>(rand()) / rangeY + 1;
-		z = static_cast<float>(rand()) / rangeZ + 1;
+		x = rand() % (int)rangeX + 1;
+		y = rand() % (int)rangeY + 1;
+		z = rand() % (int)rangeZ + 1;
 
 		if (beginAsteroidField.x > endAsteroidField.x)
 		{
@@ -213,34 +302,60 @@ void Game::placedAsteroid(Asteroid* rock)
 			z += beginAsteroidField.z;
 		}
 
-		for (const auto& other : asteroids)
+		//std::cout << "Current: " << x << ", " << y << ", " << z << std::endl;
+
+		rock->setPosition(Vector3(x, y, z));
+
+		if (!asteroids.empty())
 		{
-			if (rightDistance(rock, other))
+			int cptTrue = 0;
+			for (const auto& other : asteroids)
 			{
-				rock->setPosition(Vector3(x, y, z));
+				if (rightDistance(*rock, *other))
+				{
+					cptTrue++;
+				}
+			}
+
+			if (cptTrue == asteroids.size())
+			{
+				//std::cout << "Rock: " << rock->getPosition().x << ", " << rock->getPosition().y << ", " << rock->getPosition().z << std::endl;
+				asteroids.push_back(rock);
 				placed = true;
 			}
-			else
-			{
-				placed = false;
-			}
 		}
+		else
+		{
+			//std::cout << "Rock: " << rock->getPosition().x << ", " << rock->getPosition().y << ", " << rock->getPosition().z << std::endl;
+			asteroids.push_back(rock);
+			placed = true;
+		}
+		cpt++;
+	}
+	
+
+	if (cpt >= 100)
+	{
+		delete rock;
+		std::cout << "Asteroid not placed!" << std::endl;
 	}
 }
 
-bool Game::rightDistance(Asteroid* origin, Asteroid* target)
+bool Game::rightDistance(Asteroid& origin, Asteroid& target)
 {
 	float minDist = 0;
-	if (target->getAsteroidSize() <= origin->getAsteroidSize())
+	if (target.getAsteroidSize() <= origin.getAsteroidSize())
 	{
-		minDist = origin->getAsteroidSize() * 0.5f + 1.5f * target->getAsteroidSize();
+		minDist = origin.getAsteroidSize() * 0.5f + 1.5f * target.getAsteroidSize();
 	}
 	else
 	{
-		minDist = target->getAsteroidSize() * 0.5f + 1.5f * origin->getAsteroidSize();
+		minDist = target.getAsteroidSize() * 0.5f + 1.5f * origin.getAsteroidSize();
 	}
 
-	float dist = Vector3::distance(origin->getPosition(), target->getPosition());
+	float dist = Vector3::distance(origin.getPosition(), target.getPosition());
+
+	//std::cout << "dist: " << dist << std::endl;
 
 	if (dist < minDist)
 	{
@@ -284,6 +399,21 @@ void Game::processInput()
 		{
 			new PauseMenu();
 			return;
+		}
+
+		// Regenerate asteroidsfield
+		if (input.keyboard.getKeyState(SDL_SCANCODE_G) == ButtonState::Released)
+		{
+			std::cout << "\nRegenerate" << std::endl;
+			
+			for (auto ast : asteroids)
+			{
+				ast->setState(Actor::ActorState::Dead);
+			}
+			
+			asteroids.clear();
+
+			generateAsteroidField(3, 9, 81);
 		}
 
 		// Actor input
