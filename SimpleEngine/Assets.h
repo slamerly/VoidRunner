@@ -21,8 +21,11 @@ public:
     static std::map<std::string, Mesh> meshes;
     static std::map<std::string, Font> fonts;
 
-    // Loads a texture from file
+    // Loads a cubemap from files
     static Texture loadTexture(IRenderer& renderer, const string& filename, const string& name);
+
+    // Loads a cubemap from files
+    static Texture loadCubemap(IRenderer& renderer, const string& right, const string& left, const string& top, const string& bottom, const string& front, const string& back);
 
     // Retrieves a stored texture
     static Texture& getTexture(const std::string& name);

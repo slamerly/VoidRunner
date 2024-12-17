@@ -395,7 +395,14 @@
     <None Include="Res\Shaders\LineTrace.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Res\Shaders\Skybox.frag" />
-    <None Include="Res\Shaders\Skybox.vert" />
+    <None Include="Skybox.gpmesh">
+      <Filter>Meshes</Filter>
+    </None>
+    <None Include="Res\Shaders\Skybox.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Skybox.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -33,6 +33,7 @@ void Game::load()
 	Assets::loadShader("Res\\Shaders\\Sprite.vert", "Res\\Shaders\\Sprite.frag", "", "", "", "Sprite");
 	Assets::loadShader("Res\\Shaders\\BasicMesh.vert", "Res\\Shaders\\BasicMesh.frag", "", "", "", "BasicMesh");
 	Assets::loadShader("Res\\Shaders\\Phong.vert", "Res\\Shaders\\Phong.frag", "", "", "", "Phong");
+	Assets::loadShader("Res\\Shaders\\Skybox.vert", "Res\\Shaders\\Skybox.frag", "", "", "", "Skybox");
 
 	// Textures
 	Assets::loadTexture(renderer, "Res\\Textures\\Default.png", "Default");
@@ -46,7 +47,21 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
 	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox.png", "Skybox");
+
+	Assets::loadCubemap(renderer, "Res\\Textures\\Skybox\\back.png",
+		"Res\\Textures\\Skybox\\bottom.png",
+		"Res\\Textures\\Skybox\\front.png",
+		"Res\\Textures\\Skybox\\left.png",
+		"Res\\Textures\\Skybox\\right.png",
+		"Res\\Textures\\Skybox\\top.png");
+	/*
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\back.png", "Skybox_back");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\bottom.png", "Skybox_bottom");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\front.png", "Skybox_front");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\left.png", "Skybox_left");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\right.png", "Skybox_right");
+	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\top.png", "Skybox_top");
+	*/
 
 	// Textures UI
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonYellow.png", "ButtonYellow");
@@ -108,9 +123,9 @@ void Game::load()
 	SpriteComponent* scCrosshair = new SpriteComponent(crosshairActor, Assets::getTexture("Crosshair"));
 
 	// ===== Skybox =====
-	CubeActor* skybox = new CubeActor();
+	//CubeActor* skybox = new CubeActor();
 
-	skybox->setScale(1000);
+	//skybox->setScale(1000);
 
 	// ==============================
 	//			Actors

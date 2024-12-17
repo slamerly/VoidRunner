@@ -257,6 +257,7 @@
     <None Include="Res\Shaders\Skybox.vert" />
     <None Include="Res\Shaders\Sprite.frag" />
     <None Include="Res\Shaders\Sprite.vert" />
+    <None Include="Skybox.gpmesh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
