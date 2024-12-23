@@ -25,7 +25,7 @@ public:
     static Texture loadTexture(IRenderer& renderer, const string& filename, const string& name);
 
     // Loads a cubemap from files
-    static Texture loadCubemap(IRenderer& renderer, const string& right, const string& left, const string& top, const string& bottom, const string& front, const string& back);
+    static Texture loadCubemap(IRenderer& renderer, const string& right, const string& left, const string& top, const string& bottom, const string& front, const string& back, const string& name);
 
     // Retrieves a stored texture
     static Texture& getTexture(const std::string& name);

@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Mesh.h"
 
-MeshComponent::MeshComponent(Actor* owner) : Component(owner), mesh(nullptr), textureIndex(0), isVisible(true)
+MeshComponent::MeshComponent(Actor* owner) : Component(owner), mesh(nullptr), textureIndex(0), isVisible(true), isLighted(true)
 {
 	owner->getGame().getRenderer().addMesh(this);
 }
@@ -25,6 +25,17 @@ void MeshComponent::draw(Shader& shader)
 		Matrix4 wt = owner.getWorldTransform();
 		shader.setMatrix4("uWorldTransform", wt);
 		shader.setFloat("uSpecPower", mesh->getSpecularPower());
+
+		// light
+		if (isLighted)
+		{
+			shader.setInteger("uUseLighting", true);
+		}
+		else
+		{
+			shader.setInteger("uUseLighting", false);
+		}
+
 		Texture* t = mesh->getTexture(textureIndex);
 		if (t)
 		{
@@ -44,4 +55,9 @@ void MeshComponent::setMesh(Mesh& meshP)
 void MeshComponent::setTextureIndex(size_t textureIndexP)
 {
 	textureIndex = textureIndexP;
+}
+
+void MeshComponent::setLighted(bool lighted)
+{
+	isLighted = lighted;
 }

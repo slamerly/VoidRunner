@@ -100,7 +100,7 @@ bool Texture::loadOGLCubemap(RendererOGL& rendererP, const string facesCubemapP[
 		SDL_Surface* surf = IMG_Load(facesCubemapP[i].c_str());
 		if (!surf)
 		{
-			Log::error(LogCategory::Application, "Failed to load texture file " + filename);
+			Log::error(LogCategory::Application, "Failed to load texture file " + facesCubemapP[i]);
 			return false;
 		}
 
@@ -119,7 +119,7 @@ bool Texture::loadOGLCubemap(RendererOGL& rendererP, const string facesCubemapP[
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, surf->pixels);
 		SDL_FreeSurface(surf);
 
-		Log::info("Loaded texture " + filename);
+		Log::info("Loaded texture " + facesCubemapP[i]);
 	}
 
 	return true;

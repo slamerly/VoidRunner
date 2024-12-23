@@ -173,6 +173,7 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RendererOGL.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SkyboxActor.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SphereActor.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RendererOGL.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SkyboxActor.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SphereActor.h" />
     <ClInclude Include="SpriteComponent.h" />
@@ -246,6 +248,7 @@
   <ItemGroup>
     <None Include="Res\Meshes\Cube.gpmesh" />
     <None Include="Res\Meshes\Plane.gpmesh" />
+    <None Include="Res\Meshes\Skybox.gpmesh" />
     <None Include="Res\Meshes\Sphere.gpmesh" />
     <None Include="Res\Shaders\BasicMesh.frag" />
     <None Include="Res\Shaders\BasicMesh.vert" />
@@ -257,7 +260,6 @@
     <None Include="Res\Shaders\Skybox.vert" />
     <None Include="Res\Shaders\Sprite.frag" />
     <None Include="Res\Shaders\Sprite.vert" />
-    <None Include="Skybox.gpmesh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

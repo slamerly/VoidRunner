@@ -17,7 +17,7 @@ Texture Assets::loadTexture(IRenderer& renderer, const string& filename, const s
     return textures[name];
 }
 
-Texture Assets::loadCubemap(IRenderer& renderer, const string& right, const string& left, const string& top, const string& bottom, const string& front, const string& back)
+Texture Assets::loadCubemap(IRenderer& renderer, const string& right, const string& left, const string& top, const string& bottom, const string& front, const string& back, const string& name)
 {
     const string facesCubemap[6] = 
     {
@@ -34,7 +34,9 @@ Texture Assets::loadCubemap(IRenderer& renderer, const string& right, const stri
     {
         texture.loadOGLCubemap(dynamic_cast<RendererOGL&>(renderer), facesCubemap);
     }
-    return texture;
+    textures[name] = texture;
+
+    return textures[name];
 }
 
 Texture& Assets::getTexture(const string& name)

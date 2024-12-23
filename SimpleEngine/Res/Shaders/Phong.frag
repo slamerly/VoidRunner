@@ -15,6 +15,8 @@ out vec4 outColor;
 // This is used for the texture sampling
 uniform sampler2D uTexture;
 
+uniform bool uUseLighting;
+
 // Create a struct for directional light
 struct DirectionalLight
 {
@@ -49,15 +51,22 @@ void main()
 	vec3 R = normalize(reflect(-L, N));
 
 	// Compute phong reflection
-	vec3 Phong = uAmbientLight;
-	float NdotL = dot(N, L);
-	if (NdotL > 0)
-	{
-		vec3 Diffuse = uDirLight.diffuseColor * NdotL;
-		vec3 Specular = uDirLight.specColor * pow(max(0.0, dot(R, V)), uSpecPower);
-		Phong += Diffuse + Specular;
-	}
+	if (uUseLighting) {
+		vec3 Phong = uAmbientLight;
+		float NdotL = dot(N, L);
+		if (NdotL > 0)
+		{
+			vec3 Diffuse = uDirLight.diffuseColor * NdotL;
+			vec3 Specular = uDirLight.specColor * pow(max(0.0, dot(R, V)), uSpecPower);
+			Phong += Diffuse + Specular;
+		}
 
-	// Final color is texture color times phong light (alpha = 1)
-    outColor = texture(uTexture, fragTexCoord) * vec4(Phong, 1.0f);
+		// Final color is texture color times phong light (alpha = 1)
+		outColor = texture(uTexture, fragTexCoord) * vec4(Phong, 1.0f);
+	}
+	else
+	{
+		// Final color is texture color times phong light (alpha = 1)
+		outColor = texture(uTexture, fragTexCoord);
+	}
 }

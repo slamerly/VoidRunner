@@ -14,10 +14,14 @@ public:
 	virtual void setMesh(class Mesh& meshP);
 	void setTextureIndex(size_t textureIndexP);
 
+	bool getLighted() const { return isLighted; }
+	void setLighted(bool lighted);
+
 
 protected:
 	Mesh* mesh;
 	size_t textureIndex;
 	bool isVisible;
+	bool isLighted;
 };
 
