@@ -102,10 +102,10 @@ private:
 	// ==================================================================
 	//Camera* camera;
 	Character* chara;
+	Actor* skybox;
 	Achievements* achieve;
 	vector<PlaneActor*> planes;
 	vector<Actor*> movableActors;
-	SphereActor* skybox;
 
 	vector<Asteroid*> asteroids;
 	Vector3 beginAsteroidField, endAsteroidField;

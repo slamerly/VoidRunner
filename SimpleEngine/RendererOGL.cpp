@@ -17,7 +17,7 @@ RendererOGL::RendererOGL() :
 	spriteVertexArray(nullptr),
 	spriteViewProj(Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT)),
 	view(Matrix4::createLookAt(Vector3::zero, Vector3::unitX, Vector3::unitZ)),
-	projection(Matrix4::createPerspectiveFOV(Maths::toRadians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 25.0f, 100000.0f)),
+	projection(Matrix4::createPerspectiveFOV(Maths::toRadians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 25.0f, 1000000.0f)),
 	ambientLight(Vector3(1.0f, 1.0f, 1.0f)),
 	dirLight({ Vector3::zero, Vector3::zero, Vector3::zero })
 {
@@ -74,8 +74,8 @@ bool RendererOGL::initialize(Window& windowP)
 void RendererOGL::beginDraw()
 {
 	// Background color
-	glClearColor(0.45f, 0.45f, 1.0f, 1.0f);
-	//glClearColor(0.f, 0.f, 0.01f, 1.0f);
+	//glClearColor(0.45f, 0.45f, 1.0f, 1.0f);
+	glClearColor(0.f, 0.f, 0.01f, 1.0f);
 	// Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

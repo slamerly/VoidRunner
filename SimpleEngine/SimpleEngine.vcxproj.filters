@@ -190,9 +190,6 @@
     <ClCompile Include="Asteroid.cpp">
       <Filter>GameSpecific</Filter>
     </ClCompile>
-    <ClCompile Include="SkyboxActor.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -363,9 +360,6 @@
     <ClInclude Include="Asteroid.h">
       <Filter>GameSpecific</Filter>
     </ClInclude>
-    <ClInclude Include="SkyboxActor.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\Shaders\Sprite.frag">
@@ -400,15 +394,6 @@
     </None>
     <None Include="Res\Shaders\LineTrace.vert">
       <Filter>Shaders</Filter>
-    </None>
-    <None Include="Res\Shaders\Skybox.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Res\Shaders\Skybox.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Res\Meshes\Skybox.gpmesh">
-      <Filter>Meshes</Filter>
     </None>
   </ItemGroup>
 </Project>

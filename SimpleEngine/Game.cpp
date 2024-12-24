@@ -11,7 +11,6 @@
 #include "Font.h"
 #include "PauseMenu.h"
 #include "Asteroid.h"
-#include "SkyboxActor.h"
 
 bool Game::initialize()
 {
@@ -34,7 +33,6 @@ void Game::load()
 	Assets::loadShader("Res\\Shaders\\Sprite.vert", "Res\\Shaders\\Sprite.frag", "", "", "", "Sprite");
 	Assets::loadShader("Res\\Shaders\\BasicMesh.vert", "Res\\Shaders\\BasicMesh.frag", "", "", "", "BasicMesh");
 	Assets::loadShader("Res\\Shaders\\Phong.vert", "Res\\Shaders\\Phong.frag", "", "", "", "Phong");
-	Assets::loadShader("Res\\Shaders\\Skybox.vert", "Res\\Shaders\\Skybox.frag", "", "", "", "Skybox");
 
 	// Textures
 	Assets::loadTexture(renderer, "Res\\Textures\\Default.png", "Default");
@@ -50,24 +48,6 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
 
 	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\_Skybox.png", "SpaceSkybox");
-	/*
-	Assets::loadCubemap(renderer, "Res\\Textures\\Skybox\\back.png",
-		"Res\\Textures\\Skybox\\bottom.png",
-		"Res\\Textures\\Skybox\\front.png",
-		"Res\\Textures\\Skybox\\left.png",
-		"Res\\Textures\\Skybox\\right.png",
-		"Res\\Textures\\Skybox\\top.png",
-		"Skybox"
-	);
-	*/
-	/*
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\back.png", "Skybox_back");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\bottom.png", "Skybox_bottom");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\front.png", "Skybox_front");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\left.png", "Skybox_left");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\right.png", "Skybox_right");
-	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\top.png", "Skybox_top");
-	*/
 
 	// Textures UI
 	Assets::loadTexture(renderer, "Res\\Textures\\ButtonYellow.png", "ButtonYellow");
@@ -78,8 +58,7 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\Cube.gpmesh", "Mesh_Cube");
 	Assets::loadMesh("Res\\Meshes\\Plane.gpmesh", "Mesh_Plane");
 	Assets::loadMesh("Res\\Meshes\\Sphere.gpmesh", "Mesh_Sphere");
-	Assets::loadMesh("Res\\Meshes\\Skybox.gpmesh", "Mesh_Skybox");
-	Assets::loadMesh("Res\\Meshes\\SpaceSkybox.gpmesh", "Mesh_SpaceSkybox");
+	Assets::loadMesh("Res\\Meshes\\skyv2.gpmesh", "Mesh_SpaceSkybox");
 	Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium01.gpmesh", "Rock_Medium01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium02.gpmesh", "Rock_Medium02");
@@ -131,16 +110,11 @@ void Game::load()
 	SpriteComponent* scCrosshair = new SpriteComponent(crosshairActor, Assets::getTexture("Crosshair"));
 
 	// ===== Skybox =====
-	//CubeActor* skybox = new CubeActor();
-	//SkyboxActor* skybox = new SkyboxActor();
-
-	//skybox->setScale(1000);
-
-	Actor* sky = new Actor();
-	MeshComponent* mcsky = new MeshComponent(sky);
+	skybox = new Actor();
+	MeshComponent* mcsky = new MeshComponent(skybox);
 	mcsky->setMesh(Assets::getMesh("Mesh_SpaceSkybox"));
 	mcsky->setLighted(false);
-	sky->setScale(500);
+	skybox->setScale(750);
 
 	// ==============================
 	//			Actors
@@ -474,6 +448,9 @@ void Game::update(float dt)
 			actor->update(dt);
 		}
 		isUpdatingActors = false;
+
+		// Put the skybox at the same place then the chara
+		skybox->setPosition(chara->getPosition());
 
 		// Move pending actors to actors
 		for (auto pendingActor : pendingActors)

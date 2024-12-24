@@ -85,46 +85,6 @@ bool Texture::loadOGL(RendererOGL& renderer, const string& filenameP)
 	return true;
 }
 
-bool Texture::loadOGLCubemap(RendererOGL& rendererP, const string facesCubemapP[])
-{
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	for (unsigned int i = 0; i < 6; i++)
-	{
-		SDL_Surface* surf = IMG_Load(facesCubemapP[i].c_str());
-		if (!surf)
-		{
-			Log::error(LogCategory::Application, "Failed to load texture file " + facesCubemapP[i]);
-			return false;
-		}
-
-		width = surf->w;
-		height = surf->h;
-		int format = 0;
-		if (surf->format->format == SDL_PIXELFORMAT_RGB24)
-		{
-			format = GL_RGB;
-		}
-		else if (surf->format->format == SDL_PIXELFORMAT_RGBA32)
-		{
-			format = GL_RGBA;
-		}
-
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, surf->pixels);
-		SDL_FreeSurface(surf);
-
-		Log::info("Loaded texture " + facesCubemapP[i]);
-	}
-
-	return true;
-}
-
 void Texture::updateInfo(int& widthOut, int& heightOut)
 {
 	widthOut = width;
