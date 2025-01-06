@@ -38,15 +38,19 @@ Asteroid::Asteroid()
 Asteroid::Asteroid(AsteroidSize size)
 {
 	mc = new MeshComponent(this);
-
 	
-	// Size test
+	// ===== Size test =====
 	//sphere = new SphereActor();
 	//sphere->getMeshComponent()->setTextureIndex(4);
+	int sphereSize = 1;
 	
 
 	int selectMesh = 0;
 	int selectScale = 1;
+
+	// ===================================================================
+	//							Mesh & Size
+	// ===================================================================
 
 	switch (size)
 	{
@@ -63,14 +67,16 @@ Asteroid::Asteroid(AsteroidSize size)
 			mc->setMesh(Assets::getMesh("Rock_Small02"));
 		}
 
-		asteroidSize = 65;
+		sphereSize = 65;
+		asteroidSize = 1625;
+
+		//sphere->setScale(sphereSize);
 
 		setScale(selectScale);
 		break;
 
 	case MEDIUM:
 		selectMesh = rand() % 4;
-		selectScale = 1;
 
 		switch (selectMesh)
 		{
@@ -84,17 +90,18 @@ Asteroid::Asteroid(AsteroidSize size)
 			break;
 		case 2:
 			mc->setMesh(Assets::getMesh("Rock_Medium01"));
-			selectScale = rand() % 6 + 2;
+			selectScale = rand() % 6 + 4;
 			break;
 		case 3:
 			mc->setMesh(Assets::getMesh("Rock_Medium02"));
-			selectScale = rand() % 6 + 2;
+			selectScale = rand() % 6 + 4;
 			break;
 		default:
 			break;
 		}
 
-		asteroidSize = 145;
+		sphereSize = 190;
+		asteroidSize = 4750;
 
 		setScale(selectScale);
 		break;
@@ -112,9 +119,8 @@ Asteroid::Asteroid(AsteroidSize size)
 			mc->setMesh(Assets::getMesh("Rock_Medium02"));
 		}
 
-		asteroidSize = 595;
-
-		//sphere->setScale(asteroidSize);
+		sphereSize = 595;
+		asteroidSize = 14875;
 
 		setScale(selectScale);
 		break;
@@ -125,6 +131,20 @@ Asteroid::Asteroid(AsteroidSize size)
 	default:
 		break;
 	}
+
+	// ================================================================
+	//							Rotation
+	// ================================================================
+	int rotX = 0;
+	int rotY = 0;
+	int rotZ = 0;
+
+	rotX = rand() % 361;
+	setAngle(Vector3::unitX, rotX);
+	rotY = rand() % 361;
+	setAngle(Vector3::unitY, rotY);
+	rotZ = rand() % 361;
+	setAngle(Vector3::unitZ, rotZ);
 }
 
 Asteroid::~Asteroid()

@@ -144,10 +144,10 @@ void Game::load()
 	
 	/*
 	Asteroid* ast;
-	ast = new Asteroid(AsteroidSize::LARGE);
-	ast->setPosition(Vector3(10000, -(ast->getAsteroidSize()*2), 0));
-	ast = new Asteroid(AsteroidSize::LARGE);
+	ast = new Asteroid(AsteroidSize::SMALL);
 	ast->setPosition(Vector3(10000, 0, 0));
+	ast = new Asteroid(AsteroidSize::SMALL);
+	ast->setPosition(Vector3(10000, 1625, 0));
 	*/
 	/*
 	for (int i = 0; i < 4; i++)
