@@ -123,10 +123,6 @@ void Game::load()
 	// ===== Player =====
 	chara = new Character();
 
-	//std::cout << chara->getPosition().x << ", " << chara->getPosition().y << ", " << chara->getPosition().z << std::endl;
-	//chara->setPosition(Vector3(200.0f, 0.0f, 0.0f));
-	//chara->setScale(25.0f);
-
 	// ===== Enemies =====
 	/*
 	Enemy* t = new Enemy();
@@ -137,6 +133,18 @@ void Game::load()
 	// ===== Asteroids =====
 	//Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
 	//ast->setPosition(Vector3(5500, 0, 0));
+	SphereActor* beginArea = new SphereActor();
+	SphereActor* endArea = new SphereActor();
+
+	beginArea->getMeshComponent()->setTextureIndex(4);
+	beginArea->setPosition(Vector3(1000, -50000, -50000));
+	beginArea->setScale(25.0f);
+
+
+	endArea->getMeshComponent()->setTextureIndex(4);
+	endArea->setPosition(Vector3(110000, 50000, 50000));
+	endArea->setScale(100.0f);
+
 	beginAsteroidField = Vector3(1000, -50000, -50000);
 	endAsteroidField = Vector3(110000, 50000, 50000);
 	
@@ -148,28 +156,6 @@ void Game::load()
 	ast->setPosition(Vector3(10000, 0, 0));
 	ast = new Asteroid(AsteroidSize::SMALL);
 	ast->setPosition(Vector3(10000, 1625, 0));
-	*/
-	/*
-	for (int i = 0; i < 4; i++)
-	{
-		Asteroid* ast;
-		/*
-		if(i == 0 || i == 2)
-			ast = new Asteroid(AsteroidSize::SMALL);
-		else
-			ast = new Asteroid(AsteroidSize::MEDIUM);
-		
-		ast = new Asteroid(AsteroidSize::LARGE);
-
-		ast->setPosition(Vector3(7500, -6000 + (i * 3000), 0));
-		
-		int selectScale = 1;
-		selectScale = rand() % 1 + 10;
-
-		ast->setScale(selectScale);
-		std::cout << selectScale << std::endl;
-		
-	}
 	*/
 }
 
