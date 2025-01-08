@@ -114,7 +114,7 @@ void Game::load()
 	MeshComponent* mcsky = new MeshComponent(skybox);
 	mcsky->setMesh(Assets::getMesh("Mesh_SpaceSkybox"));
 	mcsky->setLighted(false);
-	skybox->setScale(750);
+	skybox->setScale(2000);
 
 	// ==============================
 	//			Actors
@@ -137,16 +137,16 @@ void Game::load()
 	SphereActor* endArea = new SphereActor();
 
 	beginArea->getMeshComponent()->setTextureIndex(4);
-	beginArea->setPosition(Vector3(1000, -50000, -50000));
+	beginArea->setPosition(Vector3(1000, -5000, -5000));
 	beginArea->setScale(25.0f);
 
 
 	endArea->getMeshComponent()->setTextureIndex(4);
-	endArea->setPosition(Vector3(110000, 50000, 50000));
+	endArea->setPosition(Vector3(40000, 5000, 5000));
 	endArea->setScale(100.0f);
 
-	beginAsteroidField = Vector3(1000, -50000, -50000);
-	endAsteroidField = Vector3(110000, 50000, 50000);
+	beginAsteroidField = Vector3(1000, -5000, -5000);
+	endAsteroidField = Vector3(40000, 5000, 5000);
 	
 	generateAsteroidField(3, 9, 81);
 	
@@ -191,44 +191,10 @@ void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall)
 		return;
 	}
 
-	if (numLarge > 0)
-	{
-		for (int i = 0; i < numLarge; i++)
-		{
-			Asteroid* ast = new Asteroid(LARGE);
-			placedAsteroid(ast);
-		}
-	}
+	int rangeX = 0;
+	int rangeY = 0;
+	int rangeZ = 0;
 
-	if (numMedium > 0)
-	{
-		for (int i = 0; i < numMedium; i++)
-		{
-			Asteroid* ast = new Asteroid(MEDIUM);
-			placedAsteroid(ast);
-		}
-	}
-
-	if (numSmall > 0)
-	{
-		for (int i = 0; i < numSmall; i++)
-		{
-			Asteroid* ast = new Asteroid(SMALL);
-			placedAsteroid(ast);
-		}
-	}
-}
-
-void Game::placedAsteroid(Asteroid* rock)
-{
-	bool placed = false;
-	bool rightDist = false;
-	int cpt = 0;
-
-	float x, y, z;
-	float rangeX = 0;
-	float rangeY = 0;
-	float rangeZ = 0;
 	if ((beginAsteroidField.x >= 0 && endAsteroidField.x >= 0) ||
 		(beginAsteroidField.x <= 0 && endAsteroidField.x <= 0))
 	{
@@ -257,13 +223,50 @@ void Game::placedAsteroid(Asteroid* rock)
 		rangeZ = abs(beginAsteroidField.z) + abs(endAsteroidField.z);
 	}
 
-	//std::cout << "Range:\nx:" << rangeX << "\ny:" << rangeY << "\nz:" << rangeZ << "\n" << std::endl;
+	std::cout << "Range:\nx:" << rangeX << "\ny:" << rangeY << "\nz:" << rangeZ << "\n" << std::endl;
+
+	if (numLarge > 0)
+	{
+		for (int i = 0; i < numLarge; i++)
+		{
+			Asteroid* ast = new Asteroid(LARGE);
+			placedAsteroid(ast, rangeX, rangeY, rangeZ);
+		}
+	}
+
+	if (numMedium > 0)
+	{
+		for (int i = 0; i < numMedium; i++)
+		{
+			Asteroid* ast = new Asteroid(MEDIUM);
+			placedAsteroid(ast, rangeX, rangeY, rangeZ);
+		}
+	}
+
+	if (numSmall > 0)
+	{
+		for (int i = 0; i < numSmall; i++)
+		{
+			Asteroid* ast = new Asteroid(SMALL);
+			placedAsteroid(ast, rangeX, rangeY, rangeZ);
+		}
+	}
+}
+
+void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
+{
+	float x, y, z;
+	bool placed = false;
+	bool rightDist = false;
+	int cpt = 0;
 	
 	while (!placed && cpt < 100)
 	{
-		x = rand() % (int)rangeX + 1;
-		y = rand() % (int)rangeY + 1;
-		z = rand() % (int)rangeZ + 1;
+		x = rand() % rangeX + 1;
+		y = rand() % rangeY + 1;
+		z = rand() % rangeZ + 1;
+
+		std::cout << "rand x:" << x << std::endl;
 
 		if (beginAsteroidField.x > endAsteroidField.x)
 		{
@@ -323,6 +326,7 @@ void Game::placedAsteroid(Asteroid* rock)
 		cpt++;
 	}
 	
+	std::cout << "Valid rand x:" << x << std::endl;
 
 	if (cpt >= 100)
 	{

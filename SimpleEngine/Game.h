@@ -75,7 +75,7 @@ public:
 	vector<Actor*>& getMovableActors() { return movableActors; }
 
 	void generateAsteroidField(int numLarge, int numMedium, int numSmall);
-	void placedAsteroid(Asteroid* rock);
+	void placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ);
 
 	bool rightDistance(Asteroid& origin, Asteroid& target);
 
