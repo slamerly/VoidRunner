@@ -12,6 +12,7 @@
 #include "PhysicsSystem.h"
 #include "PlaneActor.h"
 #include "Asteroid.h"
+#include <random>
 
 using std::vector;
 
@@ -101,6 +102,9 @@ private:
 	//						Game Specific
 	// ==================================================================
 	//Camera* camera;
+
+	std::random_device rd; // non-deterministic generator
+
 	Character* chara;
 	Actor* skybox;
 	Achievements* achieve;

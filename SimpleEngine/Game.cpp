@@ -76,6 +76,7 @@ void Game::load()
 	// ====================================================
 
 	srand(time(nullptr));
+	
 
 	Quaternion q(Vector3::unitY, -Maths::piOver2);
 	q = Quaternion::concatenate(q, Quaternion(Vector3::unitZ, Maths::pi + Maths::pi / 4.0f));
@@ -137,18 +138,19 @@ void Game::load()
 	SphereActor* endArea = new SphereActor();
 
 	beginArea->getMeshComponent()->setTextureIndex(4);
-	beginArea->setPosition(Vector3(1000, -5000, -5000));
+	beginArea->setPosition(Vector3(5000, -50000, -50000));
 	beginArea->setScale(25.0f);
 
 
 	endArea->getMeshComponent()->setTextureIndex(4);
-	endArea->setPosition(Vector3(40000, 5000, 5000));
+	endArea->setPosition(Vector3(100000, 50000, 50000));
 	endArea->setScale(100.0f);
 
-	beginAsteroidField = Vector3(1000, -5000, -5000);
-	endAsteroidField = Vector3(40000, 5000, 5000);
+	beginAsteroidField = Vector3(5000, -50000, -50000);
+	endAsteroidField = Vector3(100000, 50000, 50000);
 	
-	generateAsteroidField(3, 9, 81);
+	//generateAsteroidField(3, 9, 81);
+	generateAsteroidField(9, 81, 721);
 	
 	/*
 	Asteroid* ast;
@@ -223,7 +225,7 @@ void Game::generateAsteroidField(int numLarge, int numMedium, int numSmall)
 		rangeZ = abs(beginAsteroidField.z) + abs(endAsteroidField.z);
 	}
 
-	std::cout << "Range:\nx:" << rangeX << "\ny:" << rangeY << "\nz:" << rangeZ << "\n" << std::endl;
+	//std::cout << "Range:\nx:" << rangeX << "\ny:" << rangeY << "\nz:" << rangeZ << "\n" << std::endl;
 
 	if (numLarge > 0)
 	{
@@ -262,11 +264,15 @@ void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
 	
 	while (!placed && cpt < 100)
 	{
-		x = rand() % rangeX + 1;
-		y = rand() % rangeY + 1;
-		z = rand() % rangeZ + 1;
+		std::mt19937 gen(rd());  // to seed mersenne twister.
+		std::uniform_int_distribution<> distributX(0, rangeX);
+		x = distributX(gen);
 
-		std::cout << "rand x:" << x << std::endl;
+		std::uniform_int_distribution<> distributY(0, rangeY);
+		y = distributY(gen);
+
+		std::uniform_int_distribution<> distributZ(0, rangeZ);
+		z = distributZ(gen);
 
 		if (beginAsteroidField.x > endAsteroidField.x)
 		{
@@ -294,8 +300,6 @@ void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
 		{
 			z += beginAsteroidField.z;
 		}
-
-		//std::cout << "Current: " << x << ", " << y << ", " << z << std::endl;
 
 		rock->setPosition(Vector3(x, y, z));
 
@@ -325,8 +329,6 @@ void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
 		}
 		cpt++;
 	}
-	
-	std::cout << "Valid rand x:" << x << std::endl;
 
 	if (cpt >= 100)
 	{
@@ -338,6 +340,7 @@ void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
 bool Game::rightDistance(Asteroid& origin, Asteroid& target)
 {
 	float minDist = 0;
+	/*
 	if (target.getAsteroidSize() <= origin.getAsteroidSize())
 	{
 		minDist = origin.getAsteroidSize() * 0.5f + 1.5f * target.getAsteroidSize();
@@ -346,6 +349,9 @@ bool Game::rightDistance(Asteroid& origin, Asteroid& target)
 	{
 		minDist = target.getAsteroidSize() * 0.5f + 1.5f * origin.getAsteroidSize();
 	}
+	*/
+
+	minDist = origin.getAsteroidSize() * 0.5f + 0.5f * target.getAsteroidSize();
 
 	float dist = Vector3::distance(origin.getPosition(), target.getPosition());
 
@@ -407,7 +413,7 @@ void Game::processInput()
 			
 			asteroids.clear();
 
-			generateAsteroidField(3, 9, 81);
+			generateAsteroidField(9, 81, 721);
 		}
 
 		// Actor input
