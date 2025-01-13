@@ -46,6 +46,10 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
 	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
+	Assets::loadTexture(renderer, "Res\\Textures\\station01_diffuse.png", "station01");
+	Assets::loadTexture(renderer, "Res\\Textures\\station03_base_diffuse.png", "station03_base");
+	Assets::loadTexture(renderer, "Res\\Textures\\station03_dock_diffuse.png", "station03_dock");
+	Assets::loadTexture(renderer, "Res\\Textures\\station03_ring_diffuse.png", "station03_ring");
 
 	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\_Skybox.png", "SpaceSkybox");
 
@@ -64,6 +68,10 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium02.gpmesh", "Rock_Medium02");
 	Assets::loadMesh("Res\\Meshes\\Rock_Small01.gpmesh", "Rock_Small01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Small02.gpmesh", "Rock_Small02");
+	Assets::loadMesh("Res\\Meshes\\station01.gpmesh", "Station01");
+	Assets::loadMesh("Res\\Meshes\\station03_base.gpmesh", "Station03_Base");
+	Assets::loadMesh("Res\\Meshes\\station03_dock.gpmesh", "Station03_Dock");
+	Assets::loadMesh("Res\\Meshes\\station03_ring.gpmesh", "Station03_Ring");
 
 	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
@@ -141,7 +149,6 @@ void Game::load()
 	beginArea->setPosition(Vector3(5000, -50000, -50000));
 	beginArea->setScale(25.0f);
 
-
 	endArea->getMeshComponent()->setTextureIndex(4);
 	endArea->setPosition(Vector3(100000, 50000, 50000));
 	endArea->setScale(100.0f);
@@ -159,6 +166,20 @@ void Game::load()
 	ast = new Asteroid(AsteroidSize::SMALL);
 	ast->setPosition(Vector3(10000, 1625, 0));
 	*/
+
+	// ===================================================================================
+	//									Stations
+	// ===================================================================================
+	Actor* station1 = new Actor();
+	MeshComponent* mcstation1 = new MeshComponent(station1);
+	mcstation1->setMesh(Assets::getMesh("Station01"));
+	station1->setPosition(Vector3(-10000, 0, 0));
+	Quaternion rotationx = Quaternion(Vector3::unitX, Maths::toRadians(90));
+	Quaternion rotationy = Quaternion(Vector3::unitY, Maths::toRadians(25));
+	Quaternion rotationz = Quaternion(Vector3::unitZ, Maths::toRadians(45));
+	station1->setRotation(Quaternion::concatenate(rotationx, rotationy));
+	station1->setRotation(Quaternion::concatenate(station1->getRotation(), rotationz));
+	station1->setScale(10);
 }
 
 void Game::addPlane(PlaneActor* plane)

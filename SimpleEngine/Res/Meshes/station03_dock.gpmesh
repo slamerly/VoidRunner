@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/station03_dock.bmp"
+		"station03_dock"
 	],
 	"specularPower":100.0,
 	"vertices":[

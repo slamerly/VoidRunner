@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/station03_ring.bmp"
+		"station03_ring"
 	],
 	"specularPower":100.0,
 	"vertices":[
