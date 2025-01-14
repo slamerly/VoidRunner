@@ -190,6 +190,9 @@
     <ClCompile Include="Asteroid.cpp">
       <Filter>GameSpecific</Filter>
     </ClCompile>
+    <ClCompile Include="Station.cpp">
+      <Filter>GameSpecific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -358,6 +361,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Asteroid.h">
+      <Filter>GameSpecific</Filter>
+    </ClInclude>
+    <ClInclude Include="Station.h">
       <Filter>GameSpecific</Filter>
     </ClInclude>
   </ItemGroup>

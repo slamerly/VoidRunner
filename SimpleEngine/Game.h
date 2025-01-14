@@ -12,6 +12,7 @@
 #include "PhysicsSystem.h"
 #include "PlaneActor.h"
 #include "Asteroid.h"
+#include "Station.h"
 #include <random>
 
 using std::vector;
@@ -113,5 +114,7 @@ private:
 
 	vector<Asteroid*> asteroids;
 	Vector3 beginAsteroidField, endAsteroidField;
+
+	vector<Station*> stations;
 };
 

@@ -10,7 +10,6 @@
 #include "Enemy.h"
 #include "Font.h"
 #include "PauseMenu.h"
-#include "Asteroid.h"
 
 bool Game::initialize()
 {
@@ -140,8 +139,8 @@ void Game::load()
 	*/
 
 	// ===== Asteroids =====
-	//Asteroid* ast = new Asteroid(AsteroidSize::LARGE);
-	//ast->setPosition(Vector3(5500, 0, 0));
+	// DEBUG FIELD
+	/*
 	SphereActor* beginArea = new SphereActor();
 	SphereActor* endArea = new SphereActor();
 
@@ -152,11 +151,10 @@ void Game::load()
 	endArea->getMeshComponent()->setTextureIndex(4);
 	endArea->setPosition(Vector3(100000, 50000, 50000));
 	endArea->setScale(100.0f);
-
+	*/
 	beginAsteroidField = Vector3(5000, -50000, -50000);
 	endAsteroidField = Vector3(100000, 50000, 50000);
-	
-	//generateAsteroidField(3, 9, 81);
+
 	generateAsteroidField(9, 81, 721);
 	
 	/*
@@ -170,16 +168,13 @@ void Game::load()
 	// ===================================================================================
 	//									Stations
 	// ===================================================================================
-	Actor* station1 = new Actor();
-	MeshComponent* mcstation1 = new MeshComponent(station1);
-	mcstation1->setMesh(Assets::getMesh("Station01"));
-	station1->setPosition(Vector3(-10000, 0, 0));
-	Quaternion rotationx = Quaternion(Vector3::unitX, Maths::toRadians(90));
-	Quaternion rotationy = Quaternion(Vector3::unitY, Maths::toRadians(25));
-	Quaternion rotationz = Quaternion(Vector3::unitZ, Maths::toRadians(45));
-	station1->setRotation(Quaternion::concatenate(rotationx, rotationy));
-	station1->setRotation(Quaternion::concatenate(station1->getRotation(), rotationz));
-	station1->setScale(10);
+	Station* station = new Station(1);
+	station->setPosition(Vector3(beginAsteroidField.x - 10000, 0, 0));
+	stations.push_back(station);
+
+	station = new Station(2);
+	station->setPosition(Vector3(endAsteroidField.x + 10000, 0, 0));
+	stations.push_back(station);
 }
 
 void Game::addPlane(PlaneActor* plane)
