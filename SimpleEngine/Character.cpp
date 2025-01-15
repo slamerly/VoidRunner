@@ -47,7 +47,7 @@ Character::~Character()
 void Character::actorInput(const struct InputState& inputState)
 {
 	//std::cout << getPosition().x << ", " << getPosition().y << std::endl;
-	float forwardSpeed = 0.0f;
+	//float forwardSpeed = 0.0f;
 	float upSpeed = 0.0f;
 	float angularSpeed = 0.0f;
 	float strafeSpeed = 0.0f;
@@ -55,31 +55,47 @@ void Character::actorInput(const struct InputState& inputState)
 	// wasd movement
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
 	{
-		forwardSpeed += maxFowardSpeed;
+		if (debugMovement)
+			forwardSpeed += maxFowardSpeed;
+		else
+			if (forwardSpeed < maxFowardSpeed)
+			{
+				forwardSpeed += stepForwardSpeed;
+				std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
+			}
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
+		if (debugMovement)
 		forwardSpeed -= maxNegatFowardSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
 	{
+		if (debugMovement)
 		upSpeed += maxUpSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_LCTRL))
 	{
+		if (debugMovement)
 		upSpeed -= maxUpSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_A))
 	{
 		if (cameraComponent->getFPScam())
-			strafeSpeed -= maxStrafeSpeed;
+		{
+			if (debugMovement)
+				strafeSpeed -= maxStrafeSpeed;
+		}
 		else
 			angularSpeed -= sensitiveRota;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_D))
 	{
-		if(cameraComponent->getFPScam())
-			strafeSpeed += maxStrafeSpeed;
+		if (cameraComponent->getFPScam())
+		{
+			if (debugMovement)
+				strafeSpeed += maxStrafeSpeed;
+		}
 		else
 			angularSpeed += sensitiveRota;
 	}
@@ -109,14 +125,17 @@ void Character::actorInput(const struct InputState& inputState)
 		float x = mousePosition.x;
 		float y = mousePosition.y;
 
-		const float maxMouseSpeed = 500;
+		
 		const float maxAngularSpeed = Maths::pi * 8;
 
 		float angularSpeed = 0.0f;
 		if (x != 0)
 		{
-			angularSpeed = x / maxMouseSpeed;
-			angularSpeed *= maxAngularSpeed;
+			if (debugMovement)
+			{
+				angularSpeed = x / maxMouseSpeed;
+				angularSpeed *= maxAngularSpeed;
+			}
 		}
 		moveComponent->setAngularSpeed(angularSpeed);
 		
@@ -125,8 +144,11 @@ void Character::actorInput(const struct InputState& inputState)
 		float pitchSpeed = 0.0f;
 		if (y != 0)
 		{
-			pitchSpeed = y / maxMouseSpeed;
-			pitchSpeed *= maxPitchSpeed;
+			if (debugMovement)
+			{
+				pitchSpeed = y / maxMouseSpeed;
+				pitchSpeed *= maxPitchSpeed;
+			}
 		}
 		moveComponent->setPitchSpeed(pitchSpeed);
 
@@ -134,11 +156,13 @@ void Character::actorInput(const struct InputState& inputState)
 		float rollSpeed = 0.0f;
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
 		{
-			rollSpeed += sensitiveRota / 2;
+			if (debugMovement)
+				rollSpeed += sensitiveRota / 2;
 		}
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
 		{
-			rollSpeed -= sensitiveRota / 2;
+			if (debugMovement)
+				rollSpeed -= sensitiveRota / 2;
 		}
 		moveComponent->setRollSpeed(rollSpeed);
 		
@@ -146,11 +170,11 @@ void Character::actorInput(const struct InputState& inputState)
 
 	if (inputState.mouse.getButtonState(1) == ButtonState::Pressed || inputState.mouse.getButtonState(1) == ButtonState::Held)
 	{
-		shoot();
+		//shoot();
 	}
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_R) == ButtonState::Pressed)
 	{
-		reload();
+		//reload();
 	}
 }
 

@@ -6,8 +6,8 @@ Station::Station(int meshNumber)
 	mc = new MeshComponent(this);
 	
 	Quaternion rotationx = Quaternion(Vector3::unitX, Maths::toRadians(90));
-	Quaternion rotationy = Quaternion(Vector3::unitY, Maths::toRadians(25));
-	Quaternion rotationz = Quaternion(Vector3::unitZ, Maths::toRadians(45));
+	Quaternion rotationy = Quaternion(Vector3::unitY, Maths::toRadians(10));
+	Quaternion rotationz = Quaternion(Vector3::unitZ, Maths::toRadians(50));
 	
 	setScale(10);
 
@@ -26,7 +26,7 @@ Station::Station(int meshNumber)
 		mc2 = new MeshComponent(this);
 		mc2->setMesh(Assets::getMesh("Station03_Ring"));
 
-		rotationx = Quaternion(Vector3::unitX, Maths::toRadians(-90));
+		rotationx = Quaternion(Vector3::unitX, Maths::toRadians(-75));
 		rotationy = Quaternion(Vector3::unitY, Maths::toRadians(-25));
 		rotationz = Quaternion(Vector3::unitZ, Maths::toRadians(-45));
 		

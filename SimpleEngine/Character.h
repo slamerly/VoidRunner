@@ -27,14 +27,24 @@ private:
 	SphereActor* sphereX;
 	SphereActor* sphereY;
 
-	// Movements
-	//float maxFowardSpeed = 1000.0f;
-	float maxFowardSpeed = 4000.0f;
-	float maxNegatFowardSpeed = maxFowardSpeed / 2;
-	float maxUpSpeed = maxNegatFowardSpeed;
-	//float maxStrafeSpeed = 750.0f;
-	float maxStrafeSpeed = 3000.0f;
-	float sensitiveRota = Maths::twoPi;
+	//=======================================================
+	//						Movements
+	//=======================================================
+	// Debug
+	bool debugMovement = false;
+
+	// Max
+	const float maxFowardSpeed = 4000.0f;
+	const float maxNegatFowardSpeed = maxFowardSpeed / 2;
+	const float maxUpSpeed = maxNegatFowardSpeed;
+	const float maxStrafeSpeed = 3000.0f;
+	const float maxMouseSpeed = 500;
+	const float sensitiveRota = Maths::twoPi;
+
+	// Steps
+	const float stepForwardSpeed = 20.0f;
+
+	float forwardSpeed = 0.0f;
 	
 	// Ammo
 	int magazineMax = 15;
