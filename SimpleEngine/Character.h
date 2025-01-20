@@ -42,9 +42,14 @@ private:
 	const float sensitiveRota = Maths::twoPi;
 
 	// Steps
-	const float stepForwardSpeed = 20.0f;
+	const float stepForwardSpeed = 50.0f;
+	const float stepNegateForwardSpeed = stepForwardSpeed / 2;
 
 	float forwardSpeed = 0.0f;
+	
+	bool readyToMoveBack = false;
+	bool onForwardDelay = false;
+	float forwardDelay = 5 * 60.0f;
 	
 	// Ammo
 	int magazineMax = 15;

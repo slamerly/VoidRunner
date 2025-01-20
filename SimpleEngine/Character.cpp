@@ -52,23 +52,70 @@ void Character::actorInput(const struct InputState& inputState)
 	float angularSpeed = 0.0f;
 	float strafeSpeed = 0.0f;
 
-	// wasd movement
+	// ==================================================
+	//					  MOVEMENTS
+	// ==================================================
+
+	// FORWARD
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
 	{
 		if (debugMovement)
 			forwardSpeed += maxFowardSpeed;
 		else
-			if (forwardSpeed < maxFowardSpeed)
+		{
+			//if (!readyToMoveBack && forwardSpeed < maxFowardSpeed)
+			if (forwardDelay <= 0 && forwardSpeed < maxFowardSpeed)
 			{
+				onForwardDelay = false;
 				forwardSpeed += stepForwardSpeed;
-				std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
 			}
+			if (forwardSpeed == 0 && !onForwardDelay)
+			{
+				forwardDelay = 2.5 * 60.0f;
+				onForwardDelay = true;
+			}
+			if (forwardSpeed < 0)
+			{
+				forwardSpeed += stepNegateForwardSpeed;
+			}
+		}
 	}
+
+	// MOVE BACK
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
 		if (debugMovement)
-		forwardSpeed -= maxNegatFowardSpeed;
+			forwardSpeed -= maxNegatFowardSpeed;
+		else
+		{
+			if (forwardSpeed > 0)
+			{
+				forwardSpeed -= stepForwardSpeed;
+			}
+			if (forwardSpeed == 0 && !onForwardDelay)
+			{
+				forwardDelay = 2.5 * 60.0f;
+				onForwardDelay = true;
+			}
+			//if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
+			if (forwardDelay <= 0 && forwardSpeed > -maxNegatFowardSpeed)
+			{
+				onForwardDelay = false;
+				forwardSpeed -= stepNegateForwardSpeed;
+			}
+		}
 	}
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
+	{
+		std::cout << "ready To Move Back" << std::endl;
+		readyToMoveBack = true;
+	}
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
+	{
+		std::cout << "not Ready To Move Back" << std::endl;
+		readyToMoveBack = false;
+	}
+
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
 	{
 		if (debugMovement)
@@ -99,6 +146,12 @@ void Character::actorInput(const struct InputState& inputState)
 		else
 			angularSpeed += sensitiveRota;
 	}
+
+	// =================================================================
+	//						Display
+	// =================================================================
+	
+	std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
 
 	// Camera shake movement
 	/*
@@ -182,6 +235,13 @@ void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
 
+	// ===== Movement =====
+	if (onForwardDelay && forwardDelay > 0)
+	{
+		forwardDelay--;
+	}
+
+
 	//sphereX->setPosition(getPosition() + getForward() * 300);
 	//sphereY->setPosition(getPosition() + getForward() * 300 + getRight() * 100);
 	
@@ -189,6 +249,7 @@ void Character::updateActor(float dt)
 	Vector3 modelPosition = getPosition();
 
 	// === Shoot Animation ===
+	/*
 	if (isShooting)
 	{
 		modelPosition += getForward() * (MODEL_OFFSET.x + currentCooldownShoot * 50);
@@ -235,7 +296,7 @@ void Character::updateActor(float dt)
 	//q = Quaternion::concatenate(q, Quaternion(getRight(), cameraComponent->getPitch() + currentAngle));
 
 	//FPSModelRifle->setRotation(q);
-	
+	*/
 	fixCollisions();
 }
 
