@@ -63,10 +63,10 @@ void Character::actorInput(const struct InputState& inputState)
 			forwardSpeed += maxFowardSpeed;
 		else
 		{
-			//if (!readyToMoveBack && forwardSpeed < maxFowardSpeed)
 			if (forwardDelay <= 0 && forwardSpeed < maxFowardSpeed)
 			{
 				onForwardDelay = false;
+				readyToMoveBack = false;
 				forwardSpeed += stepForwardSpeed;
 			}
 			if (forwardSpeed == 0 && !onForwardDelay)
@@ -74,7 +74,7 @@ void Character::actorInput(const struct InputState& inputState)
 				forwardDelay = 2.5 * 60.0f;
 				onForwardDelay = true;
 			}
-			if (forwardSpeed < 0)
+			if (readyToMoveBack && forwardSpeed < 0)
 			{
 				forwardSpeed += stepNegateForwardSpeed;
 			}
@@ -84,11 +84,12 @@ void Character::actorInput(const struct InputState& inputState)
 	// MOVE BACK
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
+		//std::cout << "Delay: " << onForwardDelay << ", time: " << forwardDelay << std::endl;
 		if (debugMovement)
 			forwardSpeed -= maxNegatFowardSpeed;
 		else
 		{
-			if (forwardSpeed > 0)
+			if (!readyToMoveBack && forwardSpeed > 0)
 			{
 				forwardSpeed -= stepForwardSpeed;
 			}
@@ -97,23 +98,13 @@ void Character::actorInput(const struct InputState& inputState)
 				forwardDelay = 2.5 * 60.0f;
 				onForwardDelay = true;
 			}
-			//if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
 			if (forwardDelay <= 0 && forwardSpeed > -maxNegatFowardSpeed)
 			{
 				onForwardDelay = false;
+				readyToMoveBack = true;
 				forwardSpeed -= stepNegateForwardSpeed;
 			}
 		}
-	}
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
-	{
-		std::cout << "ready To Move Back" << std::endl;
-		readyToMoveBack = true;
-	}
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
-	{
-		std::cout << "not Ready To Move Back" << std::endl;
-		readyToMoveBack = false;
 	}
 
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
