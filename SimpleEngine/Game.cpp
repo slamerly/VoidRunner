@@ -49,6 +49,8 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\station03_base_diffuse.png", "station03_base");
 	Assets::loadTexture(renderer, "Res\\Textures\\station03_dock_diffuse.png", "station03_dock");
 	Assets::loadTexture(renderer, "Res\\Textures\\station03_ring_diffuse.png", "station03_ring");
+	Assets::loadTexture(renderer, "Res\\Textures\\Speed.png", "Speed");
+	Assets::loadTexture(renderer, "Res\\Textures\\Spread.png", "Spread");
 
 	Assets::loadTexture(renderer, "Res\\Textures\\Skybox\\_Skybox.png", "SpaceSkybox");
 

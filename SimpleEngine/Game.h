@@ -96,6 +96,7 @@ private:
 	vector<Actor*> actors;
 	vector<Actor*> pendingActors;
 
+	
 	vector<class UIScreen*> UIStack;
 	GameState state;
 

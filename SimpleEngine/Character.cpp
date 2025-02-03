@@ -37,6 +37,23 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	currentMagazine = magazineMax;
 
 	getGame().addMovableActor(this);
+
+	float step = 36.0f;
+
+	// UI
+	for (int i = 0; i < 15; i++)
+	{
+		Actor* ui = new Actor();
+		ui->setPosition(Vector3(-900.0f, -162.0f + i * step, 0.0f));
+		SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("Speed"));
+		sc->setVisible(false);
+
+		UISpeed.push_back(sc);
+	}
+
+	Actor* ui = new Actor();
+	ui->setPosition(Vector3(-900.0f, 0.0f, 0.0f));
+	SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("Spread"));
 }
 
 Character::~Character()
@@ -63,28 +80,40 @@ void Character::actorInput(const struct InputState& inputState)
 			forwardSpeed += maxFowardSpeed;
 		else
 		{
-			if (forwardDelay <= 0 && forwardSpeed < maxFowardSpeed)
+			if (!readyToMoveBack && forwardSpeed < maxFowardSpeed)
 			{
-				onForwardDelay = false;
+				// UI
+				if (forwardSpeed > 0)
+				{
+					//float view = forwardSpeed % 
+				}
+
 				readyToMoveBack = false;
 				forwardSpeed += stepForwardSpeed;
-			}
-			if (forwardSpeed == 0 && !onForwardDelay)
-			{
-				forwardDelay = 2.5 * 60.0f;
-				onForwardDelay = true;
 			}
 			if (readyToMoveBack && forwardSpeed < 0)
 			{
 				forwardSpeed += stepNegateForwardSpeed;
 			}
 		}
+		UISpeed[4]->setVisible(false);
+		UISpeed[5]->setVisible(true);
+	}
+
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
+	{
+		std::cout << "ready To Move Back" << std::endl;
+		readyToMoveBack = true;
+	}
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
+	{
+		std::cout << "not Ready To Move Back" << std::endl;
+		readyToMoveBack = false;
 	}
 
 	// MOVE BACK
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
-		//std::cout << "Delay: " << onForwardDelay << ", time: " << forwardDelay << std::endl;
 		if (debugMovement)
 			forwardSpeed -= maxNegatFowardSpeed;
 		else
@@ -93,29 +122,25 @@ void Character::actorInput(const struct InputState& inputState)
 			{
 				forwardSpeed -= stepForwardSpeed;
 			}
-			if (forwardSpeed == 0 && !onForwardDelay)
+			if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
 			{
-				forwardDelay = 2.5 * 60.0f;
-				onForwardDelay = true;
-			}
-			if (forwardDelay <= 0 && forwardSpeed > -maxNegatFowardSpeed)
-			{
-				onForwardDelay = false;
 				readyToMoveBack = true;
 				forwardSpeed -= stepNegateForwardSpeed;
 			}
 		}
+		UISpeed[5]->setVisible(false);
+		UISpeed[4]->setVisible(true);
 	}
 
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
 	{
 		if (debugMovement)
-		upSpeed += maxUpSpeed;
+			upSpeed += maxUpSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_LCTRL))
 	{
 		if (debugMovement)
-		upSpeed -= maxUpSpeed;
+			upSpeed -= maxUpSpeed;
 	}
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_A))
 	{
@@ -142,7 +167,7 @@ void Character::actorInput(const struct InputState& inputState)
 	//						Display
 	// =================================================================
 	
-	std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
+	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
 
 	// Camera shake movement
 	/*
@@ -225,12 +250,6 @@ void Character::actorInput(const struct InputState& inputState)
 void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
-
-	// ===== Movement =====
-	if (onForwardDelay && forwardDelay > 0)
-	{
-		forwardDelay--;
-	}
 
 
 	//sphereX->setPosition(getPosition() + getForward() * 300);

@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "SphereActor.h"
+#include "SpriteComponent.h"
 
 class Character : public Actor
 {
@@ -48,8 +49,9 @@ private:
 	float forwardSpeed = 0.0f;
 	
 	bool readyToMoveBack = false;
-	bool onForwardDelay = false;
-	float forwardDelay = 5 * 60.0f;
+	//float forwardDelay = 5 * 60.0f;
+
+	vector<SpriteComponent*> UISpeed;
 	
 	// Ammo
 	int magazineMax = 15;

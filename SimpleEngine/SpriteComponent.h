@@ -14,6 +14,8 @@ public:
 	virtual void setTexture(const Texture& textureP);
 	virtual void draw(IRenderer& renderer);
 
+	void setVisible(bool pVisible);
+
 	int getDrawOrder() const { return drawOrder; }
 	int getTexWidth() const { return texWidth; }
 	int getTexHeight() const { return texHeight; }
@@ -23,5 +25,6 @@ protected:
 	int drawOrder;
 	int texWidth;
 	int texHeight;
+	bool isVisible{ true };
 };
 
