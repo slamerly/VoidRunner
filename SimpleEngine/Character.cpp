@@ -13,11 +13,6 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	moveComponent = new MoveComponent(this);
 	cameraComponent = new Camera(this);
 
-	//FPSModelRifle = new Actor();
-	//FPSModelRifle->setScale(0.75f);
-	//mc = new MeshComponent(FPSModelRifle);
-	//mc->setMesh(Assets::getMesh("Mesh_Ak74"));
-
 	// ===== DEBUG =====
 	/*
 	sphereX = new SphereActor();
@@ -33,8 +28,6 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	AABB collision(Vector3(-25.0f, -25.0f, -87.5f), Vector3(25.0f, 25.0f, 87.5f));
 	boxComponent->setObjectBox(collision);
 	boxComponent->setShouldRotate(false);
-
-	currentMagazine = magazineMax;
 
 	getGame().addMovableActor(this);
 
@@ -184,15 +177,6 @@ void Character::actorInput(const struct InputState& inputState)
 			currentExpStepForward++;
 			if (!readyToMoveBack && forwardSpeed > 0)
 			{
-				//Before change to exp
-				/*
-				forwardSpeed -= stepForwardSpeed;
-				if (forwardSpeed < 0)
-				{
-					forwardSpeed = 0;
-				}
-				*/
-
 				if (exp(currentExpStepForward / stepForwardBreak) > stepForwardBreak)
 				{
 					forwardSpeed -= stepForwardBreak;
@@ -222,8 +206,6 @@ void Character::actorInput(const struct InputState& inputState)
 			if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
 			{
 				readyToMoveBack = true;
-				//Before change to exp
-				//forwardSpeed -= stepNegateForwardSpeed;
 
 				if (exp(currentExpStepForward / stepNegateForwardSpeed) > stepNegateForwardSpeed)
 				{
@@ -238,7 +220,6 @@ void Character::actorInput(const struct InputState& inputState)
 				{
 					forwardSpeed = -maxNegatFowardSpeed;
 				}
-
 
 				// UI
 				if (forwardSpeed < 0)
@@ -335,7 +316,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =================================================================
 	
 	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
-	std::cout << "Current Strafe speed: " << strafeSpeed << std::endl;
+	//std::cout << "Current Strafe speed: " << strafeSpeed << std::endl;
 
 	// Camera shake movement
 	/*
@@ -403,15 +384,6 @@ void Character::actorInput(const struct InputState& inputState)
 		}
 		moveComponent->setRollSpeed(rollSpeed);
 		
-	}
-
-	if (inputState.mouse.getButtonState(1) == ButtonState::Pressed || inputState.mouse.getButtonState(1) == ButtonState::Held)
-	{
-		//shoot();
-	}
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_R) == ButtonState::Pressed)
-	{
-		//reload();
 	}
 }
 
@@ -492,43 +464,6 @@ void Character::updateActor(float dt)
 	//FPSModelRifle->setRotation(q);
 	*/
 	fixCollisions();
-}
-
-void Character::shoot()
-{
-	if (currentMagazine > 0 && !isReloading && !isShooting)
-	{		
-		// Get start point (in center of screen on near plane)
-		Vector3 screenPoint(445.0f, -270.0f, 0.0f);
-		//Vector3 start = getGame().getRenderer().unproject(screenPoint);
-		//Vector3 start = FPSModelRifle->getPosition() + FPSModelRifle->getForward() * 75;
-		Vector3 start = getGame().getRenderer().unproject(screenPoint) + Vector3(0.f, 10.f, .5f);
-		// Get end point (in center of screen, between near and far)
-		screenPoint.z = 0.9f;
-		//screenPoint = Vector3(75.5f, -45.0f, 0.9f);
-		Vector3 end = getGame().getRenderer().unproject(screenPoint);
-		// Get direction vector
-		Vector3 dir = end;
-		dir.normalize();
-
-		// Spawn a ball
-		BallActor* ball = new BallActor(ballDamage);
-		ball->getMeshComponent()->setTextureIndex(1);
-		ball->setPlayer(this);
-		ball->setPosition(start + dir * 20.0f);
-		// Rotate the ball to face new direction
-		ball->rotateToNewForward(dir);
-
-		isShooting = true;
-		currentCooldownShoot = cooldownShoot;
-		currentMagazine--;
-	}
-}
-
-void Character::reload()
-{
-	decending = true;
-	isReloading = true;
 }
 
 void Character::fixCollisions()
