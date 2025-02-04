@@ -35,31 +35,45 @@ private:
 	bool debugMovement = false;
 
 	// Max
-	const float maxFowardSpeed = 4000.0f;
-	const float maxNegatFowardSpeed = maxFowardSpeed / 2;
 	const float maxUpSpeed = maxNegatFowardSpeed;
 	const float maxStrafeSpeed = 3000.0f;
 	const float maxMouseSpeed = 500;
 	const float sensitiveRota = Maths::twoPi;
 
-	// Steps
+	// UI
+	vector<SpriteComponent*> UISpeed;
+
+	// ===== Forward =====
+	// Forward - Init
+	float forwardSpeed = 0.0f;
+	bool readyToMoveBack = false;
+
+	// Forward - Max
+	const float maxFowardSpeed = 4000.0f;
+	const float maxNegatFowardSpeed = maxFowardSpeed / 2;
+
+	// Forward - Steps
 	const float stepForwardSpeed = 40.0f;
 	const float stepForwardBreak = stepForwardSpeed * 1.25f;
 	const float stepNegateForwardSpeed = stepForwardSpeed / 2;
 
+	// Forward - Exp
 	const float initWExpStepForward = stepForwardSpeed * 1.25f;
-	const float initWExpNegStepForward = 0;
 	const float initSExpStepForward = stepForwardBreak * 2.5f;
 	const float initSExpNegStepForward = 0;
 	float currentExpStepForward = initWExpStepForward;
 
-	float forwardSpeed = 0.0f;
-	
-	bool readyToMoveBack = false;
-	//float forwardDelay = 5 * 60.0f;
 
-	vector<SpriteComponent*> UISpeed;
+	// ===== Strafe =====
+	// Strafe - Init
+	float strafeSpeed = 0.0f;
+	bool canReturn = false;
+
+	// Strafe - Steps
+	const float stepStrafeSpeed = 30.0f;
 	
+	
+
 	// Ammo
 	int magazineMax = 15;
 	int currentMagazine = 0;
