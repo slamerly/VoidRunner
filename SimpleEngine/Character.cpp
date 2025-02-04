@@ -57,7 +57,6 @@ Character::~Character()
 void Character::actorInput(const struct InputState& inputState)
 {
 	//std::cout << getPosition().x << ", " << getPosition().y << std::endl;
-	float upSpeed = 0.0f;
 	float angularSpeed = 0.0f;
 	int uiSpeedIndex = 0;
 
@@ -145,18 +144,16 @@ void Character::actorInput(const struct InputState& inputState)
 		}
 	}
 
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
-	{
-		//std::cout << "ready To Move Back" << std::endl;
-		readyToMoveBack = true;
-	}	
-
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
 	{
 		//std::cout << "not Ready To Move Back" << std::endl;
 		readyToMoveBack = false;
 	}
 
+
+	// =======================================================================================================
+	//											MOVE BACK
+	// =======================================================================================================
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Pressed)
 	{
 		if (forwardSpeed > 0)
@@ -164,10 +161,7 @@ void Character::actorInput(const struct InputState& inputState)
 		else
 			currentExpStepForward = initSExpNegStepForward;
 	}
-
-	// =======================================================================================================
-	//											MOVE BACK
-	// =======================================================================================================
+	
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
 		if (debugMovement)
@@ -232,16 +226,74 @@ void Character::actorInput(const struct InputState& inputState)
 		}
 	}
 
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
+	{
+		//std::cout << "ready To Move Back" << std::endl;
+		readyToMoveBack = true;
+	}
+
+
+	// =======================================================================================================
+	//											STRAFE UP
+	// =======================================================================================================
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::Pressed)
+	{
+		canStabilized = false;
+	}
+
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
 	{
 		if (debugMovement)
-			upSpeed += maxUpSpeed;
+			strafeUpSpeed += maxUpSpeed;
+		else
+		{
+			if (strafeUpSpeed < maxUpSpeed)
+			{
+				if (strafeUpSpeed < 0)
+					strafeUpSpeed += stepStrafeUpSpeed * 2;
+				else
+					strafeUpSpeed += stepStrafeUpSpeed;
+			}
+		}
 	}
+
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::Released
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::None)
+	{
+		canStabilized = true;
+	}
+
+
+	// =======================================================================================================
+	//											STRAFE DOWN
+	// =======================================================================================================
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::Pressed)
+	{
+		canStabilized = false;
+	}
+
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_LCTRL))
 	{
 		if (debugMovement)
-			upSpeed -= maxUpSpeed;
+			strafeUpSpeed -= maxUpSpeed;
+		else
+		{
+			if (strafeUpSpeed > -maxUpSpeed)
+			{
+				if (strafeUpSpeed > 0)
+					strafeUpSpeed -= stepStrafeUpSpeed * 2;
+				else
+					strafeUpSpeed -= stepStrafeUpSpeed;
+			}
+		}
 	}
+
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::Released
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::None)
+	{
+		canStabilized = true;
+	}
+
 
 	// =======================================================================================================
 	//											STRAFE RIGHT
@@ -256,15 +308,15 @@ void Character::actorInput(const struct InputState& inputState)
 		if (cameraComponent->getFPScam())
 		{
 			if (debugMovement)
-				strafeSpeed += maxStrafeSpeed;
+				strafeRightSpeed += maxStrafeRightSpeed;
 			else
 			{
-				if (strafeSpeed < maxStrafeSpeed)
+				if (strafeRightSpeed < maxStrafeRightSpeed)
 				{
-					if(strafeSpeed < 0)
-						strafeSpeed += stepStrafeSpeed * 2;
+					if(strafeRightSpeed < 0)
+						strafeRightSpeed += stepStrafeRightSpeed * 2;
 					else
-						strafeSpeed += stepStrafeSpeed;
+						strafeRightSpeed += stepStrafeRightSpeed;
 				}
 			}
 		}
@@ -272,7 +324,8 @@ void Character::actorInput(const struct InputState& inputState)
 			angularSpeed += sensitiveRota;
 	}
 
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::Released)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::Released
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::None)
 	{
 		canReturn = true;
 	}
@@ -290,15 +343,15 @@ void Character::actorInput(const struct InputState& inputState)
 		if (cameraComponent->getFPScam())
 		{
 			if (debugMovement)
-				strafeSpeed -= maxStrafeSpeed;
+				strafeRightSpeed -= maxStrafeRightSpeed;
 			else
 			{
-				if (strafeSpeed > -maxStrafeSpeed)
+				if (strafeRightSpeed > -maxStrafeRightSpeed)
 				{
-					if (strafeSpeed > 0)
-						strafeSpeed -= stepStrafeSpeed * 2;
+					if (strafeRightSpeed > 0)
+						strafeRightSpeed -= stepStrafeRightSpeed * 2;
 					else
-						strafeSpeed -= stepStrafeSpeed;
+						strafeRightSpeed -= stepStrafeRightSpeed;
 				}
 			}
 		}
@@ -306,7 +359,8 @@ void Character::actorInput(const struct InputState& inputState)
 			angularSpeed -= sensitiveRota;
 	}
 
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::Released)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::Released
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::None)
 	{
 		canReturn = true;
 	}
@@ -316,7 +370,8 @@ void Character::actorInput(const struct InputState& inputState)
 	// =================================================================
 	
 	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
-	//std::cout << "Current Strafe speed: " << strafeSpeed << std::endl;
+	//std::cout << "Current Strafe Right speed: " << strafeRightSpeed << std::endl;
+	//std::cout << "Current Strafe Up speed: " << strafeUpSpeed << std::endl;
 
 	// Camera shake movement
 	/*
@@ -332,9 +387,9 @@ void Character::actorInput(const struct InputState& inputState)
 	*/
 	
 	moveComponent->setForwardSpeed(forwardSpeed);
-	moveComponent->setUpSpeed(upSpeed);
+	moveComponent->setUpSpeed(strafeUpSpeed);
 	moveComponent->setAngularSpeed(angularSpeed);
-	moveComponent->setStrafeSpeed(strafeSpeed);
+	moveComponent->setStrafeSpeed(strafeRightSpeed);
 
 	// FPS Camera
 	if (cameraComponent->getFPScam())
@@ -391,19 +446,37 @@ void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
 
+	// Stabilized right movement
 	if (canReturn)
 	{
-		if (strafeSpeed > 0)
+		if (strafeRightSpeed > 0)
 		{
-			strafeSpeed -= stepStrafeSpeed;
-			if (strafeSpeed < 0)
-				strafeSpeed = 0;
+			strafeRightSpeed -= stepStrafeRightSpeed;
+			if (strafeRightSpeed < 0)
+				strafeRightSpeed = 0;
 		}
-		if (strafeSpeed < 0)
+		if (strafeRightSpeed < 0)
 		{
-			strafeSpeed += stepStrafeSpeed;
-			if (strafeSpeed > 0)
-				strafeSpeed = 0;
+			strafeRightSpeed += stepStrafeRightSpeed;
+			if (strafeRightSpeed > 0)
+				strafeRightSpeed = 0;
+		}
+	}
+
+	// Stabilized up movement
+	if (canStabilized)
+	{
+		if (strafeUpSpeed > 0)
+		{
+			strafeUpSpeed -= stepStrafeUpSpeed;
+			if (strafeUpSpeed < 0)
+				strafeUpSpeed = 0;
+		}
+		if (strafeUpSpeed < 0)
+		{
+			strafeUpSpeed += stepStrafeUpSpeed;
+			if (strafeUpSpeed > 0)
+				strafeUpSpeed = 0;
 		}
 	}
 
@@ -414,55 +487,6 @@ void Character::updateActor(float dt)
 	// Update position and rotation of model relatively to position
 	Vector3 modelPosition = getPosition();
 
-	// === Shoot Animation ===
-	/*
-	if (isShooting)
-	{
-		modelPosition += getForward() * (MODEL_OFFSET.x + currentCooldownShoot * 50);
-		if (currentCooldownShoot > 0)
-			currentCooldownShoot -= dt;
-		else
-			isShooting = false;
-	}
-	else
-	{
-		modelPosition += getForward() * MODEL_OFFSET.x;
-		
-	}
-	modelPosition += getRight() * MODEL_OFFSET.y;
-	modelPosition.z += MODEL_OFFSET.z;
-	//FPSModelRifle->setPosition(modelPosition);
-	Quaternion q = getRotation();
-
-	// === RELOADING ===
-	if (isReloading && !isShooting)
-	{
-		if (currentAngle < (cameraComponent->getPitch() + finalAngle) && decending)
-		{
-			currentAngle += dt;
-		}
-		else if (currentTimeReload < timeReload)
-		{
-			currentTimeReload += dt;
-			decending = false;
-		}
-		else if (currentAngle > cameraComponent->getPitch())
-		{
-			currentAngle -= dt;
-		}
-		else
-		{
-			currentAngle = 0.0f;
-			currentTimeReload = 0.0f;
-			currentMagazine = magazineMax;
-			isReloading = false;
-		}
-	}
-
-	//q = Quaternion::concatenate(q, Quaternion(getRight(), cameraComponent->getPitch() + currentAngle));
-
-	//FPSModelRifle->setRotation(q);
-	*/
 	fixCollisions();
 }
 

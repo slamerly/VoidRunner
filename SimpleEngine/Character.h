@@ -31,8 +31,6 @@ private:
 	bool debugMovement = false;
 
 	// Max
-	const float maxUpSpeed = maxNegatFowardSpeed;
-	const float maxStrafeSpeed = 3000.0f;
 	const float maxMouseSpeed = 500;
 	const float sensitiveRota = Maths::twoPi;
 
@@ -60,13 +58,28 @@ private:
 	float currentExpStepForward = initWExpStepForward;
 
 
-	// ===== Strafe =====
-	// Strafe - Init
-	float strafeSpeed = 0.0f;
+	// ===== Strafe Right =====
+	// Strafe Right - Init
+	float strafeRightSpeed = 0.0f;
 	bool canReturn = false;
 
-	// Strafe - Steps
-	const float stepStrafeSpeed = 30.0f;
+	// Strafe Right - Max
+	const float maxStrafeRightSpeed = 3000.0f;
+
+	// Strafe Right - Steps
+	const float stepStrafeRightSpeed = 30.0f;
+
+
+	// ===== Strafe Up =====
+	// Strafe Up - Init
+	float strafeUpSpeed = 0.0f;
+	bool canStabilized = false;
+
+	// Strafe Up - Max
+	const float maxUpSpeed = maxNegatFowardSpeed;
+
+	// Strafe Right - Steps
+	const float stepStrafeUpSpeed = 50.0f;
 };
 
 const Vector3 MODEL_OFFSET = Vector3(20.0f, 30.0f, 10.0f);
