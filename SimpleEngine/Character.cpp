@@ -68,10 +68,19 @@ void Character::actorInput(const struct InputState& inputState)
 	float upSpeed = 0.0f;
 	float angularSpeed = 0.0f;
 	float strafeSpeed = 0.0f;
+	int uiSpeedIndex = 0;
 
 	// ==================================================
 	//					  MOVEMENTS
 	// ==================================================
+
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Pressed)
+	{
+		if (forwardSpeed >= 0)
+			currentExpStepForward = initExpStepForward;
+		else
+			currentExpStepForward = initExpNegStepForward;
+	}
 
 	// FORWARD
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
@@ -80,34 +89,78 @@ void Character::actorInput(const struct InputState& inputState)
 			forwardSpeed += maxFowardSpeed;
 		else
 		{
+			currentExpStepForward++;
 			if (!readyToMoveBack && forwardSpeed < maxFowardSpeed)
 			{
+				readyToMoveBack = false;
+				if (exp(currentExpStepForward / stepForwardSpeed) > stepForwardSpeed)
+				{
+					forwardSpeed += stepForwardSpeed;
+				}
+				else
+				{
+					std::cout << currentExpStepForward << std::endl;
+					forwardSpeed += exp(currentExpStepForward / stepForwardSpeed);
+				}
+				
+				if (forwardSpeed > maxFowardSpeed)
+				{
+					forwardSpeed = maxFowardSpeed;
+				}
+
 				// UI
 				if (forwardSpeed > 0)
 				{
-					//float view = forwardSpeed % 
+					uiSpeedIndex = ((forwardSpeed / maxFowardSpeed) * 10);
+					if(uiSpeedIndex < 10)
+					UISpeed[5 + uiSpeedIndex]->setVisible(true);
 				}
-
-				readyToMoveBack = false;
-				forwardSpeed += stepForwardSpeed;
 			}
+
+			if (forwardSpeed == 0)
+			{
+				UISpeed[4]->setVisible(false);
+			}
+
 			if (readyToMoveBack && forwardSpeed < 0)
 			{
-				forwardSpeed += stepNegateForwardSpeed;
+				//Before change to exp
+				//forwardSpeed += stepNegateForwardSpeed;
+
+				if (exp(currentExpStepForward / stepNegateForwardSpeed) > stepNegateForwardSpeed)
+				{
+					forwardSpeed += stepNegateForwardSpeed;
+				}
+				else
+				{
+					std::cout << currentExpStepForward << std::endl;
+					forwardSpeed += exp(currentExpStepForward / stepNegateForwardSpeed);
+				}
+
+				if (forwardSpeed > 0)
+				{
+					forwardSpeed = 0;
+				}
+
+				// UI
+				uiSpeedIndex = ((((forwardSpeed * -1) / maxNegatFowardSpeed) * 10) / 2) + 1;
+				if (4 - uiSpeedIndex >= 0)
+					UISpeed[4 - uiSpeedIndex]->setVisible(false);
 			}
 		}
-		UISpeed[4]->setVisible(false);
-		UISpeed[5]->setVisible(true);
 	}
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
 	{
-		std::cout << "ready To Move Back" << std::endl;
+		//std::cout << "ready To Move Back" << std::endl;
 		readyToMoveBack = true;
 	}
+
+	
+
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
 	{
-		std::cout << "not Ready To Move Back" << std::endl;
+		//std::cout << "not Ready To Move Back" << std::endl;
 		readyToMoveBack = false;
 	}
 
@@ -121,15 +174,37 @@ void Character::actorInput(const struct InputState& inputState)
 			if (!readyToMoveBack && forwardSpeed > 0)
 			{
 				forwardSpeed -= stepForwardSpeed;
+				if (forwardSpeed < 0)
+				{
+					forwardSpeed = 0;
+				}
+
+				// UI
+				uiSpeedIndex = ((forwardSpeed / maxFowardSpeed) * 10) + 1;
+				if (uiSpeedIndex < 10)
+					UISpeed[5 + uiSpeedIndex]->setVisible(false);
 			}
+
+			if (forwardSpeed == 0)
+			{
+				// UI
+				UISpeed[5]->setVisible(false);
+			}
+
 			if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
 			{
 				readyToMoveBack = true;
 				forwardSpeed -= stepNegateForwardSpeed;
+
+				// UI
+				if (forwardSpeed < 0)
+				{
+					uiSpeedIndex = (((forwardSpeed * -1) / maxNegatFowardSpeed) * 10) / 2;
+					if (4 - uiSpeedIndex >= 0)
+						UISpeed[4 - uiSpeedIndex]->setVisible(true);
+				}
 			}
 		}
-		UISpeed[5]->setVisible(false);
-		UISpeed[4]->setVisible(true);
 	}
 
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))

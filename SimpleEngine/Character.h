@@ -43,8 +43,12 @@ private:
 	const float sensitiveRota = Maths::twoPi;
 
 	// Steps
-	const float stepForwardSpeed = 50.0f;
+	const float stepForwardSpeed = 40.0f;
 	const float stepNegateForwardSpeed = stepForwardSpeed / 2;
+
+	float initExpStepForward = stepForwardSpeed * 1.25f;
+	float initExpNegStepForward = 0;
+	float currentExpStepForward = initExpStepForward;
 
 	float forwardSpeed = 0.0f;
 	

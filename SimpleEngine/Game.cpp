@@ -170,11 +170,13 @@ void Game::load()
 	// ===================================================================================
 	//									Stations
 	// ===================================================================================
+	/*
 	Station* station = new Station(1);
 	station->setPosition(Vector3(beginAsteroidField.x - 10000, 0, 0));
 	stations.push_back(station);
+	*/
 
-	station = new Station(2);
+	Station* station = new Station(2);
 	station->setPosition(Vector3(endAsteroidField.x + 10000, 0, 0));
 	stations.push_back(station);
 }
