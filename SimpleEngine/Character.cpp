@@ -77,12 +77,13 @@ void Character::actorInput(const struct InputState& inputState)
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Pressed)
 	{
 		if (forwardSpeed >= 0)
-			currentExpStepForward = initExpStepForward;
+			currentExpStepForward = initWExpStepForward;
 		else
-			currentExpStepForward = initExpNegStepForward;
+			currentExpStepForward = initWExpNegStepForward;
 	}
-
-	// FORWARD
+	// =======================================================================================================
+	//												FORWARD
+	// =======================================================================================================
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
 	{
 		if (debugMovement)
@@ -99,7 +100,7 @@ void Character::actorInput(const struct InputState& inputState)
 				}
 				else
 				{
-					std::cout << currentExpStepForward << std::endl;
+					//std::cout << currentExpStepForward << std::endl;
 					forwardSpeed += exp(currentExpStepForward / stepForwardSpeed);
 				}
 				
@@ -154,9 +155,7 @@ void Character::actorInput(const struct InputState& inputState)
 	{
 		//std::cout << "ready To Move Back" << std::endl;
 		readyToMoveBack = true;
-	}
-
-	
+	}	
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
 	{
@@ -164,16 +163,45 @@ void Character::actorInput(const struct InputState& inputState)
 		readyToMoveBack = false;
 	}
 
-	// MOVE BACK
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Pressed)
+	{
+		if (forwardSpeed > 0)
+			currentExpStepForward = initSExpStepForward;
+		else
+			currentExpStepForward = initSExpNegStepForward;
+	}
+
+	// =======================================================================================================
+	//											MOVE BACK
+	// =======================================================================================================
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
 		if (debugMovement)
 			forwardSpeed -= maxNegatFowardSpeed;
 		else
 		{
+			currentExpStepForward++;
 			if (!readyToMoveBack && forwardSpeed > 0)
 			{
+				//Before change to exp
+				/*
 				forwardSpeed -= stepForwardSpeed;
+				if (forwardSpeed < 0)
+				{
+					forwardSpeed = 0;
+				}
+				*/
+
+				if (exp(currentExpStepForward / stepForwardBreak) > stepForwardBreak)
+				{
+					forwardSpeed -= stepForwardBreak;
+				}
+				else
+				{
+					std::cout << currentExpStepForward << std::endl;
+					forwardSpeed -= exp(currentExpStepForward / stepForwardBreak);
+				}
+
 				if (forwardSpeed < 0)
 				{
 					forwardSpeed = 0;
@@ -194,7 +222,24 @@ void Character::actorInput(const struct InputState& inputState)
 			if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
 			{
 				readyToMoveBack = true;
-				forwardSpeed -= stepNegateForwardSpeed;
+				//Before change to exp
+				//forwardSpeed -= stepNegateForwardSpeed;
+
+				if (exp(currentExpStepForward / stepNegateForwardSpeed) > stepNegateForwardSpeed)
+				{
+					forwardSpeed -= stepNegateForwardSpeed;
+				}
+				else
+				{
+					std::cout << currentExpStepForward << std::endl;
+					forwardSpeed -= exp(currentExpStepForward / stepNegateForwardSpeed);
+				}
+
+				if (forwardSpeed < -maxNegatFowardSpeed)
+				{
+					forwardSpeed = -maxNegatFowardSpeed;
+				}
+
 
 				// UI
 				if (forwardSpeed < 0)

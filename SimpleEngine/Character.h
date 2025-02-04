@@ -44,11 +44,14 @@ private:
 
 	// Steps
 	const float stepForwardSpeed = 40.0f;
+	const float stepForwardBreak = stepForwardSpeed * 1.25f;
 	const float stepNegateForwardSpeed = stepForwardSpeed / 2;
 
-	float initExpStepForward = stepForwardSpeed * 1.25f;
-	float initExpNegStepForward = 0;
-	float currentExpStepForward = initExpStepForward;
+	const float initWExpStepForward = stepForwardSpeed * 1.25f;
+	const float initWExpNegStepForward = 0;
+	const float initSExpStepForward = stepForwardBreak * 2.5f;
+	const float initSExpNegStepForward = 0;
+	float currentExpStepForward = initWExpStepForward;
 
 	float forwardSpeed = 0.0f;
 	
