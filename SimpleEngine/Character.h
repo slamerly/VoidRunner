@@ -36,6 +36,9 @@ private:
 
 	// UI
 	vector<SpriteComponent*> UISpeed;
+	int uiSpeedIndexForward = 0;
+	int uiSpeedIndexRight = 0;
+	int uiSpeedIndexUp = 0;
 
 	// ===== Forward =====
 	// Forward - Init
