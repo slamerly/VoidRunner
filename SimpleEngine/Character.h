@@ -35,7 +35,9 @@ private:
 	const float sensitiveRota = Maths::twoPi;
 
 	// UI
-	vector<SpriteComponent*> UISpeed;
+	vector<SpriteComponent*> UIForwardSpeed;
+	vector<SpriteComponent*> UIRightSpeed;
+	vector<SpriteComponent*> UIUpSpeed;
 	int uiSpeedIndexForward = 0;
 	int uiSpeedIndexRight = 0;
 	int uiSpeedIndexUp = 0;

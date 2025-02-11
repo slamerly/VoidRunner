@@ -41,12 +41,42 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 		SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("Speed"));
 		sc->setVisible(false);
 
-		UISpeed.push_back(sc);
+		UIForwardSpeed.push_back(sc);
+	}
+
+	for (int i = 0; i < 20; i++)
+	{
+		Actor* ui = new Actor();
+		ui->setPosition(Vector3(900.0f, -342.0f + i * step, 0.0f));
+		SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("SpeedUp"));
+		sc->setVisible(false);
+
+		UIUpSpeed.push_back(sc);
+	}
+
+	for (int i = 0; i < 20; i++)
+	{
+		Actor* ui = new Actor();
+		ui->setPosition(Vector3(-342.0f + i * step, -475.0f, 0.0f));
+		ui->setAngle(Vector3::unitZ, Maths::toRadians(90.0));
+		SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("SpeedRight"));
+		sc->setVisible(false);
+
+		UIRightSpeed.push_back(sc);
 	}
 
 	Actor* ui = new Actor();
 	ui->setPosition(Vector3(-900.0f, 0.0f, 0.0f));
 	SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("Spread"));
+
+	ui = new Actor();
+	ui->setPosition(Vector3(900.0f, 0.0f, 0.0f));
+	sc = new SpriteComponent(ui, Assets::getTexture("Spread"));
+
+	ui = new Actor();
+	ui->setPosition(Vector3(0.0f, -475.0f, 0.0f));
+	ui->setAngle(Vector3::unitZ, Maths::toRadians(90.0));
+	sc = new SpriteComponent(ui, Assets::getTexture("Spread"));
 }
 
 Character::~Character()
@@ -106,14 +136,14 @@ void Character::actorInput(const struct InputState& inputState)
 				{
 					uiSpeedIndex = ((forwardSpeed / maxFowardSpeed) * 10);
 					if(uiSpeedIndex < 10)
-						UISpeed[5 + uiSpeedIndex]->setVisible(true);
+						UIForwardSpeed[5 + uiSpeedIndex]->setVisible(true);
 				}
 			}
 
 			// ===== When stop and holding the key =====
 			if (forwardSpeed == 0)
 			{
-				UISpeed[4]->setVisible(false);
+				UIForwardSpeed[4]->setVisible(false);
 			}
 
 			// ===== Decelerate Move Back =====
@@ -137,7 +167,7 @@ void Character::actorInput(const struct InputState& inputState)
 				// UI
 				uiSpeedIndex = ((((forwardSpeed * -1) / maxNegatFowardSpeed) * 10) / 2) + 1;
 				if (4 - uiSpeedIndex >= 0)
-					UISpeed[4 - uiSpeedIndex]->setVisible(false);
+					UIForwardSpeed[4 - uiSpeedIndex]->setVisible(false);
 			}
 		}
 	}
@@ -184,14 +214,14 @@ void Character::actorInput(const struct InputState& inputState)
 
 				// UI
 				uiSpeedIndex = ((forwardSpeed / maxFowardSpeed) * 10) + 1;
-				if (uiSpeedIndex < 10 && canStabilized && canReturn)
-					UISpeed[5 + uiSpeedIndex]->setVisible(false);
+				if (uiSpeedIndex < 10)
+					UIForwardSpeed[5 + uiSpeedIndex]->setVisible(false);
 			}
 
 			if (forwardSpeed == 0)
 			{
 				// UI
-				UISpeed[5]->setVisible(false);
+				UIForwardSpeed[5]->setVisible(false);
 			}
 
 			if (readyToMoveBack && forwardSpeed > -maxNegatFowardSpeed)
@@ -217,7 +247,7 @@ void Character::actorInput(const struct InputState& inputState)
 				{
 					uiSpeedIndex = (((forwardSpeed * -1) / maxNegatFowardSpeed) * 10) / 2;
 					if (4 - uiSpeedIndex >= 0)
-						UISpeed[4 - uiSpeedIndex]->setVisible(true);
+						UIForwardSpeed[4 - uiSpeedIndex]->setVisible(true);
 				}
 			}
 		}
@@ -251,17 +281,14 @@ void Character::actorInput(const struct InputState& inputState)
 					strafeUpSpeed += stepStrafeUpSpeed;
 
 				// UI
-				uiSpeedIndex = ((abs(strafeUpSpeed) / maxFowardSpeed) * 10);
-				if (uiSpeedIndex < 10)
+				if (uiSpeedIndexUp >= 0 && uiSpeedIndexUp < 10)
 				{
-					UISpeed[5 + uiSpeedIndex]->setVisible(true);
-					if (abs(forwardSpeed) < strafeUpSpeed && abs(strafeRightSpeed) < strafeUpSpeed)
-					{
-						for (int i = 6 + uiSpeedIndex; i < UISpeed.size(); i++)
-						{
-							UISpeed[i]->setVisible(false);
-						}
-					}
+					UIUpSpeed[10 + uiSpeedIndexUp]->setVisible(true);
+				}
+				if (uiSpeedIndexUp < 0 && uiSpeedIndexUp > -9)
+				{
+					UIUpSpeed[10 + uiSpeedIndexUp]->setVisible(false);
+					UIUpSpeed[9 + uiSpeedIndexUp]->setVisible(false);
 				}
 			}
 		}
@@ -296,17 +323,13 @@ void Character::actorInput(const struct InputState& inputState)
 					strafeUpSpeed -= stepStrafeUpSpeed;
 
 				// UI
-				uiSpeedIndex = ((abs(strafeUpSpeed) / maxFowardSpeed) * 10);
-				if (uiSpeedIndex < 10)
+				if (uiSpeedIndexUp >= 0 && uiSpeedIndexUp < 10)
 				{
-					UISpeed[5 + uiSpeedIndex]->setVisible(true);
-					if (abs(forwardSpeed) < strafeUpSpeed && abs(strafeRightSpeed) < strafeUpSpeed)
-					{
-						for (int i = 6 + uiSpeedIndex; i < UISpeed.size(); i++)
-						{
-							UISpeed[i]->setVisible(false);
-						}
-					}
+					UIUpSpeed[10 + uiSpeedIndexUp]->setVisible(false);
+				}
+				if (uiSpeedIndexUp < 0 && uiSpeedIndexUp > -10)
+				{
+					UIUpSpeed[10 + uiSpeedIndexUp]->setVisible(true);
 				}
 			}
 		}
@@ -344,17 +367,14 @@ void Character::actorInput(const struct InputState& inputState)
 				}
 
 				// UI
-				uiSpeedIndex = ((abs(strafeRightSpeed) / maxFowardSpeed) * 10);
-				if (uiSpeedIndex < 10)
+				if (uiSpeedIndexRight >= 0 && uiSpeedIndexRight < 10)
 				{
-					UISpeed[5 + uiSpeedIndex]->setVisible(true);
-					if (abs(forwardSpeed) < strafeRightSpeed && abs(strafeUpSpeed) < strafeRightSpeed)
-					{
-						for (int i = 6 + uiSpeedIndex; i < UISpeed.size(); i++)
-						{
-							UISpeed[i]->setVisible(false);
-						}
-					}
+					UIRightSpeed[10 + uiSpeedIndexRight]->setVisible(true);
+				}
+				if (uiSpeedIndexRight < 0 && uiSpeedIndexRight > -9)
+				{
+					UIRightSpeed[10 + uiSpeedIndexRight]->setVisible(false);
+					UIRightSpeed[9 + uiSpeedIndexRight]->setVisible(false);
 				}
 			}
 		}
@@ -393,17 +413,13 @@ void Character::actorInput(const struct InputState& inputState)
 				}
 
 				// UI
-				uiSpeedIndex = ((abs(strafeRightSpeed) / maxFowardSpeed) * 10);
-				if (uiSpeedIndex < 10)
+				if (uiSpeedIndexRight >= 0 && uiSpeedIndexRight < 10)
 				{
-					UISpeed[5 + uiSpeedIndex]->setVisible(true);
-					if (abs(forwardSpeed) < strafeRightSpeed && abs(strafeUpSpeed) < strafeRightSpeed)
-					{
-						for (int i = 6 + uiSpeedIndex; i < UISpeed.size(); i++)
-						{
-							UISpeed[i]->setVisible(false);
-						}
-					}
+					UIRightSpeed[10 + uiSpeedIndexRight]->setVisible(false);
+				}
+				if (uiSpeedIndexRight < 0 && uiSpeedIndexRight > -10)
+				{
+					UIRightSpeed[10 + uiSpeedIndexRight]->setVisible(true);
 				}
 			}
 		}
@@ -423,7 +439,7 @@ void Character::actorInput(const struct InputState& inputState)
 	
 	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
 	//std::cout << "Current Strafe Right speed: " << strafeRightSpeed << std::endl;
-	std::cout << "Current Strafe Up speed: " << strafeUpSpeed << std::endl;
+	//std::cout << "Current Strafe Up speed: " << strafeUpSpeed << std::endl;
 
 	// Camera shake movement
 	/*
@@ -498,78 +514,81 @@ void Character::updateActor(float dt)
 {
 	Actor::updateActor(dt);
 
+	if (strafeUpSpeed > 0)
+		uiSpeedIndexUp = (strafeUpSpeed / maxUpSpeed) * 10;
+	else if (strafeUpSpeed < 0)
+		uiSpeedIndexUp = floor((strafeUpSpeed / maxUpSpeed) * 10);
+	else
+		uiSpeedIndexUp = 0;
+
+	if (strafeRightSpeed > 0)
+		uiSpeedIndexRight = (strafeRightSpeed / maxStrafeRightSpeed) * 10;
+	else if (strafeRightSpeed < 0)
+		uiSpeedIndexRight = floor((strafeRightSpeed / maxStrafeRightSpeed) * 10);
+	else
+		uiSpeedIndexRight = 0;
+	
 	// Stabilized up movement
 	if (canStabilized)
 	{
-		int uiSpeedIndex = 0;
 		if (strafeUpSpeed > 0)
 		{
 			strafeUpSpeed -= stepStrafeUpSpeed;
+
+			if (uiSpeedIndexUp < 10)
+				UIUpSpeed[10 + uiSpeedIndexUp]->setVisible(false);
+
 			if (strafeUpSpeed < 0)
 				strafeUpSpeed = 0;
-
-			uiSpeedIndex = ((strafeUpSpeed / maxFowardSpeed) * 10) + 1;
 		}
 		if (strafeUpSpeed < 0)
 		{
 			strafeUpSpeed += stepStrafeUpSpeed;
+
+			if (uiSpeedIndexUp > -10)
+				UIUpSpeed[9 + uiSpeedIndexUp]->setVisible(false);
+
 			if (strafeUpSpeed > 0)
 				strafeUpSpeed = 0;
-
-			uiSpeedIndex = ((-strafeUpSpeed / maxFowardSpeed) * 10) + 1;
 		}
 
-		uiSpeedIndexForward = ((abs(forwardSpeed) / maxFowardSpeed) * 10);
-		uiSpeedIndexRight = ((abs(strafeRightSpeed) / maxFowardSpeed) * 10);
-
-		// UI
-		if (uiSpeedIndex < 10 && uiSpeedIndex > uiSpeedIndexForward && uiSpeedIndex > uiSpeedIndexRight)
+		if (strafeUpSpeed == 0)
 		{
-			UISpeed[5 + uiSpeedIndex]->setVisible(false);
-		}
-		if (uiSpeedIndex == 0 && forwardSpeed == 0 && strafeRightSpeed == 0)
-		{
-			UISpeed[5]->setVisible(false);
-			canStabilized = false;
+			UIUpSpeed[10]->setVisible(false);
+			UIUpSpeed[9]->setVisible(false);
 		}
 	}
 
 	// Stabilized right movement
 	if (canReturn)
 	{
-		int uiSpeedIndex = 0;
 		if (strafeRightSpeed > 0)
 		{
 			strafeRightSpeed -= stepStrafeRightSpeed;
+
+			if (uiSpeedIndexRight < 10)
+				UIRightSpeed[10 + uiSpeedIndexRight]->setVisible(false);
+
 			if (strafeRightSpeed < 0)
 				strafeRightSpeed = 0;
-
-			uiSpeedIndex = ((strafeRightSpeed / maxFowardSpeed) * 10) + 1;
 		}
 		if (strafeRightSpeed < 0)
 		{
 			strafeRightSpeed += stepStrafeRightSpeed;
+
+			if (uiSpeedIndexRight > -10)
+				UIRightSpeed[9 + uiSpeedIndexRight]->setVisible(false);
+
 			if (strafeRightSpeed > 0)
 				strafeRightSpeed = 0;
-
-			uiSpeedIndex = ((-strafeRightSpeed / maxFowardSpeed) * 10) + 1;
 		}
 
-		uiSpeedIndexForward = ((abs(forwardSpeed) / maxFowardSpeed) * 10);
-		uiSpeedIndexUp = ((abs(strafeUpSpeed) / maxFowardSpeed) * 10);
-
-		// UI
-		if (uiSpeedIndex < 10 && uiSpeedIndex > uiSpeedIndexForward && uiSpeedIndex > uiSpeedIndexUp)
+		if (strafeRightSpeed == 0)
 		{
-			UISpeed[5 + uiSpeedIndex]->setVisible(false);
-		}
-		if (uiSpeedIndex == 0 && forwardSpeed == 0 && strafeUpSpeed == 0)
-		{
-			UISpeed[5]->setVisible(false);
-			canReturn = false;
+			UIRightSpeed[10]->setVisible(false);
+			UIRightSpeed[9]->setVisible(false);
 		}
 	}
-
 
 	//sphereX->setPosition(getPosition() + getForward() * 300);
 	//sphereY->setPosition(getPosition() + getForward() * 300 + getRight() * 100);
