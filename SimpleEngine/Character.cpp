@@ -388,6 +388,7 @@ void Character::actorInput(const struct InputState& inputState)
 		canReturn = true;
 	}
 
+
 	// =======================================================================================================
 	//											STRAFE LEFT
 	// =======================================================================================================
@@ -433,6 +434,7 @@ void Character::actorInput(const struct InputState& inputState)
 		canReturn = true;
 	}
 
+
 	// =================================================================
 	//						Display
 	// =================================================================
@@ -456,7 +458,6 @@ void Character::actorInput(const struct InputState& inputState)
 	
 	moveComponent->setForwardSpeed(forwardSpeed);
 	moveComponent->setUpSpeed(strafeUpSpeed);
-	moveComponent->setAngularSpeed(angularSpeed);
 	moveComponent->setStrafeSpeed(strafeRightSpeed);
 
 	// FPS Camera
@@ -466,9 +467,11 @@ void Character::actorInput(const struct InputState& inputState)
 		float x = mousePosition.x;
 		float y = mousePosition.y;
 
-		
-		const float maxAngularSpeed = Maths::pi * 8;
 
+		// =======================================================================================================
+		//												YAW
+		// =======================================================================================================
+		const float maxAngularSpeed = Maths::pi * 8;
 		float angularSpeed = 0.0f;
 		if (x != 0)
 		{
@@ -477,10 +480,18 @@ void Character::actorInput(const struct InputState& inputState)
 				angularSpeed = x / maxMouseSpeed;
 				angularSpeed *= maxAngularSpeed;
 			}
+			else
+			{
+				angularSpeed = x / maxMouseSpeed;
+				angularSpeed *= maxAngularSpeed;
+			}
 		}
 		moveComponent->setAngularSpeed(angularSpeed);
 		
-		// PITCH
+
+		// =======================================================================================================
+		//												PITCH
+		// =======================================================================================================
 		const float maxPitchSpeed = Maths::pi * 8;
 		float pitchSpeed = 0.0f;
 		if (y != 0)
@@ -490,10 +501,18 @@ void Character::actorInput(const struct InputState& inputState)
 				pitchSpeed = y / maxMouseSpeed;
 				pitchSpeed *= maxPitchSpeed;
 			}
+			else
+			{
+				pitchSpeed = y / maxMouseSpeed;
+				pitchSpeed *= maxPitchSpeed;
+			}
 		}
 		moveComponent->setPitchSpeed(pitchSpeed);
 
-		// Roll
+
+		// =======================================================================================================
+		//												ROLL
+		// =======================================================================================================
 		if (inputState.keyboard.getKeyState(SDL_SCANCODE_Q) == ButtonState::Pressed 
 			|| inputState.keyboard.getKeyState(SDL_SCANCODE_E) == ButtonState::Pressed)
 		{
@@ -506,7 +525,7 @@ void Character::actorInput(const struct InputState& inputState)
 				rollSpeed += sensitiveRota / 2;
 			else
 			{
-				currentExpStepRoll += 0.075f;
+				currentExpStepRoll += stepRollSpeed;
 				rollSpeed += (exp(currentExpStepRoll / maxRollSpeed) / 100);
 				if (rollSpeed > maxRollSpeed)
 				{
@@ -520,7 +539,7 @@ void Character::actorInput(const struct InputState& inputState)
 				rollSpeed -= sensitiveRota / 2;
 			else
 			{
-				currentExpStepRoll += 0.075f;
+				currentExpStepRoll += stepRollSpeed;
 				rollSpeed -= (exp(currentExpStepRoll / maxRollSpeed) / 100);
 				if (rollSpeed < -maxRollSpeed)
 				{
@@ -535,8 +554,8 @@ void Character::actorInput(const struct InputState& inputState)
 			rollReleased = true;
 		}
 
+		//std::cout << "Current Yaw speed: " << angularSpeed << std::endl;
 		//std::cout << "Current Roll speed: " << rollSpeed << std::endl;
-		
 	}
 }
 
@@ -617,6 +636,24 @@ void Character::updateActor(float dt)
 		{
 			UIRightSpeed[10]->setVisible(false);
 			UIRightSpeed[9]->setVisible(false);
+		}
+	}
+
+	if (rollReleased)
+	{
+		if (rollSpeed > 0)
+		{
+			rollSpeed -= stepRollSpeed;
+
+			if (rollSpeed < 0)
+				rollSpeed = 0;
+		}
+		if (rollSpeed < 0)
+		{
+			rollSpeed += stepRollSpeed;
+
+			if (rollSpeed > 0)
+				rollSpeed = 0;
 		}
 	}
 

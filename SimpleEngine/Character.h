@@ -86,6 +86,7 @@ private:
 	// Strafe Right - Steps
 	const float stepStrafeUpSpeed = 50.0f;
 
+
 	// ===== Roll =====
 	// Roll - Init
 	float rollSpeed = 0.0f;
@@ -94,8 +95,8 @@ private:
 	// Roll - Max
 	const float maxRollSpeed = sensitiveRota / 2;
 
-	// Forward - Steps
-	const float stepRollSpeed = 1.f;
+	// Roll - Steps
+	const float stepRollSpeed = .075f;
 
 	// Roll - Exp
 	float currentExpStepRoll = 0.0f;
