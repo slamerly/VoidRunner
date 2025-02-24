@@ -85,6 +85,21 @@ private:
 
 	// Strafe Right - Steps
 	const float stepStrafeUpSpeed = 50.0f;
+
+	// ===== Roll =====
+	// Roll - Init
+	float rollSpeed = 0.0f;
+	bool rollReleased = false;
+
+	// Roll - Max
+	const float maxRollSpeed = sensitiveRota / 2;
+
+	// Forward - Steps
+	const float stepRollSpeed = 1.f;
+
+	// Roll - Exp
+	float currentExpStepRoll = 0.0f;
+	const float initExpStepRoll = stepRollSpeed * 1.25f;
 };
 
 const Vector3 MODEL_OFFSET = Vector3(20.0f, 30.0f, 10.0f);

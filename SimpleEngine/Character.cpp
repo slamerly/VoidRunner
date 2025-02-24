@@ -494,18 +494,48 @@ void Character::actorInput(const struct InputState& inputState)
 		moveComponent->setPitchSpeed(pitchSpeed);
 
 		// Roll
-		float rollSpeed = 0.0f;
+		if (inputState.keyboard.getKeyState(SDL_SCANCODE_Q) == ButtonState::Pressed 
+			|| inputState.keyboard.getKeyState(SDL_SCANCODE_E) == ButtonState::Pressed)
+		{
+			currentExpStepRoll = 0;
+			rollReleased = false;
+		}
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
 		{
 			if (debugMovement)
 				rollSpeed += sensitiveRota / 2;
+			else
+			{
+				currentExpStepRoll += 0.075f;
+				rollSpeed += (exp(currentExpStepRoll / maxRollSpeed) / 100);
+				if (rollSpeed > maxRollSpeed)
+				{
+					rollSpeed = maxRollSpeed;
+				}
+			}
 		}
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
 		{
 			if (debugMovement)
 				rollSpeed -= sensitiveRota / 2;
+			else
+			{
+				currentExpStepRoll += 0.075f;
+				rollSpeed -= (exp(currentExpStepRoll / maxRollSpeed) / 100);
+				if (rollSpeed < -maxRollSpeed)
+				{
+					rollSpeed = -maxRollSpeed;
+				}
+			}
 		}
 		moveComponent->setRollSpeed(rollSpeed);
+		if (inputState.keyboard.getKeyState(SDL_SCANCODE_Q) == ButtonState::Released
+			|| inputState.keyboard.getKeyState(SDL_SCANCODE_E) == ButtonState::Released)
+		{
+			rollReleased = true;
+		}
+
+		//std::cout << "Current Roll speed: " << rollSpeed << std::endl;
 		
 	}
 }
