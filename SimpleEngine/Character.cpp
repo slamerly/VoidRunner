@@ -467,14 +467,15 @@ void Character::actorInput(const struct InputState& inputState)
 		float x = mousePosition.x;
 		float y = mousePosition.y;
 
+		//std::cout << "Position: " << mousePosition.x << ", " << mousePosition.y << std::endl;
 
 		// =======================================================================================================
 		//												YAW
 		// =======================================================================================================
-		const float maxAngularSpeed = Maths::pi * 8;
-		float angularSpeed = 0.0f;
 		if (x != 0)
 		{
+			currentPowerAngularSpeed += 0.05f;
+
 			if (debugMovement)
 			{
 				angularSpeed = x / maxMouseSpeed;
@@ -483,8 +484,20 @@ void Character::actorInput(const struct InputState& inputState)
 			else
 			{
 				angularSpeed = x / maxMouseSpeed;
-				angularSpeed *= maxAngularSpeed;
+				
+				if (stepAngularSpeed * currentPowerAngularSpeed < maxAngularSpeed)
+				{
+					angularSpeed *= stepAngularSpeed * currentPowerAngularSpeed;
+				}
+				else
+				{
+					angularSpeed *= maxAngularSpeed;
+				}
 			}
+		}
+		else
+		{
+			currentPowerAngularSpeed = 0;
 		}
 		moveComponent->setAngularSpeed(angularSpeed);
 		
@@ -492,10 +505,10 @@ void Character::actorInput(const struct InputState& inputState)
 		// =======================================================================================================
 		//												PITCH
 		// =======================================================================================================
-		const float maxPitchSpeed = Maths::pi * 8;
-		float pitchSpeed = 0.0f;
 		if (y != 0)
 		{
+			currentPowerPitchSpeed += 0.05f;
+
 			if (debugMovement)
 			{
 				pitchSpeed = y / maxMouseSpeed;
@@ -504,8 +517,19 @@ void Character::actorInput(const struct InputState& inputState)
 			else
 			{
 				pitchSpeed = y / maxMouseSpeed;
-				pitchSpeed *= maxPitchSpeed;
+				if (stepPitchSpeed * currentPowerPitchSpeed < maxPitchSpeed)
+				{
+					pitchSpeed *= stepPitchSpeed * currentPowerPitchSpeed;
+				}
+				else
+				{
+					pitchSpeed *= maxAngularSpeed;
+				}
 			}
+		}
+		else
+		{
+			currentPowerPitchSpeed = 0;
 		}
 		moveComponent->setPitchSpeed(pitchSpeed);
 

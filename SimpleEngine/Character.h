@@ -87,6 +87,30 @@ private:
 	const float stepStrafeUpSpeed = 50.0f;
 
 
+	// ===== Yaw =====
+	// Yaw - Init
+	float angularSpeed = 0.0f;
+	float currentPowerAngularSpeed = 0.0f;
+
+	// Yaw - Max
+	const float maxAngularSpeed = Maths::pi * 8;
+
+	// Yaw - Max
+	const float stepAngularSpeed = Maths::pi;
+
+
+	// ===== Pitch =====
+	// Pitch - Init
+	float pitchSpeed = 0.0f;
+	float currentPowerPitchSpeed = 0.0f;
+
+	// Pitch - Max
+	const float maxPitchSpeed = Maths::pi * 8;
+
+	// Pitch - Max
+	const float stepPitchSpeed = Maths::pi;
+
+
 	// ===== Roll =====
 	// Roll - Init
 	float rollSpeed = 0.0f;
