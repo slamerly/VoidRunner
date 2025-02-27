@@ -136,6 +136,14 @@ void Game::load()
 	chara = new Character();
 
 	// ===== Enemies =====
+	TargetPoint* point = new TargetPoint();
+	point->setPosition(Vector3(50000, 25000, 0));
+	targetPoints.push_back(point);
+
+	point = new TargetPoint();
+	point->setPosition(Vector3(50000, -25000, 0));
+	targetPoints.push_back(point);
+
 	/*
 	Enemy* t = new Enemy();
 	const float start = -2500.0f;
@@ -159,8 +167,10 @@ void Game::load()
 	beginAsteroidField = Vector3(5000, -50000, -50000);
 	endAsteroidField = Vector3(100000, 50000, 50000);
 
-	generateAsteroidField(9, 81, 721);
-	
+	//**************************************************************************************
+	//generateAsteroidField(9, 81, 721);
+	//**************************************************************************************
+
 	/*
 	Asteroid* ast;
 	ast = new Asteroid(AsteroidSize::SMALL);
@@ -172,13 +182,11 @@ void Game::load()
 	// ===================================================================================
 	//									Stations
 	// ===================================================================================
-	/*
 	Station* station = new Station(1);
 	station->setPosition(Vector3(beginAsteroidField.x - 10000, 0, 0));
 	stations.push_back(station);
-	*/
 
-	Station* station = new Station(2);
+	station = new Station(2);
 	station->setPosition(Vector3(endAsteroidField.x + 10000, 0, 0));
 	stations.push_back(station);
 }

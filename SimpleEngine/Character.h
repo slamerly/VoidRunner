@@ -21,14 +21,15 @@ private:
 	class BoxCollisionComponent* boxComponent;
 
 	// Test
-	SphereActor* sphereX;
-	SphereActor* sphereY;
+	//SphereActor* sphereX;
+	//SphereActor* sphereY;
 
 	//=======================================================
 	//						Movements
 	//=======================================================
 	// Debug
-	bool debugMovement = false;
+	bool debugMovement = true;
+	float debugPower = 10.f;
 
 	// Max
 	const float maxMouseSpeed = 500;
@@ -48,8 +49,8 @@ private:
 	bool readyToMoveBack = false;
 
 	// Forward - Max
-	const float maxFowardSpeed = 4000.0f;
-	const float maxNegatFowardSpeed = maxFowardSpeed / 2;
+	float maxFowardSpeed = 4000.0f;
+	float maxNegatFowardSpeed = maxFowardSpeed / 2;
 
 	// Forward - Steps
 	const float stepForwardSpeed = 40.0f;
@@ -69,7 +70,7 @@ private:
 	bool canReturn = false;
 
 	// Strafe Right - Max
-	const float maxStrafeRightSpeed = 3000.0f;
+	float maxStrafeRightSpeed = 3000.0f;
 
 	// Strafe Right - Steps
 	const float stepStrafeRightSpeed = 30.0f;
@@ -81,7 +82,7 @@ private:
 	bool canStabilized = false;
 
 	// Strafe Up - Max
-	const float maxUpSpeed = maxNegatFowardSpeed;
+	float maxUpSpeed = maxNegatFowardSpeed;
 
 	// Strafe Right - Steps
 	const float stepStrafeUpSpeed = 50.0f;

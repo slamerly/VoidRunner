@@ -178,6 +178,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Station.cpp" />
     <ClCompile Include="Subject.cpp" />
+    <ClCompile Include="TargetPoint.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UIScreen.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Station.h" />
     <ClInclude Include="Subject.h" />
+    <ClInclude Include="TargetPoint.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UIScreen.h" />

@@ -193,6 +193,7 @@
     <ClCompile Include="Station.cpp">
       <Filter>GameSpecific</Filter>
     </ClCompile>
+    <ClCompile Include="TargetPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -366,6 +367,7 @@
     <ClInclude Include="Station.h">
       <Filter>GameSpecific</Filter>
     </ClInclude>
+    <ClInclude Include="TargetPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\Shaders\Sprite.frag">

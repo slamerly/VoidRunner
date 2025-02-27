@@ -23,6 +23,13 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 	sphereY->setScale(1.0f);
 	sphereY->getMeshComponent()->setTextureIndex(4);
 	*/
+	if (debugMovement)
+	{
+		maxFowardSpeed *= debugPower;
+		maxNegatFowardSpeed *= debugPower;
+		maxStrafeRightSpeed *= debugPower;
+		maxUpSpeed *= debugPower;
+	}
 
 	boxComponent = new BoxCollisionComponent(this);
 	AABB collision(Vector3(-25.0f, -25.0f, -87.5f), Vector3(25.0f, 25.0f, 87.5f));
@@ -33,7 +40,7 @@ Character::Character() : Actor(), moveComponent(nullptr), cameraComponent(nullpt
 
 	float step = 36.0f;
 
-	// UI
+	// ===== UI =====
 	for (int i = 0; i < 15; i++)
 	{
 		Actor* ui = new Actor();
@@ -87,8 +94,14 @@ Character::~Character()
 void Character::actorInput(const struct InputState& inputState)
 {
 	//std::cout << getPosition().x << ", " << getPosition().y << std::endl;
-	float angularSpeed = 0.0f;
 	int uiSpeedIndex = 0;
+
+	if (debugMovement)
+	{
+		forwardSpeed = 0;
+		strafeUpSpeed = 0;
+		strafeRightSpeed = 0;
+	}
 
 	// ==================================================
 	//					  MOVEMENTS
@@ -96,7 +109,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//												FORWARD
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Pressed && !debugMovement)
 	{
 		if (forwardSpeed >= 0)
 			currentExpStepForward = initWExpStepForward;
@@ -107,7 +120,9 @@ void Character::actorInput(const struct InputState& inputState)
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W))
 	{
 		if (debugMovement)
+		{
 			forwardSpeed += maxFowardSpeed;
+		}
 		else
 		{
 			currentExpStepForward++;
@@ -172,7 +187,7 @@ void Character::actorInput(const struct InputState& inputState)
 		}
 	}
 
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_W) == ButtonState::Released && forwardSpeed == 0 && !debugMovement)
 	{
 		readyToMoveBack = false;
 	}
@@ -181,7 +196,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//											MOVE BACK
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Pressed && !debugMovement)
 	{
 		if (forwardSpeed > 0)
 			currentExpStepForward = initSExpStepForward;
@@ -192,7 +207,9 @@ void Character::actorInput(const struct InputState& inputState)
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_S))
 	{
 		if (debugMovement)
+		{
 			forwardSpeed -= maxNegatFowardSpeed;
+		}
 		else
 		{
 			currentExpStepForward++;
@@ -253,7 +270,7 @@ void Character::actorInput(const struct InputState& inputState)
 		}
 	}
 
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_S) == ButtonState::Released && forwardSpeed == 0 && !debugMovement)
 	{
 		readyToMoveBack = true;
 	}
@@ -262,7 +279,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//											STRAFE UP
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::Pressed && !debugMovement)
 	{
 		canStabilized = false;
 	}
@@ -270,7 +287,9 @@ void Character::actorInput(const struct InputState& inputState)
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_SPACE))
 	{
 		if (debugMovement)
+		{
 			strafeUpSpeed += maxUpSpeed;
+		}
 		else
 		{
 			if (strafeUpSpeed < maxUpSpeed)
@@ -295,7 +314,8 @@ void Character::actorInput(const struct InputState& inputState)
 	}
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::Released
-		&& inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::None)
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::None
+		&& !debugMovement)
 	{
 		canStabilized = true;
 	}
@@ -304,7 +324,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//											STRAFE DOWN
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::Pressed && !debugMovement)
 	{
 		canStabilized = false;
 	}
@@ -312,7 +332,9 @@ void Character::actorInput(const struct InputState& inputState)
 	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_LCTRL))
 	{
 		if (debugMovement)
+		{
 			strafeUpSpeed -= maxUpSpeed;
+		}
 		else
 		{
 			if (strafeUpSpeed > -maxUpSpeed)
@@ -336,7 +358,8 @@ void Character::actorInput(const struct InputState& inputState)
 	}
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_LCTRL) == ButtonState::Released
-		&& inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::None)
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_SPACE) == ButtonState::None
+		&& !debugMovement)
 	{
 		canStabilized = true;
 	}
@@ -345,7 +368,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//											STRAFE RIGHT
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::Pressed && !debugMovement)
 	{
 		canReturn = false;
 	}
@@ -355,7 +378,9 @@ void Character::actorInput(const struct InputState& inputState)
 		if (cameraComponent->getFPScam())
 		{
 			if (debugMovement)
+			{
 				strafeRightSpeed += maxStrafeRightSpeed;
+			}
 			else
 			{
 				if (strafeRightSpeed < maxStrafeRightSpeed)
@@ -383,7 +408,8 @@ void Character::actorInput(const struct InputState& inputState)
 	}
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::Released
-		&& inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::None)
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::None
+		&& !debugMovement)
 	{
 		canReturn = true;
 	}
@@ -392,7 +418,7 @@ void Character::actorInput(const struct InputState& inputState)
 	// =======================================================================================================
 	//											STRAFE LEFT
 	// =======================================================================================================
-	if (inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::Pressed)
+	if (inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::Pressed && !debugMovement)
 	{
 		canReturn = false;
 	}
@@ -402,7 +428,9 @@ void Character::actorInput(const struct InputState& inputState)
 		if (cameraComponent->getFPScam())
 		{
 			if (debugMovement)
+			{
 				strafeRightSpeed -= maxStrafeRightSpeed;
+			}
 			else
 			{
 				if (strafeRightSpeed > -maxStrafeRightSpeed)
@@ -429,32 +457,11 @@ void Character::actorInput(const struct InputState& inputState)
 	}
 
 	if (inputState.keyboard.getKeyState(SDL_SCANCODE_A) == ButtonState::Released
-		&& inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::None)
+		&& inputState.keyboard.getKeyState(SDL_SCANCODE_D) == ButtonState::None
+		&& !debugMovement)
 	{
 		canReturn = true;
 	}
-
-
-	// =================================================================
-	//						Display
-	// =================================================================
-	
-	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
-	//std::cout << "Current Strafe Right speed: " << strafeRightSpeed << std::endl;
-	//std::cout << "Current Strafe Up speed: " << strafeUpSpeed << std::endl;
-
-	// Camera shake movement
-	/*
-	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W) ||
-		inputState.keyboard.getKeyValue(SDL_SCANCODE_S) ||
-		inputState.keyboard.getKeyValue(SDL_SCANCODE_A) ||
-		inputState.keyboard.getKeyValue(SDL_SCANCODE_D))
-	{
-		cameraComponent->setShakeSpeed(0.18f);
-	}
-	else
-		cameraComponent->setShakeSpeed(0.09f);
-	*/
 	
 	moveComponent->setForwardSpeed(forwardSpeed);
 	moveComponent->setUpSpeed(strafeUpSpeed);
@@ -466,6 +473,13 @@ void Character::actorInput(const struct InputState& inputState)
 		Vector2 mousePosition = inputState.mouse.getPosition();
 		float x = mousePosition.x;
 		float y = mousePosition.y;
+
+		if (debugMovement)
+		{
+			angularSpeed = 0;
+			pitchSpeed = 0;
+			rollSpeed = 0;
+		}
 
 		//std::cout << "Position: " << mousePosition.x << ", " << mousePosition.y << std::endl;
 
@@ -546,7 +560,9 @@ void Character::actorInput(const struct InputState& inputState)
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_Q))
 		{
 			if (debugMovement)
+			{
 				rollSpeed += sensitiveRota / 2;
+			}
 			else
 			{
 				currentExpStepRoll += stepRollSpeed;
@@ -560,7 +576,9 @@ void Character::actorInput(const struct InputState& inputState)
 		if (inputState.keyboard.getKeyValue(SDL_SCANCODE_E))
 		{
 			if (debugMovement)
+			{
 				rollSpeed -= sensitiveRota / 2;
+			}
 			else
 			{
 				currentExpStepRoll += stepRollSpeed;
@@ -577,10 +595,30 @@ void Character::actorInput(const struct InputState& inputState)
 		{
 			rollReleased = true;
 		}
-
-		//std::cout << "Current Yaw speed: " << angularSpeed << std::endl;
-		//std::cout << "Current Roll speed: " << rollSpeed << std::endl;
 	}
+
+	// =================================================================
+	//						Display
+	// =================================================================
+
+	//std::cout << "Current Forward speed: " << forwardSpeed << std::endl;
+	//std::cout << "Current Strafe Right speed: " << strafeRightSpeed << std::endl;
+	//std::cout << "Current Strafe Up speed: " << strafeUpSpeed << std::endl;
+	//std::cout << "Current Yaw speed: " << angularSpeed << std::endl;
+	//std::cout << "Current Roll speed: " << rollSpeed << std::endl;
+
+	// Camera shake movement
+	/*
+	if (inputState.keyboard.getKeyValue(SDL_SCANCODE_W) ||
+		inputState.keyboard.getKeyValue(SDL_SCANCODE_S) ||
+		inputState.keyboard.getKeyValue(SDL_SCANCODE_A) ||
+		inputState.keyboard.getKeyValue(SDL_SCANCODE_D))
+	{
+		cameraComponent->setShakeSpeed(0.18f);
+	}
+	else
+		cameraComponent->setShakeSpeed(0.09f);
+	*/
 }
 
 void Character::updateActor(float dt)
@@ -602,7 +640,7 @@ void Character::updateActor(float dt)
 		uiSpeedIndexRight = 0;
 	
 	// Stabilized up movement
-	if (canStabilized)
+	if (canStabilized && !debugMovement)
 	{
 		if (strafeUpSpeed > 0)
 		{
@@ -633,7 +671,7 @@ void Character::updateActor(float dt)
 	}
 
 	// Stabilized right movement
-	if (canReturn)
+	if (canReturn && !debugMovement)
 	{
 		if (strafeRightSpeed > 0)
 		{
@@ -663,7 +701,7 @@ void Character::updateActor(float dt)
 		}
 	}
 
-	if (rollReleased)
+	if (rollReleased && !debugMovement)
 	{
 		if (rollSpeed > 0)
 		{

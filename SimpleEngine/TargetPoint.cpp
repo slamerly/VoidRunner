@@ -1,0 +1,14 @@
+#include "TargetPoint.h"
+#include "Assets.h"
+
+TargetPoint::TargetPoint()
+{
+	sphere = new SphereActor();
+	sphere->setScale(100.0f);
+	sphere->getMeshComponent()->setTextureIndex(3);
+	sphere->setPosition(this->getPosition());
+}
+
+TargetPoint::~TargetPoint()
+{
+}
