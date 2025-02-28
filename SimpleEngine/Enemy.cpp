@@ -12,7 +12,7 @@ Enemy::Enemy()
 
 	mc = new MeshComponent(this);
 	//mc->setMesh(Assets::getMesh("Mesh_Lemon"));
-	mc->setMesh(Assets::getMesh("Destroyer_01"));
+	mc->setMesh(Assets::getMesh("Corvette"));
 
 	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
 	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());

@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/Corvette_03.bmp"
+		"Corvette_03"
 	],
 	"specularPower":100.0,
 	"vertices":[

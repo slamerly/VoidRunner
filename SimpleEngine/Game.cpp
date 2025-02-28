@@ -43,7 +43,7 @@ void Game::load()
 	Assets::loadTexture(renderer, "Res\\Textures\\NoCol.png", "NoCol");
 	Assets::loadTexture(renderer, "Res\\Textures\\PlayerBall.png", "PlayerBall");
 	Assets::loadTexture(renderer, "Res\\Textures\\EnemyBall.png", "EnemyBall");
-	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Destroyer_01");
+	Assets::loadTexture(renderer, "Res\\Textures\\Destroyer_01.png", "Corvette_03");
 	Assets::loadTexture(renderer, "Res\\Textures\\Rock.png", "Rock");
 	Assets::loadTexture(renderer, "Res\\Textures\\station01_diffuse.png", "station01");
 	Assets::loadTexture(renderer, "Res\\Textures\\station03_base_diffuse.png", "station03_base");
@@ -75,6 +75,7 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\station03_base.gpmesh", "Station03_Base");
 	Assets::loadMesh("Res\\Meshes\\station03_dock.gpmesh", "Station03_Dock");
 	Assets::loadMesh("Res\\Meshes\\station03_ring.gpmesh", "Station03_Ring");
+	Assets::loadMesh("Res\\Meshes\\Corvette_03.gpmesh", "Corvette");
 
 	// Font
 	Assets::loadFont("Res\\Fonts\\SPACE.ttf", "Space");
@@ -138,17 +139,18 @@ void Game::load()
 	// ===== Enemies =====
 	TargetPoint* point = new TargetPoint();
 	point->setPosition(Vector3(50000, 25000, 0));
+	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
 	point->setPosition(Vector3(50000, -25000, 0));
+	point->setNewLocation();
 	targetPoints.push_back(point);
 
-	/*
+
 	Enemy* t = new Enemy();
-	const float start = -2500.0f;
-	t->setPosition(Vector3(10000, 0, 0.0f));
-	*/
+	//const float start = -2500.0f;
+	t->setPosition(Vector3(50000, 0, 0));
 
 	// ===== Asteroids =====
 	// DEBUG FIELD

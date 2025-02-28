@@ -9,6 +9,8 @@ public:
     TargetPoint();
     ~TargetPoint();
 
+    void setNewLocation();
+
 private:
     SphereActor* sphere;
 

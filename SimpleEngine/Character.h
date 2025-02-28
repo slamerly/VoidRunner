@@ -29,7 +29,7 @@ private:
 	//=======================================================
 	// Debug
 	bool debugMovement = true;
-	float debugPower = 10.f;
+	float debugPower = 5.f;
 
 	// Max
 	const float maxMouseSpeed = 500;

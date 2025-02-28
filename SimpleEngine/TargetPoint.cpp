@@ -12,3 +12,8 @@ TargetPoint::TargetPoint()
 TargetPoint::~TargetPoint()
 {
 }
+
+void TargetPoint::setNewLocation()
+{
+	sphere->setPosition(this->getPosition());
+}
