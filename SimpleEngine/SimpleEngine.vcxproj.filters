@@ -35,6 +35,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{fa184b9d-cb1f-4ba1-ae2f-edfeb27ad388}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FMS">
+      <UniqueIdentifier>{5feb72a1-c87b-4fe0-a6b6-90cdc0660d67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="TargetPoint.cpp">
       <Filter>GameSpecific</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>FMS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +377,12 @@
     </ClInclude>
     <ClInclude Include="TargetPoint.h">
       <Filter>GameSpecific</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>FMS</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>FMS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

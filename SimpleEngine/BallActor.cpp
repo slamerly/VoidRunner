@@ -35,6 +35,4 @@ void BallActor::setPlayer(Actor* player)
 
 void BallActor::hitTarget(Enemy* target)
 {
-	target->setLife(dmg);
-	std::cout << "Enemy life:" << target->getLife() << std::endl;
 }

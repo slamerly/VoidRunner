@@ -3,6 +3,7 @@
 #include "SphereActor.h"
 #include "PhysicsSystem.h"
 #include "MeshComponent.h"
+#include "StateMachine.h"
 
 class Enemy : public Actor
 {
@@ -10,10 +11,10 @@ public:
 	Enemy();
 	~Enemy();
 
-	float getLife() { return life; }
-	void setLife(int dm);
-
 	void updateActor(float dt) override;
+
+	bool isLeader() { return learder; }
+	void setIsLeader(bool isLeader);
 
 private:
 	SphereActor* sphere;
@@ -34,6 +35,11 @@ private:
 	int sens = 0;
 	bool sensChoiced = false;
 
+	// State Machine
+	StateMachine* stateM;
+
+	bool learder = false;
+
 	// Detection system
 	bool detection();
 	Actor* actorDetected = nullptr;
@@ -50,22 +56,6 @@ private:
 	bool isdodging = false;
 	Vector3 saveDir;
 	void dodge(float distBA);
-
-	// Fight
-	bool fighting = false;
-	void fight(float distR, float distL, float distM);
-	void shoot(PhysicsSystem::CollisionInfo targetInfo);
-	const float cooldownShoot = 1.f;
-	float currentCooldownShoot = 0.0f;
-
-	// Life
-	float life = 30;
-	bool takingDamage = false;
-	const float timeSlow = 0.25f;
-	float currentTimeSlow = .0f;
-	float saveSpeedTurn = 0;
-	float saveSpeed = 0;
-	bool isDead = false;
 
 	// Animation
 	bool topHeight = false;

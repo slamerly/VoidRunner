@@ -176,6 +176,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SphereActor.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Station.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TargetPoint.cpp" />
@@ -236,6 +237,8 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SphereActor.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Station.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TargetPoint.h" />
