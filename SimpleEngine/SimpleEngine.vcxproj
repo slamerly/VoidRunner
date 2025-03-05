@@ -176,7 +176,10 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SphereActor.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="StateChasePlayer.cpp" />
+    <ClCompile Include="StateDodgeObject.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="StateMoveToTargetPoint.cpp" />
     <ClCompile Include="Station.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TargetPoint.cpp" />
@@ -238,7 +241,10 @@
     <ClInclude Include="SphereActor.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="StateChasePlayer.h" />
+    <ClInclude Include="StateDodgeObject.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="StateMoveToTargetPoint.h" />
     <ClInclude Include="Station.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TargetPoint.h" />

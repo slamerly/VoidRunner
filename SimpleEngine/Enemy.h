@@ -4,6 +4,7 @@
 #include "PhysicsSystem.h"
 #include "MeshComponent.h"
 #include "StateMachine.h"
+#include "StateMoveToTargetPoint.h"
 
 class Enemy : public Actor
 {
@@ -35,8 +36,9 @@ private:
 	int sens = 0;
 	bool sensChoiced = false;
 
-	// State Machine
+	// ===== State Machine =====
 	StateMachine* stateM;
+	StateMoveToTargetPoint* stateMoveTarget;
 
 	bool learder = false;
 

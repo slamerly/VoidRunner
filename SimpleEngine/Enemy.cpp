@@ -16,7 +16,10 @@ Enemy::Enemy()
 	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
 	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
 
+	// State Machine
 	stateM = new StateMachine();
+	stateMoveTarget = new StateMoveToTargetPoint();
+	stateM->changeState(this, stateMoveTarget);
 
 	// ===== DEBUG =====
 	/*

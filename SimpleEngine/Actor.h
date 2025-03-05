@@ -50,6 +50,7 @@ public:
 	virtual void updateActor(float dt);
 	void addComponent(Component* component);
 	void removeComponent(Component* component);
+	vector<Component*> getActorComponents() { return components; }
 
 	// Specific
 	const Vector3 getScaleV3() const { return scaleV3; }

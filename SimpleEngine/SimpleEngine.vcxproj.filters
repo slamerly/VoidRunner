@@ -38,6 +38,12 @@
     <Filter Include="FMS">
       <UniqueIdentifier>{5feb72a1-c87b-4fe0-a6b6-90cdc0660d67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameSpecific\Actors">
+      <UniqueIdentifier>{57b7ad4b-f995-44b5-8c00-4a40bf87c621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSpecific\States">
+      <UniqueIdentifier>{dba288f7-b26e-4920-96d8-accbba793f89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -112,9 +118,6 @@
     <ClCompile Include="Vector3.cpp">
       <Filter>Maths</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -166,12 +169,6 @@
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="BallActor.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
     <ClCompile Include="BallMoveComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -190,17 +187,35 @@
     <ClCompile Include="DialogBox.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Asteroid.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
-    <ClCompile Include="Station.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
-    <ClCompile Include="TargetPoint.cpp">
-      <Filter>GameSpecific</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>FMS</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="BallActor.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Station.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetPoint.cpp">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="StateChasePlayer.cpp">
+      <Filter>GameSpecific\States</Filter>
+    </ClCompile>
+    <ClCompile Include="StateDodgeObject.cpp">
+      <Filter>GameSpecific\States</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMoveToTargetPoint.cpp">
+      <Filter>GameSpecific\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,9 +300,6 @@
     <ClInclude Include="DirectionalLight.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -342,12 +354,6 @@
     <ClInclude Include="PhysicsSystem.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="BallActor.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
     <ClInclude Include="BallMoveComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -369,20 +375,38 @@
     <ClInclude Include="Button.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Asteroid.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
-    <ClInclude Include="Station.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetPoint.h">
-      <Filter>GameSpecific</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>FMS</Filter>
     </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>FMS</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="BallActor.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Station.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetPoint.h">
+      <Filter>GameSpecific\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="StateChasePlayer.h">
+      <Filter>GameSpecific\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StateDodgeObject.h">
+      <Filter>GameSpecific\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMoveToTargetPoint.h">
+      <Filter>GameSpecific\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
