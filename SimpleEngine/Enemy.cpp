@@ -53,6 +53,7 @@ Enemy::~Enemy()
 
 void Enemy::updateActor(float dt)
 {
+	/*
 	Vector3 start = getPosition() + getForward() * 100.0f;
 	Vector3 dir = getForward();
 	Vector3 end = start + dir * segmentLength;
@@ -86,6 +87,7 @@ void Enemy::updateActor(float dt)
 		}
 		//sphere->setPosition(info.point);
 	}
+	*/
 
 	// --- Debug ---
 	/*
@@ -153,7 +155,7 @@ bool Enemy::newDirection()
 {
 	//const float segmentLength = 1000.0f;
 	//Vector3 dirD = getForward();
-
+	/*
 	Vector3 startR = getPosition() + getRight() * 100.0f;
 	Vector3 endR = startR + getRight() * 390.0f  + getForward() * segmentLength;
 	Vector3 startL = getPosition() + getRight() * -1.f * 100.0f;
@@ -201,10 +203,13 @@ bool Enemy::newDirection()
 	}
 
 	return Rclear && Lclear;
+	*/
+	return true;
 }
 
 bool Enemy::detection()
 {
+	/*
 	distMtBMax = dist3D(getPosition(), RBorder);
 	distBtBMax = dist3D(RBorder, LBorder);
 	float distance = INFINITY;
@@ -279,7 +284,7 @@ bool Enemy::detection()
 		}
 		dodge(infoDetect.distance);
 	}
-
+	*/
 	return false;
 }
 
@@ -289,7 +294,7 @@ void Enemy::animation(float dt)
 
 void Enemy::dodge(float distBA)
 {
-	if ((round(getForward().x * 100) >= round(-saveDir.x * 100 - 5)) && (round(getForward().x * 100) <= round(-saveDir.x * 100 + 5))
+	/*if ((round(getForward().x * 100) >= round(-saveDir.x * 100 - 5)) && (round(getForward().x * 100) <= round(-saveDir.x * 100 + 5))
 		&& (round(getForward().y * 100) >= round(-saveDir.y * 100 - 5)) && (round(getForward().y * 100) <= round(-saveDir.y * 100 + 5)))
 	{
 		moveComponent->setForwardSpeed(fowardSpeed);
@@ -301,14 +306,5 @@ void Enemy::dodge(float distBA)
 	{
 		moveComponent->setForwardSpeed(0);
 		moveComponent->setAngularSpeed(1.f);
-	}
-}
-
-float Enemy::dist3D(Vector3 start, Vector3 end)
-{
-	float dx = end.x - start.x;
-	float dy = end.y - start.y;
-	float dz = end.z - start.z;
-
-	return sqrt(dx * dx + dy * dy + dz * dz);
+	}*/
 }

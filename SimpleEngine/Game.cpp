@@ -66,7 +66,7 @@ void Game::load()
 	Assets::loadMesh("Res\\Meshes\\Plane.gpmesh", "Mesh_Plane");
 	Assets::loadMesh("Res\\Meshes\\Sphere.gpmesh", "Mesh_Sphere");
 	Assets::loadMesh("Res\\Meshes\\skyv2.gpmesh", "Mesh_SpaceSkybox");
-	Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
+	//Assets::loadMesh("Res\\Meshes\\Destroyer_01.gpmesh", "Destroyer_01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium01.gpmesh", "Rock_Medium01");
 	Assets::loadMesh("Res\\Meshes\\Rock_Medium02.gpmesh", "Rock_Medium02");
 	Assets::loadMesh("Res\\Meshes\\Rock_Small01.gpmesh", "Rock_Small01");

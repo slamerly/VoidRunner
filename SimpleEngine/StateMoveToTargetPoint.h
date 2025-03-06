@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "MoveComponent.h"
+#include "TargetPoint.h"
 
 class StateMoveToTargetPoint :
     public State
@@ -14,5 +15,32 @@ public:
 
 private:
     MoveComponent* mc;
+	int currentIndexTargetPoint = 0;
+
+	void distToTarget(Actor* bot);
+	bool closeToTarget = false;
+	float maxDistToDecelerate = 500.f;
+
+    //=======================================================
+    //						Movements
+    //=======================================================
+	// ===== Forward =====
+	// Forward - Init
+	float forwardSpeed = 0.0f;
+
+	// Forward - Max
+	float maxFowardSpeed = 4000.0f;
+	float maxNegatFowardSpeed = maxFowardSpeed / 2;
+
+	// Forward - Steps
+	const float stepForwardSpeed = 40.0f;
+	const float stepForwardBreak = stepForwardSpeed * 1.25f;
+	const float stepNegateForwardSpeed = stepForwardSpeed / 2;
+
+	// Forward - Exp
+	const float initWExpStepForward = stepForwardSpeed * 1.25f;
+	const float initSExpStepForward = stepForwardBreak * 2.5f;
+	const float initSExpNegStepForward = 0;
+	float currentExpStepForward = initWExpStepForward;
 };
 
