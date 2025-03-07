@@ -110,14 +110,6 @@ void Game::load()
 	// ==============================
 	//		UI elements
 	// ============================== 
-	/*Actor* ui = new Actor();
-	ui->setPosition(Vector3(-350.0f, -350.0f, 0.0f));
-	SpriteComponent* sc = new SpriteComponent(ui, Assets::getTexture("HealthBar"));
-
-	ui = new Actor();
-	ui->setPosition(Vector3(375.0f, -275.0f, 0.0f));
-	ui->setScale(0.75f);
-	sc = new SpriteComponent(ui, Assets::getTexture("Radar"));*/
 	Actor* crosshairActor = new Actor();
 	crosshairActor->setScale(2.0f);
 	SpriteComponent* scCrosshair = new SpriteComponent(crosshairActor, Assets::getTexture("Crosshair"));
@@ -151,6 +143,7 @@ void Game::load()
 	Enemy* t = new Enemy();
 	//const float start = -2500.0f;
 	t->setPosition(Vector3(50000, 0, 0));
+	t->setAngle(Vector3::unitZ, Maths::toRadians(-90));
 
 	// ===== Asteroids =====
 	// DEBUG FIELD
@@ -172,14 +165,6 @@ void Game::load()
 	//**************************************************************************************
 	//generateAsteroidField(9, 81, 721);
 	//**************************************************************************************
-
-	/*
-	Asteroid* ast;
-	ast = new Asteroid(AsteroidSize::SMALL);
-	ast->setPosition(Vector3(10000, 0, 0));
-	ast = new Asteroid(AsteroidSize::SMALL);
-	ast->setPosition(Vector3(10000, 1625, 0));
-	*/
 
 	// ===================================================================================
 	//									Stations

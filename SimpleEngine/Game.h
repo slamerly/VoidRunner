@@ -82,7 +82,7 @@ public:
 
 	bool rightDistance(Asteroid& origin, Asteroid& target);
 
-	vector<TargetPoint*> getTargetPoints() { return targetPoints; }
+	vector<Actor*> getTargetPoints() { return targetPoints; }
 
 private:
 	void processInput();
@@ -121,6 +121,6 @@ private:
 
 	vector<Station*> stations;
 
-	vector<TargetPoint*> targetPoints;
+	vector<Actor*> targetPoints;
 };
 

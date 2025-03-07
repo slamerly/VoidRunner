@@ -16,6 +16,7 @@ public:
 private:
     MoveComponent* mc;
 	int currentIndexTargetPoint = 0;
+	Actor* currentTarget = nullptr;
 
 	void distToTarget(Actor* bot);
 	bool closeToTarget = false;

@@ -6,6 +6,11 @@ StateMachine::StateMachine()
 	currentState = nullptr;
 }
 
+void StateMachine::addState(State* state)
+{
+	statePriorityMap.insert(std::pair<State*, int>(state, state->getPriority()));
+}
+
 void StateMachine::update(Actor* bot, float deltaTime)
 {
 	if (currentState)
@@ -16,18 +21,29 @@ void StateMachine::update(Actor* bot, float deltaTime)
 
 void StateMachine::changeState(Actor* bot, State* newState)
 {
-	if (currentState)
-	{
-		currentState->exit(bot);
-	}
+	int newStatePriority = 0;
 
-	if (newState)
-	{
-		currentState = newState;
-		currentState->enter(bot);
-	}
+	if (!statePriorityMap.empty())
+		newStatePriority = statePriorityMap.find(newState)->second;
 	else
+		std::cout << "statePriorityMap is empty" << std::endl;
+
+	if (newStatePriority >= currentStatePriority)
 	{
-		std::cout << "newState not valide." << std::endl;
+		if (currentState)
+		{
+			currentState->exit(bot);
+		}
+
+		if (newState)
+		{
+			currentState = newState;
+			currentStatePriority = newStatePriority;
+			currentState->enter(bot);
+		}
+		else
+		{
+			std::cout << "newState not valide." << std::endl;
+		}
 	}
 }

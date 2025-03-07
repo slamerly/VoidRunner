@@ -13,12 +13,14 @@ Enemy::Enemy()
 	mc = new MeshComponent(this);
 	mc->setMesh(Assets::getMesh("Corvette"));
 
+	moveComponent = new MoveComponent(this);
 	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
 	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());
 
 	// State Machine
 	stateM = new StateMachine();
 	stateMoveTarget = new StateMoveToTargetPoint();
+	stateM->addState(stateMoveTarget);
 	stateM->changeState(this, stateMoveTarget);
 
 	// ===== DEBUG =====
@@ -53,6 +55,7 @@ Enemy::~Enemy()
 
 void Enemy::updateActor(float dt)
 {
+	stateM->update(this, dt);
 	/*
 	Vector3 start = getPosition() + getForward() * 100.0f;
 	Vector3 dir = getForward();

@@ -19,6 +19,8 @@ void StateMoveToTargetPoint::enter(Actor* bot)
 
 	if (bot->getGame().getTargetPoints().empty())
 		std::cerr << "Game TargetPoints is empty." << std::endl;
+	else
+		currentTarget = bot->getGame().getTargetPoints()[0];
 }
 
 void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
@@ -46,7 +48,6 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 			}
 		}
 	}
-
 	mc->setForwardSpeed(forwardSpeed);
 }
 
@@ -57,18 +58,21 @@ void StateMoveToTargetPoint::exit(Actor* bot)
 
 int StateMoveToTargetPoint::getPriority()
 {
-	return 4;
+	return 1;
 }
 
 void StateMoveToTargetPoint::distToTarget(Actor* bot)
 {
-	bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition();
-	/*float dist = Vector3::distance(bot->getPosition(), currentTargetPoint->getPosition());
-	
-	std::cout << "Distance : " << dist << std::endl;
-
-	if (dist <= maxDistToDecelerate)
+	//bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition();
+	if (currentTarget)
 	{
-		closeToTarget = true;
-	}*/
+		float dist = Vector3::distance(bot->getPosition(), currentTarget->getPosition());
+
+		std::cout << "Distance : " << dist << std::endl;
+
+		if (dist <= maxDistToDecelerate)
+		{
+			closeToTarget = true;
+		}
+	}
 }

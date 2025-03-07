@@ -21,7 +21,7 @@ private:
 	SphereActor* sphere;
 	SphereActor* sphereR;
 	SphereActor* sphereL;
-	class MoveComponent* moveComponent;
+	MoveComponent* moveComponent;
 	MeshComponent* mc;
 
 	// voir aussi animation
@@ -69,8 +69,5 @@ private:
 	//PhysicsSystem::CollisionInfo infoR, infoL;
 	//bool segCastR = false;
 	//bool segCastL = false;
-
-
-	float dist3D(Vector3 start, Vector3 end);
 };
 
