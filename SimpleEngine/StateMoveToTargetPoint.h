@@ -20,7 +20,13 @@ private:
 
 	void distToTarget(Actor* bot);
 	bool closeToTarget = false;
-	float maxDistToDecelerate = 500.f;
+	float maxDistToDecelerate = 3500.f;
+	bool isArrived = false;
+
+	bool alligned = true;
+
+	void nextTargetPoint(Actor* bot);
+	bool nextTargetIsSelected = false;
 
     //=======================================================
     //						Movements

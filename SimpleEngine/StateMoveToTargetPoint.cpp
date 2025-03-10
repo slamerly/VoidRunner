@@ -15,8 +15,6 @@ void StateMoveToTargetPoint::enter(Actor* bot)
 		}
 	}
 
-	distToTarget(bot);
-
 	if (bot->getGame().getTargetPoints().empty())
 		std::cerr << "Game TargetPoints is empty." << std::endl;
 	else
@@ -25,30 +23,63 @@ void StateMoveToTargetPoint::enter(Actor* bot)
 
 void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 {
-	if(!closeToTarget)
+	if (!isArrived)
 	{
-		currentExpStepForward++;
-
-		// ===== Move Forward =====
-		if (forwardSpeed < maxFowardSpeed)
+		if (!closeToTarget)
 		{
-			if (exp(currentExpStepForward / stepForwardSpeed) > stepForwardSpeed)
-			{
-				forwardSpeed += stepForwardSpeed;
+			if(!alligned)
+			{ 
+				float te = Vector3::dot(bot->getPosition(), currentTarget->getPosition());
+				std::cout << te << std::endl;
 			}
 			else
 			{
-				//std::cout << currentExpStepForward << std::endl;
-				forwardSpeed += exp(currentExpStepForward / stepForwardSpeed);
-			}
+				currentExpStepForward++;
 
-			if (forwardSpeed > maxFowardSpeed)
-			{
-				forwardSpeed = maxFowardSpeed;
+				// ===== Move Forward =====
+				if (forwardSpeed < maxFowardSpeed)
+				{
+					if (exp(currentExpStepForward / stepForwardSpeed) > stepForwardSpeed)
+					{
+						forwardSpeed += stepForwardSpeed;
+					}
+					else
+					{
+						//std::cout << currentExpStepForward << std::endl;
+						forwardSpeed += exp(currentExpStepForward / stepForwardSpeed);
+					}
+
+					if (forwardSpeed > maxFowardSpeed)
+					{
+						forwardSpeed = maxFowardSpeed;
+					}
+				}
 			}
 		}
+		else
+		{
+			if (forwardSpeed > 0)
+			{
+				forwardSpeed -= stepForwardSpeed;
+			}
+			if (forwardSpeed <= 0)
+			{
+				forwardSpeed = 0;
+				currentExpStepForward = 0;
+				isArrived = true;
+			}
+		}
+		mc->setForwardSpeed(forwardSpeed);
+
+		distToTarget(bot);
 	}
-	mc->setForwardSpeed(forwardSpeed);
+	else
+	{
+		if (!nextTargetIsSelected)
+		{
+			nextTargetPoint(bot);
+		}
+	}
 }
 
 void StateMoveToTargetPoint::exit(Actor* bot)
@@ -63,16 +94,31 @@ int StateMoveToTargetPoint::getPriority()
 
 void StateMoveToTargetPoint::distToTarget(Actor* bot)
 {
-	//bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition();
 	if (currentTarget)
 	{
 		float dist = Vector3::distance(bot->getPosition(), currentTarget->getPosition());
-
-		std::cout << "Distance : " << dist << std::endl;
-
 		if (dist <= maxDistToDecelerate)
 		{
+			//std::cout << "Close" << std::endl;
 			closeToTarget = true;
 		}
+	}
+}
+
+void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
+{
+	nextTargetIsSelected = true;
+	currentIndexTargetPoint++;
+	if (!bot->getGame().getTargetPoints().empty())
+	{
+		if(currentIndexTargetPoint < bot->getGame().getTargetPoints().size() - 1)
+			currentTarget = bot->getGame().getTargetPoints()[currentIndexTargetPoint];
+		else
+		{
+			// TODO: faire le trajet retour.
+		}
+		alligned = false;
+		closeToTarget = false;
+		isArrived = false;
 	}
 }

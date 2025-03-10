@@ -130,12 +130,12 @@ void Game::load()
 
 	// ===== Enemies =====
 	TargetPoint* point = new TargetPoint();
-	point->setPosition(Vector3(50000, 25000, 0));
+	point->setPosition(Vector3(50000, -25000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(50000, -25000, 0));
+	point->setPosition(Vector3(50000, 25000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
