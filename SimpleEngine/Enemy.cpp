@@ -13,6 +13,9 @@ Enemy::Enemy()
 	mc = new MeshComponent(this);
 	mc->setMesh(Assets::getMesh("Corvette"));
 
+	Actor* tst = this->getGame().getTargetPoints()[1];
+	std::cout << "currentTarget : " << tst->getPosition().x << ", " << tst->getPosition().y << ", " << tst->getPosition().z << std::endl;
+
 	moveComponent = new MoveComponent(this);
 	//BoxCollisionComponent* bc = new BoxCollisionComponent(this);
 	//bc->setObjectBox(Assets::getMesh("Destroyer_01").getBox());

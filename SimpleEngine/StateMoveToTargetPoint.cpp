@@ -30,7 +30,8 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 			if(!alligned)
 			{ 
 				float te = Vector3::dot(bot->getPosition(), currentTarget->getPosition());
-				std::cout << te << std::endl;
+				//std::cout << te << std::endl;
+				
 			}
 			else
 			{
@@ -111,14 +112,41 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 	currentIndexTargetPoint++;
 	if (!bot->getGame().getTargetPoints().empty())
 	{
-		if(currentIndexTargetPoint < bot->getGame().getTargetPoints().size() - 1)
+		if(currentIndexTargetPoint <= bot->getGame().getTargetPoints().size() - 1)
 			currentTarget = bot->getGame().getTargetPoints()[currentIndexTargetPoint];
 		else
 		{
 			// TODO: faire le trajet retour.
+			
 		}
+
+		checkRotation(bot);
+
 		alligned = false;
 		closeToTarget = false;
 		isArrived = false;
 	}
+}
+
+void StateMoveToTargetPoint::checkRotation(Actor* bot)
+{
+	std::cout << "currentTarget : " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().x << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().y << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().z << std::endl;
+
+	Vector3 direction = bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition() - bot->getPosition();
+	direction.normalize();
+
+	std::cout << "direction : " << direction.toString() << std::endl;
+
+	std::cout << "forward : " << bot->getForward().toString() << std::endl;
+
+	Vector3 forw = bot->getForward();
+	forw.normalize();
+
+	float angle = Vector3::dot(forw, direction);
+	angle = Maths::acos(angle);
+	//float angle = Maths::atan2(Vector3::cross(forw, direction).length(), Vector3::dot(forw, direction));
+
+	std::cout << "angle: " << angle << std::endl;
+
+	bot->setAngle(Vector3::unitZ, angle);
 }

@@ -28,6 +28,8 @@ private:
 	void nextTargetPoint(Actor* bot);
 	bool nextTargetIsSelected = false;
 
+	void checkRotation(Actor* bot);
+
     //=======================================================
     //						Movements
     //=======================================================
