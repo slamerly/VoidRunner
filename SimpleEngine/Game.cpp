@@ -135,7 +135,7 @@ void Game::load()
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(60000, -25000, 0));
+	point->setPosition(Vector3(50000, -45000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 

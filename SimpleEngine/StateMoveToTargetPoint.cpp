@@ -29,9 +29,24 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 		{
 			if(!alligned)
 			{ 
-				float te = Vector3::dot(bot->getPosition(), currentTarget->getPosition());
-				//std::cout << te << std::endl;
-				
+				checkRotation(bot);
+
+				if (angle > 0.01f)
+				{
+					if (dirZ > 0)
+					{
+						yawSpeed = std::min(yawSpeed + stepYawSpeed, maxYawSpeed);
+					}
+					else if (dirZ < 0)
+					{
+						yawSpeed = std::min(yawSpeed - stepYawSpeed, -maxYawSpeed);
+					}
+				}
+				else
+				{
+					yawSpeed = 0;
+					alligned = true;
+				}
 			}
 			else
 			{
@@ -55,6 +70,8 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 						forwardSpeed = maxFowardSpeed;
 					}
 				}
+
+				yawSpeed = 0;
 			}
 		}
 		else
@@ -71,6 +88,7 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 			}
 		}
 		mc->setForwardSpeed(forwardSpeed);
+		mc->setAngularSpeed(yawSpeed);
 
 		distToTarget(bot);
 	}
@@ -120,8 +138,6 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 			
 		}
 
-		checkRotation(bot);
-
 		alligned = false;
 		closeToTarget = false;
 		isArrived = false;
@@ -130,23 +146,29 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 
 void StateMoveToTargetPoint::checkRotation(Actor* bot)
 {
-	std::cout << "currentTarget : " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().x << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().y << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().z << std::endl;
+	//std::cout << "currentTarget : " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().x << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().y << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().z << std::endl;
 
 	Vector3 direction = bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition() - bot->getPosition();
 	direction.normalize();
 
-	std::cout << "direction : " << direction.toString() << std::endl;
-
-	std::cout << "forward : " << bot->getForward().toString() << std::endl;
-
 	Vector3 forw = bot->getForward();
 	forw.normalize();
 
-	float angle = Vector3::dot(forw, direction);
+	angle = Vector3::dot(forw, direction);
 	angle = Maths::acos(angle);
-	//float angle = Maths::atan2(Vector3::cross(forw, direction).length(), Vector3::dot(forw, direction));
 
-	std::cout << "angle: " << angle << std::endl;
+	//std::cout << "angle: " << angle * 100 << std::endl;
 
-	bot->setAngle(Vector3::unitZ, angle);
+	Vector3 cros = Vector3::cross(forw, direction);
+	dirZ = cros.z;
+
+	std::cout << "dirZ: " << dirZ << std::endl;
+}
+
+float StateMoveToTargetPoint::angleBetweenVectors(const Vector3& v1, const Vector3& v2)
+{
+	float dotProduct = Vector3::dot(v1, v2);
+	float magnitude1 = std::sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
+	float magnitude2 = std::sqrt(v2.x * v2.x + v2.y * v2.y + v2.z * v2.z);
+	return std::acos(dotProduct / (magnitude1 * magnitude2));
 }

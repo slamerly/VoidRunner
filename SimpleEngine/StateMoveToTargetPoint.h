@@ -30,9 +30,15 @@ private:
 
 	void checkRotation(Actor* bot);
 
+	float angleBetweenVectors(const Vector3& v1, const Vector3& v2);
+
     //=======================================================
     //						Movements
     //=======================================================
+	// Max
+	const float sensitiveRota = Maths::twoPi;
+
+
 	// ===== Forward =====
 	// Forward - Init
 	float forwardSpeed = 0.0f;
@@ -51,5 +57,24 @@ private:
 	const float initSExpStepForward = stepForwardBreak * 2.5f;
 	const float initSExpNegStepForward = 0;
 	float currentExpStepForward = initWExpStepForward;
+
+
+	// ===== Yaw =====
+	// Yaw - Init
+	float yawSpeed = 0.0f;
+	float angle = 0;
+	float dirZ = 0;
+	bool isRight = false;
+	bool isLeft = false;
+
+	// Yaw - Max
+	const float maxYawSpeed = sensitiveRota / 2;
+
+	// Yaw - Steps
+	const float stepYawSpeed = .01f;
+
+	// Yaw - Exp
+	float currentExpStepRoll = 0.0f;
+	const float initExpStepRoll = stepYawSpeed * 1.25f;
 };
 
