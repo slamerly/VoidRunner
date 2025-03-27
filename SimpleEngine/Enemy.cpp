@@ -27,10 +27,10 @@ Enemy::Enemy()
 	stateM->changeState(this, stateMoveTarget);
 
 	// ===== DEBUG =====
-	/*
+	
 	sphere = new SphereActor();
 	sphere->setScale(5.0f);
-
+	/*
 	sphereR = new SphereActor();
 	sphereR->setScale(5.0f);
 	sphereR->getMeshComponent()->setTextureIndex(3);
@@ -131,6 +131,8 @@ void Enemy::updateActor(float dt)
 	}
 	*/
 	// --- End Debug ---
+
+	sphere->setPosition(getForward() * 1000 + getPosition());
 
 	if (sensChoiced && !isdodging)
 	{

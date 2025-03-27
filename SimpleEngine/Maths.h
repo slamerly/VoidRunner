@@ -75,6 +75,11 @@ namespace Maths
 		return acosf(value);
 	}
 
+	inline float asin(float value)
+	{
+		return asinf(value);
+	}
+
 	inline float atan2(float y, float x)
 	{
 		return atan2f(y, x);

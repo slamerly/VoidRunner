@@ -27,11 +27,11 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 	{
 		if (!closeToTarget)
 		{
-			if(!alligned)
+			if(!allignedYaw || !allignedPitch)
 			{ 
 				checkRotation(bot);
 
-				if (angle > 0.01f)
+				if (Maths::abs(angleYaw) > 0.01f)
 				{
 					if (dirZ > 0)
 					{
@@ -45,7 +45,20 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 				else
 				{
 					yawSpeed = 0;
-					alligned = true;
+					allignedYaw = true;
+				}
+
+				if (Maths::abs(anglePitch) > 0.001f) {
+					if (dirY >= 0) {
+						pitchSpeed = std::max(pitchSpeed - stepPitchSpeed, -maxPitchSpeed);
+					}
+					else {
+						pitchSpeed = std::min(pitchSpeed + stepPitchSpeed, maxPitchSpeed);
+					}
+				}
+				else {
+					pitchSpeed = 0;
+					allignedPitch = true;
 				}
 			}
 			else
@@ -89,6 +102,7 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 		}
 		mc->setForwardSpeed(forwardSpeed);
 		mc->setAngularSpeed(yawSpeed);
+		mc->setPitchSpeed(pitchSpeed);
 
 		distToTarget(bot);
 	}
@@ -138,7 +152,8 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 			
 		}
 
-		alligned = false;
+		allignedYaw = false;
+		allignedPitch = false;
 		closeToTarget = false;
 		isArrived = false;
 	}
@@ -147,28 +162,48 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 void StateMoveToTargetPoint::checkRotation(Actor* bot)
 {
 	//std::cout << "currentTarget : " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().x << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().y << ", " << bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition().z << std::endl;
+	std::cout << std::endl << "===========" << std::endl;
 
 	Vector3 direction = bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition() - bot->getPosition();
 	direction.normalize();
+	
+	std::cout << "direction: " << direction.toString() << std::endl;
 
 	Vector3 forw = bot->getForward();
 	forw.normalize();
 
-	angle = Vector3::dot(forw, direction);
-	angle = Maths::acos(angle);
+	std::cout << "forw: " << forw.toString() << std::endl;
+
+
+	// Yaw
+	//angle = Vector3::dot(forw, direction);
+	//angle = Maths::acos(angle);
+
+	//angleYaw = Vector2::dot(Vector2(forw.x, forw.y), Vector2(direction.x, direction.y));
+	//angleYaw = Maths::acos(angleYaw);
+
+	//anglePitch = Vector3::dot(Vector3(forw.x, 0, forw.z), Vector3(direction.x, 0, direction.z));
+	//anglePitch = Vector2::dot(Vector2(forw.x, forw.z), Vector2(direction.x, direction.z));
+	//anglePitch = Vector2::dot(Vector2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)),
+	//	Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
+	//anglePitch = Vector2::dot(Vector2(forw.z, 0.0f), Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
+
+	anglePitch = Maths::atan2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y)) -
+		Maths::atan2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)); // Correction pour Pitch
 
 	//std::cout << "angle: " << angle * 100 << std::endl;
 
 	Vector3 cros = Vector3::cross(forw, direction);
 	dirZ = cros.z;
+	dirY = cros.y;
+	//dirY = (Maths::abs(anglePitch) > 0.01f) ? (direction.z - forw.z) : cros.y;
 
-	std::cout << "dirZ: " << dirZ << std::endl;
-}
+	if (Maths::abs(anglePitch) < 0.001f && Maths::abs(direction.z - forw.z) > 0.01f) {
+		anglePitch = direction.z - forw.z > 0 ? 0.01f : -0.01f; // Ajout d'une correction minimale
+	}
 
-float StateMoveToTargetPoint::angleBetweenVectors(const Vector3& v1, const Vector3& v2)
-{
-	float dotProduct = Vector3::dot(v1, v2);
-	float magnitude1 = std::sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
-	float magnitude2 = std::sqrt(v2.x * v2.x + v2.y * v2.y + v2.z * v2.z);
-	return std::acos(dotProduct / (magnitude1 * magnitude2));
+	//std::cout << "dirZ: " << dirZ << std::endl;
+	std::cout << "dirY: " << dirY << std::endl;
+	//std::cout << "angleYaw: " << angleYaw << std::endl;
+	std::cout << "anglePitch: " << anglePitch << std::endl;
 }

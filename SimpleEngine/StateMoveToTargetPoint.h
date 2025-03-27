@@ -23,14 +23,10 @@ private:
 	float maxDistToDecelerate = 3500.f;
 	bool isArrived = false;
 
-	bool alligned = true;
-
 	void nextTargetPoint(Actor* bot);
 	bool nextTargetIsSelected = false;
 
 	void checkRotation(Actor* bot);
-
-	float angleBetweenVectors(const Vector3& v1, const Vector3& v2);
 
     //=======================================================
     //						Movements
@@ -63,18 +59,35 @@ private:
 	// Yaw - Init
 	float yawSpeed = 0.0f;
 	float angle = 0;
+	float angleYaw = 0;
 	float dirZ = 0;
-	bool isRight = false;
-	bool isLeft = false;
+	bool allignedYaw = false;
 
 	// Yaw - Max
-	const float maxYawSpeed = sensitiveRota / 2;
+	const float maxYawSpeed = sensitiveRota / 10;
 
 	// Yaw - Steps
 	const float stepYawSpeed = .01f;
 
 	// Yaw - Exp
-	float currentExpStepRoll = 0.0f;
-	const float initExpStepRoll = stepYawSpeed * 1.25f;
+	float currentExpStepYaw = 0.0f;
+	const float initExpStepYaw= stepYawSpeed * 1.25f;
+
+	// ===== Pitch =====
+	// Pitch - Init
+	float pitchSpeed = 0.0f;
+	float anglePitch = 0;
+	float dirY = 0;
+	bool allignedPitch = false;
+
+	// Pitch - Max
+	const float maxPitchSpeed = sensitiveRota / 10;
+
+	// Pitch - Steps
+	const float stepPitchSpeed = .005f;
+
+	// Pitch - Exp
+	float currentExpStepPitch = 0.0f;
+	const float initExpStepPitch= stepPitchSpeed * 1.25f;
 };
 
