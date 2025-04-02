@@ -33,14 +33,15 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 
 				if (Maths::abs(angleYaw) > 0.01f)
 				{
-					if (dirZ > 0)
+					/*if (dirZ > 0)
 					{
 						yawSpeed = std::min(yawSpeed + stepYawSpeed, maxYawSpeed);
 					}
 					else if (dirZ < 0)
 					{
 						yawSpeed = std::min(yawSpeed - stepYawSpeed, -maxYawSpeed);
-					}
+					}*/
+					yawSpeed = Maths::clamp(yawSpeed + stepYawSpeed * (angleYaw > 0 ? 1 : -1), -maxYawSpeed, maxYawSpeed);
 				}
 				else
 				{
@@ -49,12 +50,13 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 				}
 
 				if (Maths::abs(anglePitch) > 0.001f) {
-					if (dirY >= 0) {
+					/*if (dirY >= 0) {
 						pitchSpeed = std::max(pitchSpeed - stepPitchSpeed, -maxPitchSpeed);
 					}
 					else {
 						pitchSpeed = std::min(pitchSpeed + stepPitchSpeed, maxPitchSpeed);
-					}
+					}*/
+					pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch > 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
 				}
 				else {
 					pitchSpeed = 0;
@@ -169,10 +171,27 @@ void StateMoveToTargetPoint::checkRotation(Actor* bot)
 	
 	std::cout << "direction: " << direction.toString() << std::endl;
 
-	Vector3 forw = bot->getForward();
-	forw.normalize();
+	//Vector3 forw = bot->getForward();
+	//forw.normalize();
 
-	std::cout << "forw: " << forw.toString() << std::endl;
+	//std::cout << "forw: " << forw.toString() << std::endl;
+
+	Quaternion botRot = bot->getRotation();
+	Vector3 eulerAngles = botRot.toEuler();
+	float currentYaw = eulerAngles.z;
+	float currentPitch = eulerAngles.y;
+
+	float targetYaw = atan2(direction.y, direction.x);
+	float targetPitch = atan2(direction.z, direction.x);
+
+	angleYaw = targetYaw - currentYaw;
+	anglePitch = targetPitch - currentPitch;
+
+	angleYaw = fmod(angleYaw + Maths::pi, Maths::twoPi) - Maths::pi;
+	anglePitch = fmod(anglePitch + Maths::pi, Maths::twoPi) - Maths::pi;
+
+	std::cout << "Yaw actuel : " << currentYaw << ", Yaw cible : " << targetYaw << ", angleYaw : " << angleYaw << std::endl;
+	std::cout << "Pitch actuel : " << currentPitch << ", Pitch cible : " << targetPitch << ", anglePitch : " << anglePitch << std::endl;
 
 
 	// Yaw
@@ -188,22 +207,22 @@ void StateMoveToTargetPoint::checkRotation(Actor* bot)
 	//	Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
 	//anglePitch = Vector2::dot(Vector2(forw.z, 0.0f), Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
 
-	anglePitch = Maths::atan2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y)) -
-		Maths::atan2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)); // Correction pour Pitch
+	//anglePitch = Maths::atan2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y)) -
+	//	Maths::atan2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)); // Correction pour Pitch
 
-	//std::cout << "angle: " << angle * 100 << std::endl;
+	////std::cout << "angle: " << angle * 100 << std::endl;
 
-	Vector3 cros = Vector3::cross(forw, direction);
-	dirZ = cros.z;
-	dirY = cros.y;
-	//dirY = (Maths::abs(anglePitch) > 0.01f) ? (direction.z - forw.z) : cros.y;
+	//Vector3 cros = Vector3::cross(forw, direction);
+	//dirZ = cros.z;
+	//dirY = cros.y;
+	////dirY = (Maths::abs(anglePitch) > 0.01f) ? (direction.z - forw.z) : cros.y;
 
-	if (Maths::abs(anglePitch) < 0.001f && Maths::abs(direction.z - forw.z) > 0.01f) {
-		anglePitch = direction.z - forw.z > 0 ? 0.01f : -0.01f; // Ajout d'une correction minimale
-	}
+	//if (Maths::abs(anglePitch) < 0.001f && Maths::abs(direction.z - forw.z) > 0.01f) {
+	//	anglePitch = direction.z - forw.z > 0 ? 0.01f : -0.01f; // Ajout d'une correction minimale
+	//}
 
 	//std::cout << "dirZ: " << dirZ << std::endl;
-	std::cout << "dirY: " << dirY << std::endl;
+	//std::cout << "dirY: " << dirY << std::endl;
 	//std::cout << "angleYaw: " << angleYaw << std::endl;
-	std::cout << "anglePitch: " << anglePitch << std::endl;
+	//std::cout << "anglePitch: " << anglePitch << std::endl;
 }

@@ -125,6 +125,31 @@ public:
 		return retVal;
 	}
 
+	Vector3 toEuler() const
+	{
+		Vector3 euler;
+
+		// extract quaternion value
+		float ysqr = y * y;
+
+		// Calcul Pitch
+		float t0 = +2.0f * (w * x + y * z);
+		float t1 = +1.0f - 2.0f * (x * x + ysqr);
+		euler.y = atan2(t0, t1);  // Pitch
+
+		// Calcul Yaw
+		float t2 = +2.0f * (w * y - z * x);
+		t2 = Maths::clamp(t2, -1.0f, 1.0f);
+		euler.z = asin(t2);  // Yaw
+
+		// Calcul Roll
+		float t3 = +2.0f * (w * z + x * y);
+		float t4 = +1.0f - 2.0f * (ysqr + z * z);
+		euler.x = atan2(t3, t4);  // Roll
+
+		return euler;
+	}
+
 	static const Quaternion identity;
 };
 
