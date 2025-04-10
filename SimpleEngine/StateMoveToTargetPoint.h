@@ -61,6 +61,7 @@ private:
 	float angle = 0;
 	float angleYaw = 0;
 	float dirZ = 0;
+	float targetYaw = 0;
 	bool allignedYaw = false;
 
 	// Yaw - Max

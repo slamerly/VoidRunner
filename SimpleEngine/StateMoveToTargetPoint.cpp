@@ -27,7 +27,8 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 	{
 		if (!closeToTarget)
 		{
-			if(!allignedYaw || !allignedPitch)
+			//if(!allignedYaw || !allignedPitch)
+			if (!allignedYaw)
 			{ 
 				checkRotation(bot);
 
@@ -48,20 +49,21 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 					yawSpeed = 0;
 					allignedYaw = true;
 				}
-
+				/*
 				if (Maths::abs(anglePitch) > 0.001f) {
 					/*if (dirY >= 0) {
 						pitchSpeed = std::max(pitchSpeed - stepPitchSpeed, -maxPitchSpeed);
 					}
 					else {
 						pitchSpeed = std::min(pitchSpeed + stepPitchSpeed, maxPitchSpeed);
-					}*/
+					}
 					pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch > 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
 				}
 				else {
 					pitchSpeed = 0;
 					allignedPitch = true;
 				}
+				*/
 			}
 			else
 			{
@@ -171,58 +173,25 @@ void StateMoveToTargetPoint::checkRotation(Actor* bot)
 	
 	std::cout << "direction: " << direction.toString() << std::endl;
 
-	//Vector3 forw = bot->getForward();
+	Vector3 forw = bot->getForward();
 	//forw.normalize();
+	/*
+	angleYaw = Vector3::dot(forw, direction);
+	angleYaw = Maths::acos(angleYaw);
 
-	//std::cout << "forw: " << forw.toString() << std::endl;
+	targetYaw = Maths::atan2(direction.z, forw.z);
+	std::cout << "targetYaw: " << targetYaw << std::endl;
 
-	Quaternion botRot = bot->getRotation();
-	Vector3 eulerAngles = botRot.toEuler();
-	float currentYaw = eulerAngles.z;
-	float currentPitch = eulerAngles.y;
+	std::cout << "angleYaw: " << angleYaw << std::endl;*/
 
-	float targetYaw = atan2(direction.y, direction.x);
-	float targetPitch = atan2(direction.z, direction.x);
+	Vector2 dirXY = Vector2(direction.x, direction.y);
+	dirXY.normalize();
+	Vector2 forwardXY = Vector2(forw.x, forw.y);
+	forwardXY.normalize();
 
-	angleYaw = targetYaw - currentYaw;
-	anglePitch = targetPitch - currentPitch;
+	float dot = Maths::clamp(Vector2::dot(dirXY, forwardXY), -1.0f, 1.0f);
+	angleYaw = Maths::acos(dot);
 
-	angleYaw = fmod(angleYaw + Maths::pi, Maths::twoPi) - Maths::pi;
-	anglePitch = fmod(anglePitch + Maths::pi, Maths::twoPi) - Maths::pi;
-
-	std::cout << "Yaw actuel : " << currentYaw << ", Yaw cible : " << targetYaw << ", angleYaw : " << angleYaw << std::endl;
-	std::cout << "Pitch actuel : " << currentPitch << ", Pitch cible : " << targetPitch << ", anglePitch : " << anglePitch << std::endl;
-
-
-	// Yaw
-	//angle = Vector3::dot(forw, direction);
-	//angle = Maths::acos(angle);
-
-	//angleYaw = Vector2::dot(Vector2(forw.x, forw.y), Vector2(direction.x, direction.y));
-	//angleYaw = Maths::acos(angleYaw);
-
-	//anglePitch = Vector3::dot(Vector3(forw.x, 0, forw.z), Vector3(direction.x, 0, direction.z));
-	//anglePitch = Vector2::dot(Vector2(forw.x, forw.z), Vector2(direction.x, direction.z));
-	//anglePitch = Vector2::dot(Vector2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)),
-	//	Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
-	//anglePitch = Vector2::dot(Vector2(forw.z, 0.0f), Vector2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y))); // Pitch
-
-	//anglePitch = Maths::atan2(direction.z, Maths::sqrt(direction.x * direction.x + direction.y * direction.y)) -
-	//	Maths::atan2(forw.z, Maths::sqrt(forw.x * forw.x + forw.y * forw.y)); // Correction pour Pitch
-
-	////std::cout << "angle: " << angle * 100 << std::endl;
-
-	//Vector3 cros = Vector3::cross(forw, direction);
-	//dirZ = cros.z;
-	//dirY = cros.y;
-	////dirY = (Maths::abs(anglePitch) > 0.01f) ? (direction.z - forw.z) : cros.y;
-
-	//if (Maths::abs(anglePitch) < 0.001f && Maths::abs(direction.z - forw.z) > 0.01f) {
-	//	anglePitch = direction.z - forw.z > 0 ? 0.01f : -0.01f; // Ajout d'une correction minimale
-	//}
-
-	//std::cout << "dirZ: " << dirZ << std::endl;
-	//std::cout << "dirY: " << dirY << std::endl;
-	//std::cout << "angleYaw: " << angleYaw << std::endl;
-	//std::cout << "anglePitch: " << anglePitch << std::endl;
+	float cross = forwardXY.x * dirXY.y - forwardXY.y * dirXY.x;
+	if (cross < 0) angleYaw = -angleYaw;
 }
