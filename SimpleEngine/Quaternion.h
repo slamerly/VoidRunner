@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3.h"
+
 class Quaternion
 {
 public:
@@ -26,6 +27,16 @@ public:
 	void conjugate();
 	void normalize();
 
+	friend Quaternion operator*(const Quaternion& left, const Quaternion& right)
+	{
+		Quaternion res;
+		res.x = left.w * right.x + left.x * right.w + left.y * right.z - left.z * right.y;
+		res.y = left.w * right.y - left.x * right.z + left.y * right.w + left.z * right.x;
+		res.z = left.w * right.z + left.x * right.y - left.y * right.x + left.z * right.w;
+		res.w = left.w * right.w - left.x * right.x - left.y * right.y - left.z * right.z;
+		return res;
+	}
+
 	float lengthSq() const
 	{
 		return (x * x + y * y + z * z + w * w);
@@ -41,6 +52,21 @@ public:
 	{
 		Quaternion retVal = q;
 		retVal.normalize();
+		return retVal;
+	}
+
+	// Calcul the inverse
+	static Quaternion inverse(const Quaternion& q)
+	{
+		Quaternion conj = q;
+		conj.conjugate();
+
+		Quaternion retVal;
+		retVal.x = conj.x / q.lengthSq();
+		retVal.y = conj.y / q.lengthSq();
+		retVal.z = conj.z / q.lengthSq();
+		retVal.w = conj.w / q.lengthSq();
+
 		return retVal;
 	}
 

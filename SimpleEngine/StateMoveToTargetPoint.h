@@ -85,7 +85,7 @@ private:
 	const float maxPitchSpeed = sensitiveRota / 10;
 
 	// Pitch - Steps
-	const float stepPitchSpeed = .005f;
+	const float stepPitchSpeed = .01f;
 
 	// Pitch - Exp
 	float currentExpStepPitch = 0.0f;

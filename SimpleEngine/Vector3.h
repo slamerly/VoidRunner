@@ -1,6 +1,7 @@
 #pragma once
 #include "Maths.h"
 #include <string>
+
 class Vector3
 {
 
@@ -128,6 +129,8 @@ public:
 	{
 		return v - 2.0f * Vector3::dot(v, n) * n;
 	}
+
+	Vector3 rotate(const class Quaternion& q);
 
 	static Vector3 transform(const Vector3& vec, const class Matrix4& mat, float w = 1.0f);
 

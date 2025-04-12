@@ -27,21 +27,12 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 	{
 		if (!closeToTarget)
 		{
-			//if(!allignedYaw || !allignedPitch)
-			if (!allignedYaw)
+			if(!allignedYaw || !allignedPitch)
 			{ 
 				checkRotation(bot);
 
 				if (Maths::abs(angleYaw) > 0.01f)
 				{
-					/*if (dirZ > 0)
-					{
-						yawSpeed = std::min(yawSpeed + stepYawSpeed, maxYawSpeed);
-					}
-					else if (dirZ < 0)
-					{
-						yawSpeed = std::min(yawSpeed - stepYawSpeed, -maxYawSpeed);
-					}*/
 					yawSpeed = Maths::clamp(yawSpeed + stepYawSpeed * (angleYaw > 0 ? 1 : -1), -maxYawSpeed, maxYawSpeed);
 				}
 				else
@@ -49,21 +40,14 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 					yawSpeed = 0;
 					allignedYaw = true;
 				}
-				/*
-				if (Maths::abs(anglePitch) > 0.001f) {
-					/*if (dirY >= 0) {
-						pitchSpeed = std::max(pitchSpeed - stepPitchSpeed, -maxPitchSpeed);
-					}
-					else {
-						pitchSpeed = std::min(pitchSpeed + stepPitchSpeed, maxPitchSpeed);
-					}
-					pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch > 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
+				
+				if (Maths::abs(anglePitch) > 0.01f) {
+					pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch < 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
 				}
 				else {
 					pitchSpeed = 0;
 					allignedPitch = true;
 				}
-				*/
 			}
 			else
 			{
@@ -174,24 +158,17 @@ void StateMoveToTargetPoint::checkRotation(Actor* bot)
 	std::cout << "direction: " << direction.toString() << std::endl;
 
 	Vector3 forw = bot->getForward();
-	//forw.normalize();
-	/*
-	angleYaw = Vector3::dot(forw, direction);
-	angleYaw = Maths::acos(angleYaw);
+	forw.normalize();
 
-	targetYaw = Maths::atan2(direction.z, forw.z);
-	std::cout << "targetYaw: " << targetYaw << std::endl;
+	Quaternion invRotation = Quaternion::inverse(bot->getRotation());
+	Vector3 dirLocal = direction.rotate(invRotation);
+	dirLocal.normalize();
 
-	std::cout << "angleYaw: " << angleYaw << std::endl;*/
+	std::cout << "dirLocal: " << dirLocal.toString() << std::endl;
 
-	Vector2 dirXY = Vector2(direction.x, direction.y);
-	dirXY.normalize();
-	Vector2 forwardXY = Vector2(forw.x, forw.y);
-	forwardXY.normalize();
+	angleYaw = atan2(dirLocal.y, dirLocal.x);
+	anglePitch = atan2(dirLocal.z, dirLocal.x);
 
-	float dot = Maths::clamp(Vector2::dot(dirXY, forwardXY), -1.0f, 1.0f);
-	angleYaw = Maths::acos(dot);
-
-	float cross = forwardXY.x * dirXY.y - forwardXY.y * dirXY.x;
-	if (cross < 0) angleYaw = -angleYaw;
+	std::cout << "angleYaw: " << angleYaw << std::endl;
+	std::cout << "anglePitch: " << anglePitch << std::endl;
 }

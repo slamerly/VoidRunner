@@ -45,6 +45,15 @@ const std::string Vector3::toString()
 	return strVec.str();
 }
 
+Vector3 Vector3::rotate(const Quaternion& q)
+{
+	Quaternion v = Quaternion(x, y, z, 0);
+	Quaternion conj = q;
+	conj.conjugate();
+	Quaternion result = q * v * conj;
+	return Vector3(result.x, result.y, result.z);
+}
+
 Vector3 Vector3::transform(const Vector3& vec, const Matrix4& mat, float w)
 {
 	Vector3 retVal;
