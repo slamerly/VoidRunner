@@ -84,6 +84,7 @@ public:
 
 	vector<Actor*> getEnemies() { return enemies; }
 	Actor* getPatrolLeader() { return patrolLeader; }
+	void setPatrolLeader(Actor* leader);
 	vector<Actor*> getTargetPoints() { return targetPoints; }
 
 private:

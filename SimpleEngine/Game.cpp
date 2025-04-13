@@ -161,17 +161,17 @@ void Game::load()
 
 	enemy = new Enemy();
 	//const float start = -2500.0f;
-	enemy->setPosition(Vector3(65000, 5000, 0));
+	enemy->setPosition(Vector3(58500, 5000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
 	enemy->setCrewNumber(1);
 	enemies.push_back(enemy);
 
-	enemy = new Enemy();
-	//const float start = -2500.0f;
-	enemy->setPosition(Vector3(65000, -5000, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setCrewNumber(2);
-	enemies.push_back(enemy);
+	//enemy = new Enemy();
+	////const float start = -2500.0f;
+	//enemy->setPosition(Vector3(65000, -5000, 0));
+	//enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	//enemy->setCrewNumber(2);
+	//enemies.push_back(enemy);
 
 	// ===== Asteroids =====
 	// DEBUG FIELD
@@ -411,6 +411,11 @@ bool Game::rightDistance(Asteroid& origin, Asteroid& target)
 		return true;
 	}
 	
+}
+
+void Game::setPatrolLeader(Actor* leader)
+{
+	patrolLeader = leader;
 }
 
 void Game::processInput()

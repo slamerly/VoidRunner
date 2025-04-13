@@ -5,6 +5,7 @@
 #include "MeshComponent.h"
 #include "StateMachine.h"
 #include "StateMoveToTargetPoint.h"
+#include "StateFollowLeader.h"
 
 class Enemy : public Actor
 {
@@ -39,6 +40,7 @@ private:
 	// ===== State Machine =====
 	StateMachine* stateM;
 	StateMoveToTargetPoint* stateMoveTarget;
+	StateFollowLeader* stateFollow;
 
 	bool learder = false;
 	int crewNumber = 0;

@@ -15,7 +15,7 @@ void StateFollowLeader::enter(Actor* bot)
 		}
 	}
 
-	if (bot->getGame().getPatrolLeader() != nullptr)
+	if (bot->getGame().getPatrolLeader() == nullptr)
 		std::cerr << "Game patrolLeader is null." << std::endl;
 	else
 		currentTarget = bot->getGame().getPatrolLeader();
@@ -24,12 +24,13 @@ void StateFollowLeader::enter(Actor* bot)
 void StateFollowLeader::update(Actor* bot, float deltaTime)
 {
 	defineTargetPosition(bot);
+	distToTarget(bot);
+
 	if (!isArrived)
 	{
+		checkRotation(bot);
 		if (!allignedYaw || !allignedPitch)
 		{
-			checkRotation(bot);
-
 			// ===== Yaw =====
 			if (Maths::abs(angleYaw) > 0.01f)
 			{
@@ -75,11 +76,18 @@ void StateFollowLeader::update(Actor* bot, float deltaTime)
 		mc->setForwardSpeed(forwardSpeed);
 		mc->setAngularSpeed(yawSpeed);
 		mc->setPitchSpeed(pitchSpeed);
-
-		distToTarget(bot);
 	}
 	else
 	{
+		if (forwardSpeed > 0)
+		{
+			forwardSpeed -= stepForwardSpeed;
+		}
+		if (forwardSpeed <= 0)
+		{
+			forwardSpeed = 0;
+			currentExpStepForward = 0;
+		}
 	}
 }
 
@@ -116,18 +124,18 @@ void StateFollowLeader::distToTarget(Actor* bot)
 
 void StateFollowLeader::defineTargetPosition(Actor* bot)
 {
-	if (currentTarget)
+	if (bot->getGame().getPatrolLeader())
 	{
 		// pair number on the right of the leader
 		if (Maths::fmod(patrolPosition, 2) == 0)
 		{
-			targetPosition = bot->getGame().getPatrolLeader()->getRight() * -5000
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * 5000
 				+ bot->getGame().getPatrolLeader()->getForward() * -5000
 				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
 		else
 		{
-			targetPosition = bot->getGame().getPatrolLeader()->getRight() * 5000
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * -5000
 				+ bot->getGame().getPatrolLeader()->getForward() * -5000
 				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
@@ -154,6 +162,11 @@ void StateFollowLeader::checkRotation(Actor* bot)
 
 	angleYaw = atan2(dirLocal.y, dirLocal.x);
 	anglePitch = atan2(dirLocal.z, dirLocal.x);
+
+	if (angleYaw != 0)
+		allignedYaw = false;
+	if (anglePitch != 0)
+		allignedPitch = false;
 
 	//std::cout << "angleYaw: " << angleYaw << std::endl;
 	//std::cout << "anglePitch: " << anglePitch << std::endl;
