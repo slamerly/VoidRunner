@@ -19,12 +19,12 @@ private:
 	Actor* currentTarget = nullptr;
 
 	void distToTarget(Actor* bot);
-	bool closeToTarget = false;
 	float maxDistToDecelerate = 3500.f;
 	bool isArrived = false;
 
 	void nextTargetPoint(Actor* bot);
 	bool nextTargetIsSelected = false;
+	bool isIncreamentTarget = true;
 
 	void checkRotation(Actor* bot);
 
@@ -58,10 +58,7 @@ private:
 	// ===== Yaw =====
 	// Yaw - Init
 	float yawSpeed = 0.0f;
-	float angle = 0;
 	float angleYaw = 0;
-	float dirZ = 0;
-	float targetYaw = 0;
 	bool allignedYaw = false;
 
 	// Yaw - Max
@@ -78,7 +75,6 @@ private:
 	// Pitch - Init
 	float pitchSpeed = 0.0f;
 	float anglePitch = 0;
-	float dirY = 0;
 	bool allignedPitch = false;
 
 	// Pitch - Max
