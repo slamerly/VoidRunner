@@ -24,20 +24,22 @@ Enemy::Enemy()
 	stateM = new StateMachine();
 	stateMoveTarget = new StateMoveToTargetPoint();
 	stateM->addState(stateMoveTarget);
-	stateM->changeState(this, stateMoveTarget);
+
+	if(learder)
+		stateM->changeState(this, stateMoveTarget);
 
 	// ===== DEBUG =====
 	
-	sphere = new SphereActor();
-	sphere->setScale(5.0f);
-	/*
+	//sphere = new SphereActor();
+	//sphere->setScale(5.0f);
+	
 	sphereR = new SphereActor();
-	sphereR->setScale(5.0f);
-	sphereR->getMeshComponent()->setTextureIndex(3);
+	sphereR->setScale(25.0f);
+	sphereR->getMeshComponent()->setTextureIndex(4);
 	sphereL = new SphereActor();
-	sphereL->setScale(5.0f);
+	sphereL->setScale(25.0f);
 	sphereL->getMeshComponent()->setTextureIndex(3);
-	*/
+	
 
 	//moveComponent = new MoveComponent(this);
 	//moveComponent->setForwardSpeed(fowardSpeed);
@@ -59,6 +61,13 @@ Enemy::~Enemy()
 void Enemy::updateActor(float dt)
 {
 	stateM->update(this, dt);
+
+	if (learder)
+	{
+		sphereL->setPosition(getRight() * -5000 + getForward() * -5000 + getPosition());
+		sphereR->setPosition(getRight() * 5000 + getForward() * -5000 + getPosition());
+	}
+
 	/*
 	Vector3 start = getPosition() + getForward() * 100.0f;
 	Vector3 dir = getForward();
@@ -132,24 +141,21 @@ void Enemy::updateActor(float dt)
 	*/
 	// --- End Debug ---
 
-	sphere->setPosition(getForward() * 1000 + getPosition());
+	//sphere->setPosition(getForward() * 1000 + getPosition());
 
-	if (sensChoiced && !isdodging)
-	{
-		if (newDirection())
-		{
-			moveComponent->setAngularSpeed(0);
-			moveComponent->setForwardSpeed(fowardSpeed);
-			sensChoiced = false;
-			Rclear = false;
-			Lclear = false;
-		}
-	}
-	else
-	{
-		//sphereL->setPosition(Vector3(0, 0, -1500));
-		//sphereR->setPosition(Vector3(0, 0, -1500));
-	}
+	//if (sensChoiced && !isdodging)
+	//{
+	//	moveComponent->setAngularSpeed(0);
+	//	moveComponent->setForwardSpeed(fowardSpeed);
+	//	sensChoiced = false;
+	//	Rclear = false;
+	//	Lclear = false;
+	//}
+	//else
+	//{
+	//	//sphereL->setPosition(Vector3(0, 0, -1500));
+	//	//sphereR->setPosition(Vector3(0, 0, -1500));
+	//}
 	//std::cout << newDirection() << std:: endl;
 	animation(dt);
 }
@@ -157,62 +163,12 @@ void Enemy::updateActor(float dt)
 void Enemy::setIsLeader(bool isLeader)
 {
 	learder = isLeader;
+	stateM->changeState(this, stateMoveTarget);
 }
 
-bool Enemy::newDirection()
+void Enemy::setCrewNumber(int newCrewNumber)
 {
-	//const float segmentLength = 1000.0f;
-	//Vector3 dirD = getForward();
-	/*
-	Vector3 startR = getPosition() + getRight() * 100.0f;
-	Vector3 endR = startR + getRight() * 390.0f  + getForward() * segmentLength;
-	Vector3 startL = getPosition() + getRight() * -1.f * 100.0f;
-	Vector3 endL = startL + getRight() * -390.0f + getForward() * segmentLength;
-
-	LineSegment lR(startR, endR);
-	LineSegment lL(startL, endL);
-
-	PhysicsSystem::CollisionInfo infoR;
-	if (getGame().getPhysicsSystem().segmentCast(lR, infoR) && infoR.actor != this)
-	{
-		PlaneActor* mur = dynamic_cast<PlaneActor*>(infoR.actor);
-		if (mur)
-		{
-			Rclear = false;
-		}
-
-		//sphereR->setPosition(infoR.point);
-		//sphereR->getMeshComponent()->setTextureIndex(3);
-	}
-	else
-	{
-		//sphereR->setPosition(endR);
-		//sphereR->getMeshComponent()->setTextureIndex(4);
-		Rclear = true;
-	}
-
-	PhysicsSystem::CollisionInfo infoL;
-	if (getGame().getPhysicsSystem().segmentCast(lL, infoL) && infoL.actor != this)
-	{
-		PlaneActor* mur = dynamic_cast<PlaneActor*>(infoL.actor);
-		if (mur)
-		{
-			Lclear = false;
-		}
-
-		//sphereL->setPosition(infoL.point);
-		//sphereL->getMeshComponent()->setTextureIndex(3);
-	}
-	else
-	{
-		//sphereL->setPosition(endL);
-		//sphereL->getMeshComponent()->setTextureIndex(4);
-		Lclear = true;
-	}
-
-	return Rclear && Lclear;
-	*/
-	return true;
+	crewNumber = newCrewNumber;
 }
 
 bool Enemy::detection()

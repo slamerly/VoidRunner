@@ -3,18 +3,20 @@
 #include "MoveComponent.h"
 #include "TargetPoint.h"
 
-class StateMoveToTargetPoint :
-    public State
+class StateFollowLeader :
+	public State
 {
 public:
-    void enter(Actor* bot) override;
-    void update(Actor* bot, float deltaTime) override;
-    void exit(Actor* bot) override;
+	void enter(Actor* bot) override;
+	void update(Actor* bot, float deltaTime) override;
+	void exit(Actor* bot) override;
 
-    int getPriority() override;
+	int getPriority() override;
+
+	void setPatrolPosition(int patrolPos);
 
 private:
-    MoveComponent* mc;
+	MoveComponent* mc;
 	int currentIndexTargetPoint = 0;
 	Actor* currentTarget = nullptr;
 
@@ -22,15 +24,15 @@ private:
 	float maxDistToDecelerate = 3500.f;
 	bool isArrived = false;
 
-	void nextTargetPoint(Actor* bot);
-	bool nextTargetIsSelected = false;
-	bool isIncreamentTarget = true;
+	int patrolPosition = 0;
+	Vector3 targetPosition = Vector3::zero;
+	void defineTargetPosition(Actor* bot);
 
 	void checkRotation(Actor* bot);
 
-    //=======================================================
-    //						Movements
-    //=======================================================
+	//=======================================================
+	//						Movements
+	//=======================================================
 	// Max
 	const float sensitiveRota = Maths::twoPi;
 

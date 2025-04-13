@@ -178,6 +178,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StateChasePlayer.cpp" />
     <ClCompile Include="StateDodgeObject.cpp" />
+    <ClCompile Include="StateFollowLeader.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="StateMoveToTargetPoint.cpp" />
     <ClCompile Include="Station.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateChasePlayer.h" />
     <ClInclude Include="StateDodgeObject.h" />
+    <ClInclude Include="StateFollowLeader.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="StateMoveToTargetPoint.h" />
     <ClInclude Include="Station.h" />

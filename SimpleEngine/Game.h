@@ -82,6 +82,8 @@ public:
 
 	bool rightDistance(Asteroid& origin, Asteroid& target);
 
+	vector<Actor*> getEnemies() { return enemies; }
+	Actor* getPatrolLeader() { return patrolLeader; }
 	vector<Actor*> getTargetPoints() { return targetPoints; }
 
 private:
@@ -121,6 +123,8 @@ private:
 
 	vector<Station*> stations;
 
+	vector<Actor*> enemies;
+	Actor* patrolLeader;
 	vector<Actor*> targetPoints;
 };
 

@@ -128,32 +128,50 @@ void Game::load()
 	// ===== Player =====
 	chara = new Character();
 
-	// ===== Enemies =====
+	// ===== Target Point =====
 	TargetPoint* point = new TargetPoint();
-	point->setPosition(Vector3(25000, 15000, 0));
+	point->setPosition(Vector3(25000, 15000, 10000));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(25000, -15000, 0));
+	point->setPosition(Vector3(25000, -15000, -10000));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(75000, -15000, 0));
+	point->setPosition(Vector3(75000, -15000, 10000));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(75000, 15000, 0));
+	point->setPosition(Vector3(75000, 15000, -10000));
 	point->setNewLocation();
 	targetPoints.push_back(point);
+	
 
-
-	Enemy* t = new Enemy();
+	// ===== Enemies =====
+	Enemy* enemy = new Enemy();
 	//const float start = -2500.0f;
-	t->setPosition(Vector3(50000, 0, 0));
-	t->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setPosition(Vector3(50000, 0, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setIsLeader(true);
+	enemy->setCrewNumber(0);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	//const float start = -2500.0f;
+	enemy->setPosition(Vector3(65000, 5000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setCrewNumber(1);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	//const float start = -2500.0f;
+	enemy->setPosition(Vector3(65000, -5000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setCrewNumber(2);
+	enemies.push_back(enemy);
 
 	// ===== Asteroids =====
 	// DEBUG FIELD

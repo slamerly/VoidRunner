@@ -14,8 +14,9 @@ public:
 
 	void updateActor(float dt) override;
 
-	bool isLeader() { return learder; }
+	bool getIsLeader() { return learder; }
 	void setIsLeader(bool isLeader);
+	void setCrewNumber(int newCrewNumber);
 
 private:
 	SphereActor* sphere;
@@ -28,7 +29,6 @@ private:
 	float fowardSpeed = 300.0f;
 
 	// Rotation
-	bool newDirection();
 	bool Rclear = false;
 	bool Lclear = false;
 
@@ -41,6 +41,7 @@ private:
 	StateMoveToTargetPoint* stateMoveTarget;
 
 	bool learder = false;
+	int crewNumber = 0;
 
 	// Detection system
 	bool detection();

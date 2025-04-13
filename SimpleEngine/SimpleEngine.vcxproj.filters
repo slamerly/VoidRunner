@@ -217,6 +217,9 @@
     <ClCompile Include="StateMoveToTargetPoint.cpp">
       <Filter>GameSpecific\States</Filter>
     </ClCompile>
+    <ClCompile Include="StateFollowLeader.cpp">
+      <Filter>GameSpecific\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -406,6 +409,9 @@
       <Filter>GameSpecific\States</Filter>
     </ClInclude>
     <ClInclude Include="StateMoveToTargetPoint.h">
+      <Filter>GameSpecific\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StateFollowLeader.h">
       <Filter>GameSpecific\States</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,10 @@
-#include "StateMoveToTargetPoint.h"
+#include "StateFollowLeader.h"
 #include <iostream>
 #include "Game.h"
 
-void StateMoveToTargetPoint::enter(Actor* bot)
+void StateFollowLeader::enter(Actor* bot)
 {
-	std::cout << "StateMoveToTargetPoint enter" << std::endl;
+	std::cout << "StateFollowLeader enter" << std::endl;
 
 	for (auto comp : bot->getActorComponents())
 	{
@@ -15,18 +15,19 @@ void StateMoveToTargetPoint::enter(Actor* bot)
 		}
 	}
 
-	if (bot->getGame().getTargetPoints().empty())
-		std::cerr << "Game TargetPoints is empty." << std::endl;
+	if (bot->getGame().getPatrolLeader() != nullptr)
+		std::cerr << "Game patrolLeader is null." << std::endl;
 	else
-		currentTarget = bot->getGame().getTargetPoints()[0];
+		currentTarget = bot->getGame().getPatrolLeader();
 }
 
-void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
+void StateFollowLeader::update(Actor* bot, float deltaTime)
 {
+	defineTargetPosition(bot);
 	if (!isArrived)
 	{
-		if(!allignedYaw || !allignedPitch)
-		{ 
+		if (!allignedYaw || !allignedPitch)
+		{
 			checkRotation(bot);
 
 			// ===== Yaw =====
@@ -39,7 +40,7 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 				yawSpeed = 0;
 				allignedYaw = true;
 			}
-				
+
 			// ===== Pitch =====
 			if (Maths::abs(anglePitch) > 0.01f) {
 				pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch < 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
@@ -79,28 +80,29 @@ void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
 	}
 	else
 	{
-		if (!nextTargetIsSelected)
-		{
-			nextTargetPoint(bot);
-		}
 	}
 }
 
-void StateMoveToTargetPoint::exit(Actor* bot)
+void StateFollowLeader::exit(Actor* bot)
 {
-	std::cout << "StateMoveToTargetPoint exit" << std::endl;
+	std::cout << "StateFollowLeader exit" << std::endl;
 }
 
-int StateMoveToTargetPoint::getPriority()
+int StateFollowLeader::getPriority()
 {
 	return 1;
 }
 
-void StateMoveToTargetPoint::distToTarget(Actor* bot)
+void StateFollowLeader::setPatrolPosition(int patrolPos)
 {
-	if (currentTarget)
+	patrolPosition = patrolPos;
+}
+
+void StateFollowLeader::distToTarget(Actor* bot)
+{
+	if (!targetPosition.equal(Vector3::zero))
 	{
-		float dist = Vector3::distance(bot->getPosition(), currentTarget->getPosition());
+		float dist = Vector3::distance(bot->getPosition(), targetPosition);
 
 		if (dist <= maxDistToDecelerate)
 		{
@@ -112,53 +114,33 @@ void StateMoveToTargetPoint::distToTarget(Actor* bot)
 	}
 }
 
-void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
+void StateFollowLeader::defineTargetPosition(Actor* bot)
 {
-	nextTargetIsSelected = true;
-
-	if (!bot->getGame().getTargetPoints().empty())
+	if (currentTarget)
 	{
-		if (isIncreamentTarget)
+		// pair number on the right of the leader
+		if (Maths::fmod(patrolPosition, 2) == 0)
 		{
-			currentIndexTargetPoint++;
-
-			if (currentIndexTargetPoint <= bot->getGame().getTargetPoints().size() - 1)
-				currentTarget = bot->getGame().getTargetPoints()[currentIndexTargetPoint];
-			else
-			{
-				isIncreamentTarget = false;
-				nextTargetPoint(bot);
-				//currentIndexTargetPoint = 0;
-				//currentTarget = bot->getGame().getTargetPoints()[currentIndexTargetPoint];
-			}
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * -5000
+				+ bot->getGame().getPatrolLeader()->getForward() * -5000
+				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
 		else
 		{
-			currentIndexTargetPoint--;
-
-			if (currentIndexTargetPoint >= 0)
-				currentTarget = bot->getGame().getTargetPoints()[currentIndexTargetPoint];
-			else
-			{
-				isIncreamentTarget = true;
-				nextTargetPoint(bot);
-			}
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * 5000
+				+ bot->getGame().getPatrolLeader()->getForward() * -5000
+				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
-
-		allignedYaw = false;
-		allignedPitch = false;
-		isArrived = false;
-		nextTargetIsSelected = false;
 	}
 }
 
-void StateMoveToTargetPoint::checkRotation(Actor* bot)
+void StateFollowLeader::checkRotation(Actor* bot)
 {
 	//std::cout << std::endl << "===========" << std::endl;
 
-	Vector3 direction = bot->getGame().getTargetPoints()[currentIndexTargetPoint]->getPosition() - bot->getPosition();
+	Vector3 direction = targetPosition - bot->getPosition();
 	direction.normalize();
-	
+
 	//std::cout << "direction: " << direction.toString() << std::endl;
 
 	Vector3 forw = bot->getForward();
