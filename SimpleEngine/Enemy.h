@@ -20,9 +20,6 @@ public:
 	void setCrewNumber(int newCrewNumber);
 
 private:
-	SphereActor* sphere;
-	SphereActor* sphereR;
-	SphereActor* sphereL;
 	MoveComponent* moveComponent;
 	MeshComponent* mc;
 
@@ -68,6 +65,11 @@ private:
 	bool topFinal = false;
 
 	// Debug
+	void debug(bool enable);
+	bool isDebug = false;
+	SphereActor* sphere;
+	SphereActor* sphereR;
+	SphereActor* sphereL;
 	//Vector3 startR, startL, endR, endL;
 	//PhysicsSystem::CollisionInfo infoR, infoL;
 	//bool segCastR = false;

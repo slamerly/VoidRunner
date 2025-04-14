@@ -30,17 +30,7 @@ Enemy::Enemy()
 		stateM->changeState(this, stateFollow);
 
 	// ===== DEBUG =====
-	
-	//sphere = new SphereActor();
-	//sphere->setScale(5.0f);
-	
-	sphereR = new SphereActor();
-	sphereR->setScale(25.0f);
-	sphereR->getMeshComponent()->setTextureIndex(4);
-	sphereL = new SphereActor();
-	sphereL->setScale(25.0f);
-	sphereL->getMeshComponent()->setTextureIndex(3);
-	
+	//debug(true);
 
 	//moveComponent = new MoveComponent(this);
 	//moveComponent->setForwardSpeed(fowardSpeed);
@@ -56,6 +46,17 @@ Enemy::~Enemy()
 	//sphere->setState(Actor::ActorState::Dead);
 	//sphereR->setState(Actor::ActorState::Dead);
 	//sphereL->setState(Actor::ActorState::Dead);
+	debug(false);
+
+	if (!getGame().getEnemies().empty())
+	{
+		//std::cout << "nb enemies: " << getGame().getEnemies().size() << std::endl;
+
+		Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[0]);
+		if (current)
+			current->setIsLeader(true);
+	}
+
 	getGame().removeMovableActor(this);
 }
 
@@ -63,10 +64,10 @@ void Enemy::updateActor(float dt)
 {
 	stateM->update(this, dt);
 
-	if (learder)
+	if (learder && isDebug)
 	{
-		sphereL->setPosition(getRight() * -5000 + getForward() * -5000 + getPosition());
-		sphereR->setPosition(getRight() * 5000 + getForward() * -5000 + getPosition());
+		sphereL->setPosition(getRight() * -10000 + getForward() * -5000 + getPosition());
+		sphereR->setPosition(getRight() * 10000 + getForward() * -5000 +getPosition());
 	}
 
 	/*
@@ -166,6 +167,9 @@ void Enemy::setIsLeader(bool isLeader)
 	learder = isLeader;
 	getGame().setPatrolLeader(this);
 	stateM->changeState(this, stateMoveTarget);
+
+	if (isLeader)
+		debug(true);
 }
 
 void Enemy::setCrewNumber(int newCrewNumber)
@@ -278,4 +282,34 @@ void Enemy::dodge(float distBA)
 		moveComponent->setForwardSpeed(0);
 		moveComponent->setAngularSpeed(1.f);
 	}*/
+}
+
+void Enemy::debug(bool enable)
+{
+	isDebug = enable;
+
+	if (enable)
+	{
+		//sphere = new SphereActor();
+		//sphere->setScale(5.0f);
+
+		sphereR = new SphereActor();
+		sphereR->setScale(25.0f);
+		sphereR->getMeshComponent()->setTextureIndex(4);
+
+		sphereL = new SphereActor();
+		sphereL->setScale(25.0f);
+		sphereL->getMeshComponent()->setTextureIndex(3);
+	}
+	else
+	{
+		if(sphere)
+			sphere->setState(Actor::ActorState::Dead);
+
+		if(sphereR)
+			sphereR->setState(Actor::ActorState::Dead);
+
+		if(sphereL)
+			sphereL->setState(Actor::ActorState::Dead);
+	}
 }

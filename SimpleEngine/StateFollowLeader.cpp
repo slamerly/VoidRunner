@@ -43,7 +43,8 @@ void StateFollowLeader::update(Actor* bot, float deltaTime)
 			}
 
 			// ===== Pitch =====
-			if (Maths::abs(anglePitch) > 0.01f) {
+			if (Maths::abs(anglePitch) > 0.01f) 
+			{
 				pitchSpeed = Maths::clamp(pitchSpeed + stepPitchSpeed * (anglePitch < 0 ? 1 : -1), -maxPitchSpeed, maxPitchSpeed);
 			}
 			else {
@@ -55,6 +56,24 @@ void StateFollowLeader::update(Actor* bot, float deltaTime)
 		currentExpStepForward++;
 
 		// ===== Move Forward =====
+		if (currentDistance > 6000)
+		{
+			maxFowardSpeed = 6000;
+		}
+		else if (currentDistance < 6000 && currentDistance >= 4000)
+		{
+			maxFowardSpeed = 4000;
+		}
+		else if (currentDistance < 4000 && currentDistance >= 1000)
+		{
+			maxFowardSpeed = 2000;
+		}
+		else
+		{
+			maxFowardSpeed = 0;
+		}
+
+
 		if (forwardSpeed < maxFowardSpeed)
 		{
 			if (exp(currentExpStepForward / stepForwardSpeed) > stepForwardSpeed)
@@ -71,6 +90,10 @@ void StateFollowLeader::update(Actor* bot, float deltaTime)
 			{
 				forwardSpeed = maxFowardSpeed;
 			}
+		}
+		else
+		{
+			forwardSpeed -= stepForwardSpeed;
 		}
 
 		mc->setForwardSpeed(forwardSpeed);
@@ -112,13 +135,7 @@ void StateFollowLeader::distToTarget(Actor* bot)
 	{
 		float dist = Vector3::distance(bot->getPosition(), targetPosition);
 
-		if (dist <= maxDistToDecelerate)
-		{
-			// without stop at checkpoint
-			isArrived = true;
-		}
-		else
-			isArrived = false;
+		currentDistance = dist;
 	}
 }
 
@@ -129,14 +146,14 @@ void StateFollowLeader::defineTargetPosition(Actor* bot)
 		// pair number on the right of the leader
 		if (Maths::fmod(patrolPosition, 2) == 0)
 		{
-			targetPosition = bot->getGame().getPatrolLeader()->getRight() * 5000
-				+ bot->getGame().getPatrolLeader()->getForward() * -5000
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * 5000 * (patrolPosition / 2)
+				+ bot->getGame().getPatrolLeader()->getForward() * -5000 * std::floor(((patrolPosition - 1) / 2))
 				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
 		else
 		{
-			targetPosition = bot->getGame().getPatrolLeader()->getRight() * -5000
-				+ bot->getGame().getPatrolLeader()->getForward() * -5000
+			targetPosition = bot->getGame().getPatrolLeader()->getRight() * -5000 * ((patrolPosition - 1) / 2 + 1)
+				+ bot->getGame().getPatrolLeader()->getForward() * -5000 * ((patrolPosition - 1) / 2)
 				+ bot->getGame().getPatrolLeader()->getPosition();
 		}
 	}

@@ -21,6 +21,7 @@ private:
 
 	void distToTarget(Actor* bot);
 	float maxDistToDecelerate = 3500.f;
+	float currentDistance = 0;
 	bool isArrived = false;
 
 	int patrolPosition = 0;

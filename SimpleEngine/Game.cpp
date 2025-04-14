@@ -152,7 +152,6 @@ void Game::load()
 
 	// ===== Enemies =====
 	Enemy* enemy = new Enemy();
-	//const float start = -2500.0f;
 	enemy->setPosition(Vector3(50000, 0, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
 	enemy->setIsLeader(true);
@@ -160,18 +159,28 @@ void Game::load()
 	enemies.push_back(enemy);
 
 	enemy = new Enemy();
-	//const float start = -2500.0f;
-	enemy->setPosition(Vector3(58500, 5000, 0));
+	enemy->setPosition(Vector3(60000, 5000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
 	enemy->setCrewNumber(1);
 	enemies.push_back(enemy);
 
-	//enemy = new Enemy();
-	////const float start = -2500.0f;
-	//enemy->setPosition(Vector3(65000, -5000, 0));
-	//enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	//enemy->setCrewNumber(2);
-	//enemies.push_back(enemy);
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(60000, -5000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setCrewNumber(2);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(70000, 10000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setCrewNumber(3);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(70000, -10000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
+	enemy->setCrewNumber(4);
+	enemies.push_back(enemy);
 
 	// ===== Asteroids =====
 	// DEBUG FIELD
@@ -385,16 +394,6 @@ void Game::placedAsteroid(Asteroid* rock, int rangeX, int rangeY, int rangeZ)
 bool Game::rightDistance(Asteroid& origin, Asteroid& target)
 {
 	float minDist = 0;
-	/*
-	if (target.getAsteroidSize() <= origin.getAsteroidSize())
-	{
-		minDist = origin.getAsteroidSize() * 0.5f + 1.5f * target.getAsteroidSize();
-	}
-	else
-	{
-		minDist = target.getAsteroidSize() * 0.5f + 1.5f * origin.getAsteroidSize();
-	}
-	*/
 
 	minDist = origin.getAsteroidSize() * 0.5f + 0.5f * target.getAsteroidSize();
 
@@ -464,6 +463,46 @@ void Game::processInput()
 			asteroids.clear();
 
 			generateAsteroidField(9, 81, 721);
+		}
+
+		// Destroi leader
+		if (input.keyboard.getKeyState(SDL_SCANCODE_P) == ButtonState::Released)
+		{
+			std::cout << "\nDestroi leader" << std::endl;
+
+			Actor* actorToKill = enemies[0];
+
+			enemies.erase(enemies.begin());
+
+			// TODO - remettre dans l'ordre
+			/*if (crewNumber != 0)
+			{
+				if (Maths::fmod(getGame().getEnemies().size(), 2) == 0)
+				{
+					for (int i = 2; i < getGame().getEnemies().size(); i + 2)
+					{
+						Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[i]);
+						if (current)
+							current->setCrewNumber(i - 2);
+					}
+				}
+				else
+				{
+					for (int i = 1; i < getGame().getEnemies().size(); i + 2)
+					{
+						Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[i]);
+						if (current)
+						{
+							if (i - 2 > 0)
+								current->setCrewNumber(i - 2);
+							else
+								current->setCrewNumber(i - 1);
+						}
+					}
+				}
+			}*/
+
+			actorToKill->setState(Actor::ActorState::Dead);
 		}
 
 		// Actor input
