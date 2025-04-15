@@ -96,6 +96,16 @@ int StateMoveToTargetPoint::getPriority()
 	return 1;
 }
 
+void StateMoveToTargetPoint::setCurrentExpStepForward(float expStepForward)
+{
+	currentExpStepForward = expStepForward;
+}
+
+void StateMoveToTargetPoint::setCurrentForwardSpeed(float forwSpeed)
+{
+	forwardSpeed = forwSpeed;
+}
+
 void StateMoveToTargetPoint::distToTarget(Actor* bot)
 {
 	if (currentTarget)

@@ -14,6 +14,9 @@ public:
 	int getPriority() override;
 
 	void setPatrolPosition(int patrolPos);
+	float getCurrentExpStepForward() { return currentExpStepForward; }
+	float getCurrentForwardSpeed() { return forwardSpeed; }
+	void isUpdateCrewNumber();
 
 private:
 	MoveComponent* mc;
@@ -29,6 +32,10 @@ private:
 	void defineTargetPosition(Actor* bot);
 
 	void checkRotation(Actor* bot);
+
+	bool isUpdate = false;
+	float durationUpdtae = 60;
+	float currentUpdate = 0;
 
 	//=======================================================
 	//						Movements
@@ -53,7 +60,6 @@ private:
 	// Forward - Exp
 	const float initWExpStepForward = stepForwardSpeed * 1.25f;
 	const float initSExpStepForward = stepForwardBreak * 2.5f;
-	const float initSExpNegStepForward = 0;
 	float currentExpStepForward = initWExpStepForward;
 
 

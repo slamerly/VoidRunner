@@ -18,6 +18,9 @@ public:
 	bool getIsLeader() { return learder; }
 	void setIsLeader(bool isLeader);
 	void setCrewNumber(int newCrewNumber);
+	int getCrewNumber() { return crewNumber; }
+
+	void updateCrewNumber();
 
 private:
 	MoveComponent* moveComponent;

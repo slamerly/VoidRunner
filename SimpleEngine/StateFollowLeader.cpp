@@ -74,6 +74,18 @@ void StateFollowLeader::update(Actor* bot, float deltaTime)
 		}
 
 
+		if (isUpdate && currentUpdate < durationUpdtae)
+		{
+			currentUpdate++;
+
+			if (currentDistance < 1000)
+				maxFowardSpeed = 0;
+			else
+				maxFowardSpeed = 1000;
+		}
+		else
+			isUpdate = false;
+
 		if (forwardSpeed < maxFowardSpeed)
 		{
 			if (exp(currentExpStepForward / stepForwardSpeed) > stepForwardSpeed)
@@ -127,6 +139,12 @@ int StateFollowLeader::getPriority()
 void StateFollowLeader::setPatrolPosition(int patrolPos)
 {
 	patrolPosition = patrolPos;
+}
+
+void StateFollowLeader::isUpdateCrewNumber()
+{
+	isUpdate = true;
+	currentUpdate = 0;
 }
 
 void StateFollowLeader::distToTarget(Actor* bot)

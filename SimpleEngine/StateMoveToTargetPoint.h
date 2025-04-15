@@ -13,6 +13,9 @@ public:
 
     int getPriority() override;
 
+	void setCurrentExpStepForward(float expStepForward);
+	void setCurrentForwardSpeed(float forwSpeed);
+
 private:
     MoveComponent* mc;
 	int currentIndexTargetPoint = 0;
@@ -51,7 +54,6 @@ private:
 	// Forward - Exp
 	const float initWExpStepForward = stepForwardSpeed * 1.25f;
 	const float initSExpStepForward = stepForwardBreak * 2.5f;
-	const float initSExpNegStepForward = 0;
 	float currentExpStepForward = initWExpStepForward;
 
 
@@ -62,7 +64,7 @@ private:
 	bool allignedYaw = false;
 
 	// Yaw - Max
-	const float maxYawSpeed = sensitiveRota / 10;
+	const float maxYawSpeed = sensitiveRota / 15;
 
 	// Yaw - Steps
 	const float stepYawSpeed = .01f;
@@ -74,7 +76,7 @@ private:
 	bool allignedPitch = false;
 
 	// Pitch - Max
-	const float maxPitchSpeed = sensitiveRota / 10;
+	const float maxPitchSpeed = sensitiveRota / 15;
 
 	// Pitch - Steps
 	const float stepPitchSpeed = .01f;

@@ -48,14 +48,14 @@ Enemy::~Enemy()
 	//sphereL->setState(Actor::ActorState::Dead);
 	debug(false);
 
-	if (!getGame().getEnemies().empty())
-	{
-		//std::cout << "nb enemies: " << getGame().getEnemies().size() << std::endl;
+	//if (!getGame().getEnemies().empty())
+	//{
+	//	//std::cout << "nb enemies: " << getGame().getEnemies().size() << std::endl;
 
-		Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[0]);
-		if (current)
-			current->setIsLeader(true);
-	}
+	//	Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[0]);
+	//	if (current)
+	//		current->setIsLeader(true);
+	//}
 
 	getGame().removeMovableActor(this);
 }
@@ -66,8 +66,10 @@ void Enemy::updateActor(float dt)
 
 	if (learder && isDebug)
 	{
-		sphereL->setPosition(getRight() * -10000 + getForward() * -5000 + getPosition());
-		sphereR->setPosition(getRight() * 10000 + getForward() * -5000 +getPosition());
+		if(sphereL)
+			sphereL->setPosition(getRight() * -10000 + getForward() * -5000 + getPosition());
+		if(sphereR)
+			sphereR->setPosition(getRight() * 10000 + getForward() * -5000 +getPosition());
 	}
 
 	/*
@@ -166,6 +168,8 @@ void Enemy::setIsLeader(bool isLeader)
 {
 	learder = isLeader;
 	getGame().setPatrolLeader(this);
+	stateMoveTarget->setCurrentExpStepForward(stateFollow->getCurrentExpStepForward());
+	stateMoveTarget->setCurrentForwardSpeed(stateFollow->getCurrentForwardSpeed());
 	stateM->changeState(this, stateMoveTarget);
 
 	if (isLeader)
@@ -179,6 +183,32 @@ void Enemy::setCrewNumber(int newCrewNumber)
 	if (stateFollow)
 	{
 		stateFollow->setPatrolPosition(newCrewNumber);
+	}
+}
+
+void Enemy::updateCrewNumber()
+{
+	if (Maths::fmod(getGame().getEnemies().size(), 2) == 0 &&
+		Maths::fmod(crewNumber, 2) == 0)
+	{
+		crewNumber -= 2;
+
+	}
+	else if (Maths::fmod(getGame().getEnemies().size(), 2) != 0 &&
+		Maths::fmod(crewNumber, 2) != 0)
+	{
+		if (crewNumber - 2 >= 0)
+			crewNumber -= 2;
+		else
+			crewNumber -= 1;
+	}
+
+	if (crewNumber == 0)
+		setIsLeader(true);
+	else
+	{
+		stateFollow->setPatrolPosition(crewNumber);
+		stateFollow->isUpdateCrewNumber();
 	}
 }
 
@@ -293,13 +323,13 @@ void Enemy::debug(bool enable)
 		//sphere = new SphereActor();
 		//sphere->setScale(5.0f);
 
-		sphereR = new SphereActor();
+		/*sphereR = new SphereActor();
 		sphereR->setScale(25.0f);
 		sphereR->getMeshComponent()->setTextureIndex(4);
 
 		sphereL = new SphereActor();
 		sphereL->setScale(25.0f);
-		sphereL->getMeshComponent()->setTextureIndex(3);
+		sphereL->getMeshComponent()->setTextureIndex(3);*/
 	}
 	else
 	{

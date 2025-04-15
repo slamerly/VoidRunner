@@ -130,7 +130,7 @@ void Game::load()
 
 	// ===== Target Point =====
 	TargetPoint* point = new TargetPoint();
-	point->setPosition(Vector3(25000, 15000, 10000));
+	/*point->setPosition(Vector3(25000, 15000, 10000));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
@@ -147,12 +147,20 @@ void Game::load()
 	point = new TargetPoint();
 	point->setPosition(Vector3(75000, 15000, -10000));
 	point->setNewLocation();
-	targetPoints.push_back(point);
+	targetPoints.push_back(point);*/
 	
+	point->setPosition(Vector3(50000, -50000, 0));
+	point->setNewLocation();
+	targetPoints.push_back(point);
+
+	point = new TargetPoint();
+	point->setPosition(Vector3(50000, 50000, 0));
+	point->setNewLocation();
+	targetPoints.push_back(point);
 
 	// ===== Enemies =====
 	Enemy* enemy = new Enemy();
-	enemy->setPosition(Vector3(50000, 0, 0));
+	/*enemy->setPosition(Vector3(50000, 0, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
 	enemy->setIsLeader(true);
 	enemy->setCrewNumber(0);
@@ -180,7 +188,39 @@ void Game::load()
 	enemy->setPosition(Vector3(70000, -10000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
 	enemy->setCrewNumber(4);
+	enemies.push_back(enemy);*/
+
+	enemy->setPosition(Vector3(50000, 0, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setIsLeader(true);
+	enemy->setCrewNumber(0);
 	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(45000, 10000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setCrewNumber(1);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(55000, 10000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setCrewNumber(2);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(40000, 20000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setCrewNumber(3);
+	enemies.push_back(enemy);
+
+	enemy = new Enemy();
+	enemy->setPosition(Vector3(60000, 20000, 0));
+	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
+	enemy->setCrewNumber(4);
+	enemies.push_back(enemy);
+
+	
 
 	// ===== Asteroids =====
 	// DEBUG FIELD
@@ -474,35 +514,27 @@ void Game::processInput()
 
 			enemies.erase(enemies.begin());
 
-			// TODO - remettre dans l'ordre
-			/*if (crewNumber != 0)
+			for (int i = 0; i < enemies.size(); i++)
 			{
-				if (Maths::fmod(getGame().getEnemies().size(), 2) == 0)
+				Enemy* current = dynamic_cast<Enemy*>(enemies[i]);
+				if (current)
 				{
-					for (int i = 2; i < getGame().getEnemies().size(); i + 2)
-					{
-						Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[i]);
-						if (current)
-							current->setCrewNumber(i - 2);
-					}
+					std::cout << i << ": " << current->getCrewNumber() << std::endl;
 				}
-				else
+			}
+
+			for (int i = 0; i < enemies.size(); i++)
+			{
+				Enemy* current = dynamic_cast<Enemy*>(enemies[i]);
+				if (current)
 				{
-					for (int i = 1; i < getGame().getEnemies().size(); i + 2)
-					{
-						Enemy* current = dynamic_cast<Enemy*>(getGame().getEnemies()[i]);
-						if (current)
-						{
-							if (i - 2 > 0)
-								current->setCrewNumber(i - 2);
-							else
-								current->setCrewNumber(i - 1);
-						}
-					}
+					current->updateCrewNumber();
+					std::cout << i << ": " << current->getCrewNumber() << std::endl;
 				}
-			}*/
+			}
 
 			actorToKill->setState(Actor::ActorState::Dead);
+			return;
 		}
 
 		// Actor input
