@@ -18,7 +18,7 @@ void StateMoveToTargetPoint::enter(Actor* bot)
 	if (bot->getGame().getTargetPoints().empty())
 		std::cerr << "Game TargetPoints is empty." << std::endl;
 	else
-		currentTarget = bot->getGame().getTargetPoints()[0];
+		currentTarget = bot->getGame().getTargetPoints()[bot->getGame().getCurrentTargetPoint()];
 }
 
 void StateMoveToTargetPoint::update(Actor* bot, float deltaTime)
@@ -154,6 +154,8 @@ void StateMoveToTargetPoint::nextTargetPoint(Actor* bot)
 				nextTargetPoint(bot);
 			}
 		}
+
+		bot->getGame().setCurrentTargetPoint(currentIndexTargetPoint);
 
 		allignedYaw = false;
 		allignedPitch = false;

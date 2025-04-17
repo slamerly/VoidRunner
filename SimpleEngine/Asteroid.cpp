@@ -4,6 +4,7 @@
 Asteroid::Asteroid()
 {
 	mc = new MeshComponent(this);
+	mvc = new MoveComponent(this);
 
 	int selectMesh = 0;
 
@@ -33,12 +34,15 @@ Asteroid::Asteroid()
 
 	setScale(selectScale);
 	std::cout << selectScale << std::endl;
+
+	
 }
 
 Asteroid::Asteroid(AsteroidSize size)
 {
 	mc = new MeshComponent(this);
-	
+	mvc = new MoveComponent(this);
+
 	// ===== Size test =====
 	//sphere = new SphereActor();
 	//sphere->getMeshComponent()->setTextureIndex(4);
@@ -145,6 +149,8 @@ Asteroid::Asteroid(AsteroidSize size)
 	setAngle(Vector3::unitY, rotY);
 	rotZ = rand() % 361;
 	setAngle(Vector3::unitZ, rotZ);
+
+	isRotation();
 }
 
 Asteroid::~Asteroid()
@@ -156,4 +162,17 @@ void Asteroid::setPosition(Vector3 positionP)
 {
 	Actor::setPosition(positionP);
 	//sphere->setPosition(positionP);
+}
+
+void Asteroid::isRotation()
+{
+	rotate = rand() % 2;
+
+	if (mvc && rotate)
+	{
+		speed = rand() % 40 + 40;
+		speed = Maths::twoPi / speed;
+
+		mvc->setPitchSpeed(speed);
+	}
 }

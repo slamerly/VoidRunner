@@ -28,7 +28,7 @@ private:
 	//						Movements
 	//=======================================================
 	// Debug
-	bool debugMovement = true;
+	bool debugMovement = false;
 	float debugPower = 5.f;
 
 	// Max

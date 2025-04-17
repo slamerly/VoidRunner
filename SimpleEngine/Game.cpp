@@ -129,68 +129,38 @@ void Game::load()
 	chara = new Character();
 
 	// ===== Target Point =====
-	TargetPoint* point = new TargetPoint();
-	/*point->setPosition(Vector3(25000, 15000, 10000));
+	/*TargetPoint* point = new TargetPoint();
+	point->setPosition(Vector3(25000, 15000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(25000, -15000, -10000));
+	point->setPosition(Vector3(25000, -15000, -0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(75000, -15000, 10000));
+	point->setPosition(Vector3(75000, -15000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
-	point->setPosition(Vector3(75000, 15000, -10000));
+	point->setPosition(Vector3(75000, 15000, -0));
 	point->setNewLocation();
 	targetPoints.push_back(point);*/
 	
-	point->setPosition(Vector3(50000, -50000, 0));
+	/*point->setPosition(Vector3(50000, -500000, 0));
 	point->setNewLocation();
 	targetPoints.push_back(point);
 
 	point = new TargetPoint();
 	point->setPosition(Vector3(50000, 50000, 0));
 	point->setNewLocation();
-	targetPoints.push_back(point);
+	targetPoints.push_back(point);*/
 
 	// ===== Enemies =====
-	Enemy* enemy = new Enemy();
+	//Enemy* enemy = new Enemy();
 	/*enemy->setPosition(Vector3(50000, 0, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setIsLeader(true);
-	enemy->setCrewNumber(0);
-	enemies.push_back(enemy);
-
-	enemy = new Enemy();
-	enemy->setPosition(Vector3(60000, 5000, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setCrewNumber(1);
-	enemies.push_back(enemy);
-
-	enemy = new Enemy();
-	enemy->setPosition(Vector3(60000, -5000, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setCrewNumber(2);
-	enemies.push_back(enemy);
-
-	enemy = new Enemy();
-	enemy->setPosition(Vector3(70000, 10000, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setCrewNumber(3);
-	enemies.push_back(enemy);
-
-	enemy = new Enemy();
-	enemy->setPosition(Vector3(70000, -10000, 0));
-	enemy->setAngle(Vector3::unitZ, Maths::toRadians(180));
-	enemy->setCrewNumber(4);
-	enemies.push_back(enemy);*/
-
-	enemy->setPosition(Vector3(50000, 0, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
 	enemy->setIsLeader(true);
 	enemy->setCrewNumber(0);
@@ -206,9 +176,9 @@ void Game::load()
 	enemy->setPosition(Vector3(55000, 10000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
 	enemy->setCrewNumber(2);
-	enemies.push_back(enemy);
+	enemies.push_back(enemy);*/
 
-	enemy = new Enemy();
+	/*enemy = new Enemy();
 	enemy->setPosition(Vector3(40000, 20000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
 	enemy->setCrewNumber(3);
@@ -218,7 +188,7 @@ void Game::load()
 	enemy->setPosition(Vector3(60000, 20000, 0));
 	enemy->setAngle(Vector3::unitZ, Maths::toRadians(-90));
 	enemy->setCrewNumber(4);
-	enemies.push_back(enemy);
+	enemies.push_back(enemy);*/
 
 	
 
@@ -240,7 +210,7 @@ void Game::load()
 	endAsteroidField = Vector3(100000, 50000, 50000);
 
 	//**************************************************************************************
-	//generateAsteroidField(9, 81, 721);
+	generateAsteroidField(9, 81, 721);
 	//**************************************************************************************
 
 	// ===================================================================================
@@ -457,6 +427,11 @@ void Game::setPatrolLeader(Actor* leader)
 	patrolLeader = leader;
 }
 
+void Game::setCurrentTargetPoint(bool currentTP)
+{
+	currentTargetPoint = currentTP;
+}
+
 void Game::processInput()
 {
 	inputSystem.preUpdate();
@@ -514,14 +489,14 @@ void Game::processInput()
 
 			enemies.erase(enemies.begin());
 
-			for (int i = 0; i < enemies.size(); i++)
+			/*for (int i = 0; i < enemies.size(); i++)
 			{
 				Enemy* current = dynamic_cast<Enemy*>(enemies[i]);
 				if (current)
 				{
 					std::cout << i << ": " << current->getCrewNumber() << std::endl;
 				}
-			}
+			}*/
 
 			for (int i = 0; i < enemies.size(); i++)
 			{
@@ -529,7 +504,7 @@ void Game::processInput()
 				if (current)
 				{
 					current->updateCrewNumber();
-					std::cout << i << ": " << current->getCrewNumber() << std::endl;
+					//std::cout << i << ": " << current->getCrewNumber() << std::endl;
 				}
 			}
 

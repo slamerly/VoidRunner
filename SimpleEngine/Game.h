@@ -86,6 +86,8 @@ public:
 	Actor* getPatrolLeader() { return patrolLeader; }
 	void setPatrolLeader(Actor* leader);
 	vector<Actor*> getTargetPoints() { return targetPoints; }
+	void setCurrentTargetPoint(bool currentTP);
+	bool getCurrentTargetPoint() { return currentTargetPoint; }
 
 private:
 	void processInput();
@@ -127,5 +129,6 @@ private:
 	vector<Actor*> enemies;
 	Actor* patrolLeader;
 	vector<Actor*> targetPoints;
+	int currentTargetPoint = 0;
 };
 

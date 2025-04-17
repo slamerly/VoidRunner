@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "MeshComponent.h"
 #include "SphereActor.h"
+#include "MoveComponent.h"
 
 enum AsteroidSize
 {
@@ -25,10 +26,14 @@ public:
 	const float getAsteroidSize() { return asteroidSize; }
 
 	void setPosition(Vector3 positionP);
+	void isRotation();
 
 private:
 	MeshComponent* mc;
+	MoveComponent* mvc;
 	float asteroidSize = 0;
-	
+
+	bool rotate = false;
+	float speed = 0;
 };
 

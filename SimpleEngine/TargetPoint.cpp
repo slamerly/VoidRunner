@@ -4,7 +4,7 @@
 TargetPoint::TargetPoint()
 {
 	sphere = new SphereActor();
-	sphere->setScale(100.0f);
+	sphere->setScale(50.0f);
 	sphere->getMeshComponent()->setTextureIndex(1);
 	sphere->setPosition(this->getPosition());
 }
