@@ -1,8 +1,3 @@
-Personal project built on my custom 3D engine using SDL and OpenGL. This project showcases advanced game development concepts:
+**VoidRunner** is a personal 5th-year project developed using my **custom 3D engine** with **SDL** and **OpenGL**, focusing on creating a space-themed game. 
 
-- **Spaceship Flight System:** Intuitive controls for agile maneuvering.
-- **Dynamic UI:** Real-time display the current speed.
-- **Asteroid Field Generator:** Infinite and varied cosmic environments.
-- **Advanced AI with State Machine:**
-    - Coordinated formation flying.
-    - Intelligent regrouping mechanisms in case of dispersion or unit loss.
+Key features implemented include a responsive **spaceship flying system**, **asteroid field generation**, and an advanced **AI state machine** for formation movement and regrouping, alongside essential **UI elements** for speed and pause.
